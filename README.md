@@ -1,2 +1,2 @@
-# onboard-server
-Server of OnBoard Project
+# snuboard-server
+Server of SNUBoard Project
