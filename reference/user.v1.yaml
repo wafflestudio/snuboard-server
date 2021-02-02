@@ -1,0 +1,360 @@
+openapi: 3.0.0
+info:
+  title: user
+  version: '1.0'
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /user/me/:
+    parameters: []
+    get:
+      summary: Get User Info by User ID
+      tags: []
+      responses:
+        '200':
+          description: User Found
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  id:
+                    type: number
+                  username:
+                    type: string
+                    minLength: 1
+                  nickname:
+                    type: string
+                    minLength: 1
+                required:
+                  - id
+                  - username
+                  - nickname
+              examples:
+                Get user me:
+                  value:
+                    id: 1
+                    username: eldpswp99
+                    nickname: nickname
+        '401':
+          description: |-
+            Unauthorized
+            access_token 신규 혹은 재발급 필요
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  message:
+                    type: string
+                    minLength: 1
+                required:
+                  - message
+              examples:
+                invalid token:
+                  value:
+                    message: Invalid token
+      operationId: get-user-me
+      description: Retrieve the information of the user him/herself.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: 'Bearer [access_token]'
+    patch:
+      summary: Update User Information
+      operationId: patch-user-userId
+      responses:
+        '200':
+          description: User Updated
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  id:
+                    type: number
+                  username:
+                    type: string
+                    minLength: 1
+                  nickname:
+                    type: string
+                    minLength: 1
+                required:
+                  - id
+                  - username
+                  - nickname
+              examples:
+                update user me:
+                  value:
+                    id: 1
+                    username: eldpswp99
+                    nickname: Rebecca
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  message:
+                    type: string
+                    minLength: 1
+                required:
+                  - message
+              examples:
+                Bad request:
+                  value:
+                    message: Invalid nickname
+        '401':
+          description: |-
+            Unauthorized
+            access_token 신규 혹은 재발급 필요
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  message:
+                    type: string
+                    minLength: 1
+                required:
+                  - message
+              examples:
+                Invalid token:
+                  value:
+                    message: Invalid token
+      description: Update the infromation of an existing user.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nickname:
+                  type: string
+                password:
+                  type: string
+            examples:
+              Update nickname:
+                value:
+                  nickname: Rebecca
+        description: Patch user properties to update.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: 'Bearer [token]'
+  /user/:
+    post:
+      summary: Create New User
+      operationId: post-user
+      responses:
+        '200':
+          description: |-
+            User Created,
+
+            expires_at은 ISO_8601 포맷(yyyy-mm-ddThh:mm:ss.sssZ)을 사용합니다.
+            access_token을 통해 authentication을 진행하며, 만료 후에는 /user/auth/를 통해 access_token을 새로 발급받아야합니다. access token을 새로 발급받을 때에 refresh_token 또한 새로 발급됩니다.
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  id:
+                    type: number
+                  username:
+                    type: string
+                    minLength: 1
+                  nickname:
+                    type: string
+                    minLength: 1
+                  access_token:
+                    type: string
+                    minLength: 1
+                  refresh_token:
+                    type: string
+                    minLength: 1
+                  expires_at:
+                    type: string
+                required:
+                  - id
+                  - username
+                  - nickname
+                  - access_token
+                  - refresh_token
+              examples:
+                post user example:
+                  value:
+                    id: 1
+                    username: eldpswp99
+                    nickname: nickname
+                    access_token: access_token
+                    refresh_token: refresh_token
+                    expires_at: '2020-03-16T17:40:00+09:00'
+            application/xml:
+              schema:
+                type: object
+                properties: {}
+            multipart/form-data:
+              schema:
+                type: object
+                properties: {}
+            text/html:
+              schema:
+                type: object
+                properties: {}
+            text/plain:
+              schema:
+                type: object
+                properties: {}
+            application/EDI-X12:
+              schema:
+                type: object
+                properties: {}
+            json:
+              schema:
+                type: object
+                properties: {}
+          headers: {}
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  message:
+                    type: string
+                    minLength: 1
+                required:
+                  - message
+              examples:
+                example-1:
+                  value:
+                    message: Invalid Username
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+                nickname:
+                  type: string
+              required:
+                - username
+                - password
+                - nickname
+            examples:
+              post user example:
+                value:
+                  username: eldpswp99
+                  password: password
+                  nickname: nickname
+        description: Post the necessary fields for the API to create a new user.
+      description: Create a new user.
+    parameters: []
+  /user/auth/token/:
+    parameters: []
+    post:
+      summary: User Authentication
+      operationId: post-user-auth
+      responses:
+        '200':
+          description: |-
+            expires_at은 ISO_8601 포맷(yyyy-mm-ddThh:mm:ss.sssZ)을 사용합니다.
+
+            access_token을 통해 authentication을 진행하며, 만료 후에는 /user/auth/token/를 통해 access_token을 새로 발급받아야합니다. access token을 새로 발급받을 때에 refresh_token 또한 새로 발급됩니다.
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  id:
+                    type: number
+                  username:
+                    type: string
+                    minLength: 1
+                  nickname:
+                    type: string
+                    minLength: 1
+                  access_token:
+                    type: string
+                    minLength: 1
+                  refresh_token:
+                    type: string
+                    minLength: 1
+                  expires_at:
+                    type: string
+                    minLength: 1
+                required:
+                  - id
+                  - username
+                  - nickname
+                  - access_token
+                  - refresh_token
+                  - expires_at
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  message:
+                    type: string
+                    minLength: 1
+                required:
+                  - message
+              examples:
+                Invalid:
+                  value:
+                    message: Invalid refesh_token
+      description: user authentication
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              properties:
+                grant_type:
+                  type: string
+                  minLength: 1
+                username:
+                  type: string
+                  minLength: 1
+                password:
+                  type: string
+                  minLength: 1
+                refresh_token:
+                  type: string
+              required:
+                - grant_type
+            examples:
+              password authentication:
+                value:
+                  grant_type: password
+                  username: eldpswp99
+                  password: password
+              refresh_token authentication:
+                value:
+                  grant_type: refresh_token
+                  refresh_token: '{example_token}'
+components:
+  schemas: {}
