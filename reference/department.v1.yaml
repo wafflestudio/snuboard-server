@@ -16,53 +16,27 @@ paths:
             application/json:
               schema:
                 description: ''
-                type: object
-                properties:
-                  departments:
-                    type: array
-                    uniqueItems: true
-                    minItems: 1
-                    items:
-                      required:
-                        - id
-                        - name
-                      properties:
-                        id:
-                          type: number
-                        name:
-                          type: string
-                          minLength: 1
-                        tags:
-                          type: array
-                          items:
-                            required: []
-                            properties: {}
-                        follow:
-                          type: array
-                          items:
-                            required: []
-                            properties: {}
-                required:
-                  - departments
+                type: array
+                items:
+                  $ref: '#/components/schemas/department'
               examples:
                 예시:
                   value:
-                    departments:
-                      - id: 1
-                        name: 컴퓨터공학부
-                        tags:
-                          - 입학
-                          - 졸업
-                          - 수업
-                        follow:
-                          - 졸업
-                      - id: 2
-                        name: 기계공학부
-                        tags:
-                          - 학부
-                          - 대학원
-                        follow:
-                          - 대학원
+                    - id: 1
+                      name: 컴퓨터공학부
+                      tags:
+                        - 입학
+                        - 졸업
+                        - 수업
+                      follow:
+                        - 졸업
+                    - id: 2
+                      name: 기계공학부
+                      tags:
+                        - 학부
+                        - 대학원
+                      follow:
+                        - 대학원
         '401':
           description: |-
             Unauthorized
@@ -76,7 +50,7 @@ paths:
           name: Authorization
           description: 'Bearer [token]'
     parameters: []
-  '/departments/{id}/':
+  '/departments/{department_id}':
     get:
       summary: Your GET endpoint
       tags: []
@@ -86,29 +60,7 @@ paths:
           content:
             application/json:
               schema:
-                description: ''
-                type: object
-                properties:
-                  id:
-                    type: number
-                  name:
-                    type: string
-                    minLength: 1
-                  tags:
-                    type: array
-                    items:
-                      required: []
-                      properties: {}
-                  follow:
-                    type: array
-                    items:
-                      required: []
-                      properties: {}
-                required:
-                  - id
-                  - name
-                  - tags
-                  - follow
+                $ref: '#/components/schemas/department'
               examples:
                 example-1:
                   value:
@@ -141,29 +93,7 @@ paths:
           content:
             application/json:
               schema:
-                description: ''
-                type: object
-                properties:
-                  id:
-                    type: number
-                  name:
-                    type: string
-                    minLength: 1
-                  tags:
-                    type: array
-                    items:
-                      required: []
-                      properties: {}
-                  follow:
-                    type: array
-                    items:
-                      required: []
-                      properties: {}
-                required:
-                  - id
-                  - name
-                  - tags
-                  - follow
+                $ref: '#/components/schemas/department'
               examples:
                 example-1:
                   value:
@@ -210,9 +140,44 @@ paths:
         description: ''
     parameters:
       - schema:
-          type: number
-        name: id
+          type: string
+        name: department_id
         in: path
         required: true
+        description: 과 id
 components:
-  schemas: {}
+  schemas:
+    department:
+      description: ''
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+          minLength: 1
+        tags:
+          type: array
+          items:
+            required: []
+            properties: {}
+        follow:
+          type: array
+          items:
+            required: []
+            properties: {}
+      required:
+        - id
+        - name
+        - tags
+        - follow
+      x-examples:
+        example-1:
+          id: 1
+          name: 컴퓨터공학부
+          tags:
+            - 입학
+            - 졸업
+            - 수업
+          follow:
+            - 졸업

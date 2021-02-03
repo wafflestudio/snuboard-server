@@ -16,27 +16,16 @@ paths:
           content:
             application/json:
               schema:
-                description: ''
-                type: object
-                properties:
-                  id:
-                    type: number
-                  username:
-                    type: string
-                    minLength: 1
-                  nickname:
-                    type: string
-                    minLength: 1
-                required:
-                  - id
-                  - username
-                  - nickname
+                $ref: '#/components/schemas/User'
               examples:
                 Get user me:
                   value:
                     id: 1
                     username: eldpswp99
                     nickname: nickname
+                    keywords:
+                      - 장학
+                      - 인턴
         '401':
           description: |-
             Unauthorized
@@ -73,27 +62,16 @@ paths:
           content:
             application/json:
               schema:
-                description: ''
-                type: object
-                properties:
-                  id:
-                    type: number
-                  username:
-                    type: string
-                    minLength: 1
-                  nickname:
-                    type: string
-                    minLength: 1
-                required:
-                  - id
-                  - username
-                  - nickname
+                $ref: '#/components/schemas/User'
               examples:
                 update user me:
                   value:
                     id: 1
                     username: eldpswp99
                     nickname: Rebecca
+                    keywords:
+                      - 장학
+                      - 인턴
         '400':
           description: Bad Request
           content:
@@ -141,6 +119,10 @@ paths:
                   type: string
                 password:
                   type: string
+                keywords:
+                  type: array
+                  items:
+                    type: string
             examples:
               Update nickname:
                 value:
@@ -166,31 +148,7 @@ paths:
           content:
             application/json:
               schema:
-                description: ''
-                type: object
-                properties:
-                  id:
-                    type: number
-                  username:
-                    type: string
-                    minLength: 1
-                  nickname:
-                    type: string
-                    minLength: 1
-                  access_token:
-                    type: string
-                    minLength: 1
-                  refresh_token:
-                    type: string
-                    minLength: 1
-                  expires_at:
-                    type: string
-                required:
-                  - id
-                  - username
-                  - nickname
-                  - access_token
-                  - refresh_token
+                $ref: '#/components/schemas/tokenUser'
               examples:
                 post user example:
                   value:
@@ -200,6 +158,7 @@ paths:
                     access_token: access_token
                     refresh_token: refresh_token
                     expires_at: '2020-03-16T17:40:00+09:00'
+                    keywords: []
             application/xml:
               schema:
                 type: object
@@ -281,33 +240,17 @@ paths:
           content:
             application/json:
               schema:
-                description: ''
-                type: object
-                properties:
-                  id:
-                    type: number
-                  username:
-                    type: string
-                    minLength: 1
-                  nickname:
-                    type: string
-                    minLength: 1
-                  access_token:
-                    type: string
-                    minLength: 1
-                  refresh_token:
-                    type: string
-                    minLength: 1
-                  expires_at:
-                    type: string
-                    minLength: 1
-                required:
-                  - id
-                  - username
-                  - nickname
-                  - access_token
-                  - refresh_token
-                  - expires_at
+                $ref: '#/components/schemas/tokenUser'
+              examples:
+                example-1:
+                  value:
+                    id: 1
+                    username: eldpswp99
+                    nickname: nickname
+                    access_token: access_token
+                    refresh_token: refresh_token
+                    expires_at: '2020-03-16T17:40:00+09:00'
+                    keywords: []
         '403':
           description: Forbidden
           content:
@@ -357,4 +300,78 @@ paths:
                   grant_type: refresh_token
                   refresh_token: '{example_token}'
 components:
-  schemas: {}
+  schemas:
+    User:
+      description: ''
+      type: object
+      properties:
+        id:
+          type: number
+        username:
+          type: string
+          minLength: 1
+        nickname:
+          type: string
+          minLength: 1
+        keywords:
+          type: array
+          items:
+            required: []
+            properties: {}
+      required:
+        - id
+        - username
+        - nickname
+        - keywords
+      x-examples:
+        example-1:
+          id: 1
+          username: eldpswp99
+          nickname: nickname
+          keywords:
+            - 장학
+            - 인턴
+    tokenUser:
+      description: ''
+      type: object
+      properties:
+        id:
+          type: number
+        username:
+          type: string
+          minLength: 1
+        nickname:
+          type: string
+          minLength: 1
+        access_token:
+          type: string
+          minLength: 1
+        refresh_token:
+          type: string
+          minLength: 1
+        expires_at:
+          type: string
+          minLength: 1
+        keywords:
+          type: array
+          items:
+            required: []
+            properties: {}
+      required:
+        - id
+        - username
+        - nickname
+        - access_token
+        - refresh_token
+        - expires_at
+        - keywords
+      x-examples:
+        example-1:
+          id: 1
+          username: eldpswp99
+          nickname: nickname
+          access_token: access_token
+          refresh_token: refresh_token
+          expires_at: '2020-03-16T17:40:00+09:00'
+          keywords:
+            - 장학
