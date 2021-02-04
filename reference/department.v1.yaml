@@ -7,7 +7,7 @@ servers:
 paths:
   /departments/:
     get:
-      summary: Your GET endpoint
+      summary: Get all departments
       tags: []
       responses:
         '200':
@@ -52,7 +52,7 @@ paths:
     parameters: []
   '/departments/{department_id}':
     get:
-      summary: Your GET endpoint
+      summary: Get department by department id
       tags: []
       responses:
         '200':
@@ -83,9 +83,9 @@ paths:
           in: header
           name: Authorization
           description: 'Bearer [token]'
-      description: ''
+      description: id에 해당하는 과의 정보 리턴
     put:
-      summary: ''
+      summary: Edit department follow
       operationId: put-department-follow
       responses:
         '200':
@@ -111,7 +111,7 @@ paths:
           description: |-
             Unauthorized
             토큰 재발급 혹은 로그인 필요
-      description: user의 department follow 갱신
+      description: user의 department follow 갱신. 들어오는 값으로 덮어씌워서 갱신합니다.
       parameters:
         - schema:
             type: string
@@ -150,27 +150,6 @@ components:
     department:
       description: ''
       type: object
-      properties:
-        id:
-          type: number
-        name:
-          type: string
-          minLength: 1
-        tags:
-          type: array
-          items:
-            required: []
-            properties: {}
-        follow:
-          type: array
-          items:
-            required: []
-            properties: {}
-      required:
-        - id
-        - name
-        - tags
-        - follow
       x-examples:
         example-1:
           id: 1
@@ -181,3 +160,22 @@ components:
             - 수업
           follow:
             - 졸업
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+          minLength: 1
+        tags:
+          type: array
+          items:
+            type: string
+        follow:
+          type: array
+          items:
+            type: string
+      required:
+        - id
+        - name
+        - tags
+        - follow

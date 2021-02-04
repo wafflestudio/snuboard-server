@@ -304,6 +304,14 @@ components:
     User:
       description: ''
       type: object
+      x-examples:
+        example-1:
+          id: 1
+          username: eldpswp99
+          nickname: nickname
+          keywords:
+            - 장학
+            - 인턴
       properties:
         id:
           type: number
@@ -316,24 +324,25 @@ components:
         keywords:
           type: array
           items:
-            required: []
-            properties: {}
+            type: string
       required:
         - id
         - username
         - nickname
         - keywords
+    tokenUser:
+      description: ''
+      type: object
       x-examples:
         example-1:
           id: 1
           username: eldpswp99
           nickname: nickname
+          access_token: access_token
+          refresh_token: refresh_token
+          expires_at: '2020-03-16T17:40:00+09:00'
           keywords:
             - 장학
-            - 인턴
-    tokenUser:
-      description: ''
-      type: object
       properties:
         id:
           type: number
@@ -355,8 +364,7 @@ components:
         keywords:
           type: array
           items:
-            required: []
-            properties: {}
+            type: string
       required:
         - id
         - username
@@ -365,13 +373,3 @@ components:
         - refresh_token
         - expires_at
         - keywords
-      x-examples:
-        example-1:
-          id: 1
-          username: eldpswp99
-          nickname: nickname
-          access_token: access_token
-          refresh_token: refresh_token
-          expires_at: '2020-03-16T17:40:00+09:00'
-          keywords:
-            - 장학
