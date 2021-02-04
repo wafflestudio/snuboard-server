@@ -331,7 +331,7 @@ paths:
         in: path
         required: true
     post:
-      summary: ''
+      summary: Post notice scrap
       operationId: post-notices-notice_id-scrap
       responses:
         '201':
@@ -342,9 +342,9 @@ paths:
           description: Unauthorized
         '404':
           description: Not Found
-      description: ''
+      description: '게시글 스크랩 하기. 이미 스크랩한 경우 400, 게시글이 존재하지 않으면 404를 리턴합니다.'
     delete:
-      summary: ''
+      summary: Delete notice scrap
       operationId: delete-notices-notice_id-scrap
       responses:
         '200':
@@ -355,6 +355,7 @@ paths:
           description: Unauthorized
         '404':
           description: Not Found
+      description: '게시글 스크랩을 취소합니다. 스크랩이 되어있지 않은 경우 204, 게시글이 없으면 404를 리턴합니다'
 components:
   schemas:
     Notice:
