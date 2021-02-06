@@ -5,7 +5,7 @@ info:
 servers:
   - url: 'http://localhost:3000'
 paths:
-  /user/me/:
+  /users/me/:
     parameters: []
     get:
       summary: Get User Info by User ID
@@ -134,7 +134,7 @@ paths:
           in: header
           name: Authorization
           description: 'Bearer [token]'
-  /user/:
+  /users/:
     post:
       summary: Create New User
       operationId: post-user
@@ -226,7 +226,7 @@ paths:
         description: Post the necessary fields for the API to create a new user.
       description: Create a new user.
     parameters: []
-  /user/auth/token/:
+  /users/auth/token/:
     parameters: []
     post:
       summary: User Authentication
