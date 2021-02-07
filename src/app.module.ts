@@ -16,11 +16,13 @@ import {
   UserTag,
 } from './department/department.entity';
 
+const ENV: string = process.env.NODE_ENV;
+
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ['.env', '.env.ci'],
+      envFilePath: [ENV === 'prod' ? '.env.prod' : '.env.dev', '.env.ci'],
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',

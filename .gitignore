@@ -34,4 +34,5 @@ lerna-debug.log*
 !.vscode/extensions.json
 
 #secrets
-.env
+.env.dev
+.env.prod
