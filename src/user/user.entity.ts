@@ -12,6 +12,7 @@ import { Exclude } from 'class-transformer';
 import * as bcrypt from 'bcrypt';
 import { UserNotice } from '../notice/notice.entity';
 import { UserTag } from '../department/department.entity';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Entity()
 export class User extends BaseEntity {
@@ -42,6 +43,11 @@ export class User extends BaseEntity {
 
   @OneToMany(() => UserTag, (userTag) => userTag.user)
   userTags: UserTag[];
+
+  constructor(userData: CreateUserDto) {
+    super();
+    Object.assign(this, userData);
+  }
 
   @BeforeInsert()
   async hashPassword() {
