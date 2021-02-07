@@ -1,0 +1,522 @@
+openapi: 3.0.0
+info:
+  title: notice
+  version: '1.0'
+  description: ''
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/notices/{notice_id}':
+    parameters:
+      - schema:
+          type: string
+        name: notice_id
+        in: path
+        required: true
+        description: 공지사항의 id
+    get:
+      summary: Get Notice by Notice ID
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notice'
+              examples:
+                example-1:
+                  value:
+                    id: 1
+                    department_name: 컴퓨터공학부
+                    department_id: 5
+                    title: '2021학년도 1학기 컴퓨터공학부 개설 교과목 ''정원 외 신청(구: 초안지)'' 안내'
+                    content: 2021학년도 1학기부터 서울대학교 운영방법 변경에 따라 ...
+                    created_at: '2021-02-02T15:38:22Z'
+                    tags:
+                      - 수업
+                      - 학사 (학부)
+                      - 학사 (대학원)
+                      - 제2전공/전과
+                    is_pinned: true
+                    outlink: 'https://cse.snu.ac.kr/node/47377'
+                    files:
+                      - id: 0
+                        file_name: (국문) 2021년 1학기 정원외신청 매뉴얼_학생.pdf
+                        file_link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%EA%B5%AD%EB%AC%B8%29%202021%EB%85%84%201%ED%95%99%EA%B8%B0%20%EC%A0%95%EC%9B%90%EC%99%B8%EC%8B%A0%EC%B2%AD%20%EB%A7%A4%EB%89%B4%EC%96%BC_%ED%95%99%EC%83%9D.pdf'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Notice Not Found
+      operationId: get-notices-id
+      description: Id에 따른 공지사항을 리턴
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: 'Bearer [token]'
+  '/notices/department/{department_id}':
+    parameters:
+      - schema:
+          type: string
+        name: department_id
+        in: path
+        required: true
+    get:
+      summary: Get Notice by Department ID
+      operationId: get-notices-department
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Notice'
+              examples:
+                example-1:
+                  value:
+                    - id: 1
+                      department_name: 컴퓨터공학부
+                      department_id: 5
+                      title: '2021학년도 1학기 컴퓨터공학부 개설 교과목 ''정원 외 신청(구: 초안지)'' 안내'
+                      content: 2021학년도 1학기부터 서울대학교 운영방법 변경에 따라 ...
+                      created_at: '2021-02-02T15:38:22Z'
+                      tags:
+                        - 수업
+                        - 학사 (학부)
+                        - 학사 (대학원)
+                        - 제2전공/전과
+                      is_pinned: true
+                      outlink: 'https://cse.snu.ac.kr/node/47377'
+                      files:
+                        - id: 0
+                          file_name: (국문) 2021년 1학기 정원외신청 매뉴얼_학생.pdf
+                          file_link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%EA%B5%AD%EB%AC%B8%29%202021%EB%85%84%201%ED%95%99%EA%B8%B0%20%EC%A0%95%EC%9B%90%EC%99%B8%EC%8B%A0%EC%B2%AD%20%EB%A7%A4%EB%89%B4%EC%96%BC_%ED%95%99%EC%83%9D.pdf'
+                    - id: 2
+                      department_name: 컴퓨터공학부
+                      department_id: 5
+                      title: 2021학년도 1학기 컴퓨터공학부 개설 교과목별 수업 운영 계획 안내
+                      content: 2021학년도 1학기 컴퓨터공학부 개설 교과목의 「교과목별 수업 운영 계획」을 붙임과 같이 안내합니다.
+                      created_at: '2021-01-28T14:15:22Z'
+                      tags:
+                        - 수업
+                        - 학사 (학부)
+                        - 학사 (대학원)
+                        - 제2전공/전과
+                      is_pinned: true
+                      outlink: 'https://cse.snu.ac.kr/node/47349'
+                      files:
+                        - id: 1
+                          file_name: ' (학생공지) 2021-1학기 수업 운영 계획_컴퓨터공학부 0127.xlsx'
+                          file_link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%ED%95%99%EC%83%9D%EA%B3%B5%EC%A7%80%29%202021-1%ED%95%99%EA%B8%B0%20%EC%88%98%EC%97%85%20%EC%9A%B4%EC%98%81%20%EA%B3%84%ED%9A%8D_%EC%BB%B4%ED%93%A8%ED%84%B0%EA%B3%B5%ED%95%99%EB%B6%80%200127.xlsx'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+      description: |-
+        해당 과의 (모든/pin 되어있는/태그별) 공지사항 리턴
+
+
+        404 - 해당하는 Id를 가진 department가 없는 경우
+      parameters:
+        - schema:
+            type: boolean
+          in: query
+          name: pinned
+          description: true인 경우 pin되어 있는 공지사항만 리턴
+        - schema:
+            type: string
+          in: query
+          name: tags
+          description: '특정 태그에 해당하는 공지사항만 리턴, 여러개의 태그는 쉼표'',''로 구분, default = ''all'''
+        - schema:
+            type: integer
+          in: query
+          name: offset
+          description: pagination/ offset
+        - schema:
+            type: integer
+          in: query
+          name: limit
+          description: pagination/ 가져오는 notice 수
+          required: true
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: 'Bearer [token]'
+  /notices/follow:
+    get:
+      summary: Get Notice by Following Info
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Notice'
+              examples:
+                example-1:
+                  value:
+                    - id: 1
+                      department_name: 컴퓨터공학부
+                      department_id: 5
+                      title: '2021학년도 1학기 컴퓨터공학부 개설 교과목 ''정원 외 신청(구: 초안지)'' 안내'
+                      content: 2021학년도 1학기부터 서울대학교 운영방법 변경에 따라 ...
+                      created_at: '2021-02-02T15:38:22Z'
+                      tags:
+                        - 수업
+                        - 학사 (학부)
+                        - 학사 (대학원)
+                        - 제2전공/전과
+                      is_pinned: true
+                      outlink: 'https://cse.snu.ac.kr/node/47377'
+                      files:
+                        - id: 0
+                          file_name: (국문) 2021년 1학기 정원외신청 매뉴얼_학생.pdf
+                          file_link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%EA%B5%AD%EB%AC%B8%29%202021%EB%85%84%201%ED%95%99%EA%B8%B0%20%EC%A0%95%EC%9B%90%EC%99%B8%EC%8B%A0%EC%B2%AD%20%EB%A7%A4%EB%89%B4%EC%96%BC_%ED%95%99%EC%83%9D.pdf'
+                    - id: 2
+                      department_name: 컴퓨터공학부
+                      department_id: 5
+                      title: 2021학년도 1학기 컴퓨터공학부 개설 교과목별 수업 운영 계획 안내
+                      content: 2021학년도 1학기 컴퓨터공학부 개설 교과목의 「교과목별 수업 운영 계획」을 붙임과 같이 안내합니다.
+                      created_at: '2021-01-28T14:15:22Z'
+                      tags:
+                        - 수업
+                        - 학사 (학부)
+                        - 학사 (대학원)
+                        - 제2전공/전과
+                      is_pinned: true
+                      outlink: 'https://cse.snu.ac.kr/node/47349'
+                      files:
+                        - id: 1
+                          file_name: ' (학생공지) 2021-1학기 수업 운영 계획_컴퓨터공학부 0127.xlsx'
+                          file_link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%ED%95%99%EC%83%9D%EA%B3%B5%EC%A7%80%29%202021-1%ED%95%99%EA%B8%B0%20%EC%88%98%EC%97%85%20%EC%9A%B4%EC%98%81%20%EA%B3%84%ED%9A%8D_%EC%BB%B4%ED%93%A8%ED%84%B0%EA%B3%B5%ED%95%99%EB%B6%80%200127.xlsx'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+      operationId: get-notices
+      description: |
+        팔로우하는 과의 공지사항을 리턴
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: 'Bearer [token]'
+        - schema:
+            type: integer
+          in: query
+          name: offset
+          description: pagination/ offset
+        - schema:
+            type: integer
+          in: query
+          name: limit
+          required: true
+          description: pagination/ 가져오는 notice 수
+    parameters: []
+  /notices/search:
+    get:
+      summary: Search Notice
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Notice'
+              examples:
+                example-1:
+                  value:
+                    - id: 1
+                      department_name: 컴퓨터공학부
+                      department_id: 5
+                      title: '2021학년도 1학기 컴퓨터공학부 개설 교과목 ''정원 외 신청(구: 초안지)'' 안내'
+                      content: 2021학년도 1학기부터 서울대학교 운영방법 변경에 따라 ...
+                      created_at: '2021-02-02T15:38:22Z'
+                      tags:
+                        - 수업
+                        - 학사 (학부)
+                        - 학사 (대학원)
+                        - 제2전공/전과
+                      is_pinned: true
+                      outlink: 'https://cse.snu.ac.kr/node/47377'
+                      files:
+                        - id: 0
+                          file_name: (국문) 2021년 1학기 정원외신청 매뉴얼_학생.pdf
+                          file_link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%EA%B5%AD%EB%AC%B8%29%202021%EB%85%84%201%ED%95%99%EA%B8%B0%20%EC%A0%95%EC%9B%90%EC%99%B8%EC%8B%A0%EC%B2%AD%20%EB%A7%A4%EB%89%B4%EC%96%BC_%ED%95%99%EC%83%9D.pdf'
+                    - id: 2
+                      department_name: 컴퓨터공학부
+                      department_id: 5
+                      title: 2021학년도 1학기 컴퓨터공학부 개설 교과목별 수업 운영 계획 안내
+                      content: 2021학년도 1학기 컴퓨터공학부 개설 교과목의 「교과목별 수업 운영 계획」을 붙임과 같이 안내합니다.
+                      created_at: '2021-01-28T14:15:22Z'
+                      tags:
+                        - 수업
+                        - 학사 (학부)
+                        - 학사 (대학원)
+                        - 제2전공/전과
+                      is_pinned: true
+                      outlink: 'https://cse.snu.ac.kr/node/47349'
+                      files:
+                        - id: 1
+                          file_name: ' (학생공지) 2021-1학기 수업 운영 계획_컴퓨터공학부 0127.xlsx'
+                          file_link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%ED%95%99%EC%83%9D%EA%B3%B5%EC%A7%80%29%202021-1%ED%95%99%EA%B8%B0%20%EC%88%98%EC%97%85%20%EC%9A%B4%EC%98%81%20%EA%B3%84%ED%9A%8D_%EC%BB%B4%ED%93%A8%ED%84%B0%EA%B3%B5%ED%95%99%EB%B6%80%200127.xlsx'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+      operationId: get-notices-search
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: keyword
+          description: 검색할 키워드
+        - schema:
+            type: boolean
+          in: query
+          name: title
+          description: true로 설정되면 제목에 키워드를 포함하는 공지사항을 리턴
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: 'Bearer [token]'
+        - schema:
+            type: boolean
+          in: query
+          name: content
+          description: 'true로 설정되면 내용에 키워드를 포함하고 있는 공지사항을 리턴 '
+        - schema:
+            type: integer
+          in: query
+          name: offset
+          description: pagination/ offset
+        - schema:
+            type: integer
+          in: query
+          name: limit
+          required: true
+          description: pagination/ 가져오는 notice 수
+        - schema:
+            type: boolean
+          in: query
+          name: follow_only
+          description: '팔로우하는 과의 공지사항에서 검색, default = false'
+      description: |
+        제목또는 내용에 키워드를 포함한 공지사항을 검색한다
+
+        title과 content가 모두 true이면 제목 및 내용 검색으로 동작(두개의 결과를 OR)
+        title과 content 둘 중 하나는 true여야한다
+
+        기본적으로 전체 공지사항에서 검색, follow_only = true인 경우 팔로우하는 과의 공지사항만 검색 - (팔로우하는 태그에는 관계없이 모든 태그에 대해 검색)
+    parameters: []
+  /notices/scrap:
+    get:
+      summary: Get Scrapped Notices
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Notice'
+              examples:
+                example-1:
+                  value:
+                    - id: 1
+                      department_name: 컴퓨터공학부
+                      department_id: 5
+                      title: '2021학년도 1학기 컴퓨터공학부 개설 교과목 ''정원 외 신청(구: 초안지)'' 안내'
+                      content: 2021학년도 1학기부터 서울대학교 운영방법 변경에 따라 ...
+                      created_at: '2021-02-02T15:38:22Z'
+                      tags:
+                        - 수업
+                        - 학사 (학부)
+                        - 학사 (대학원)
+                        - 제2전공/전과
+                      is_pinned: true
+                      outlink: 'https://cse.snu.ac.kr/node/47377'
+                      files:
+                        - id: 0
+                          file_name: (국문) 2021년 1학기 정원외신청 매뉴얼_학생.pdf
+                          file_link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%EA%B5%AD%EB%AC%B8%29%202021%EB%85%84%201%ED%95%99%EA%B8%B0%20%EC%A0%95%EC%9B%90%EC%99%B8%EC%8B%A0%EC%B2%AD%20%EB%A7%A4%EB%89%B4%EC%96%BC_%ED%95%99%EC%83%9D.pdf'
+                    - id: 2
+                      department_name: 컴퓨터공학부
+                      department_id: 5
+                      title: 2021학년도 1학기 컴퓨터공학부 개설 교과목별 수업 운영 계획 안내
+                      content: 2021학년도 1학기 컴퓨터공학부 개설 교과목의 「교과목별 수업 운영 계획」을 붙임과 같이 안내합니다.
+                      created_at: '2021-01-28T14:15:22Z'
+                      tags:
+                        - 수업
+                        - 학사 (학부)
+                        - 학사 (대학원)
+                        - 제2전공/전과
+                      is_pinned: true
+                      outlink: 'https://cse.snu.ac.kr/node/47349'
+                      files:
+                        - id: 1
+                          file_name: ' (학생공지) 2021-1학기 수업 운영 계획_컴퓨터공학부 0127.xlsx'
+                          file_link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%ED%95%99%EC%83%9D%EA%B3%B5%EC%A7%80%29%202021-1%ED%95%99%EA%B8%B0%20%EC%88%98%EC%97%85%20%EC%9A%B4%EC%98%81%20%EA%B3%84%ED%9A%8D_%EC%BB%B4%ED%93%A8%ED%84%B0%EA%B3%B5%ED%95%99%EB%B6%80%200127.xlsx'
+        '400':
+          description: 'Bad Request, invlaid offset or limit'
+        '401':
+          description: Unauthorized
+      operationId: get-notices-scrap
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: 'Bearer [token]'
+        - schema:
+            type: integer
+          in: query
+          name: offset
+          description: pagination/ offset
+        - schema:
+            type: integer
+          in: query
+          name: limit
+          description: pagination/ 가져오는 notice 수
+          required: true
+      description: |+
+        유저가 스크랩한 공지사항을 리턴
+
+  '/notices/{notice_id}/scrap':
+    parameters:
+      - schema:
+          type: integer
+        name: notice_id
+        in: path
+        required: true
+    post:
+      summary: Post notice scrap
+      operationId: post-notices-notice_id-scrap
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Already scrapped
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+      description: '게시글 스크랩 하기. 이미 스크랩한 경우 400, 게시글이 존재하지 않으면 404를 리턴합니다.'
+    delete:
+      summary: Delete notice scrap
+      operationId: delete-notices-notice_id-scrap
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: No Content. already deleted
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+      description: '게시글 스크랩을 취소합니다. 스크랩이 되어있지 않은 경우 204, 게시글이 없으면 404를 리턴합니다'
+components:
+  schemas:
+    Notice:
+      title: Notice
+      type: object
+      description: 공지사항
+      x-examples:
+        example-1:
+          id: 1
+          department_name: 컴퓨터공학부
+          department_id: 5
+          title: '2021학년도 1학기 컴퓨터공학부 개설 교과목 ''정원 외 신청(구: 초안지)'' 안내'
+          content: 2021학년도 1학기부터 서울대학교 운영방법 변경에 따라 ...
+          created_at: '2021-02-02T15:38:22Z'
+          tags:
+            - 수업
+            - 학사 (학부)
+            - 학사 (대학원)
+            - 제2전공/전과
+          is_pinned: true
+          outlink: 'https://cse.snu.ac.kr/node/47377'
+          files:
+            - id: 0
+              file_name: (국문) 2021년 1학기 정원외신청 매뉴얼_학생.pdf
+              file_link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%EA%B5%AD%EB%AC%B8%29%202021%EB%85%84%201%ED%95%99%EA%B8%B0%20%EC%A0%95%EC%9B%90%EC%99%B8%EC%8B%A0%EC%B2%AD%20%EB%A7%A4%EB%89%B4%EC%96%BC_%ED%95%99%EC%83%9D.pdf'
+        example-2:
+          id: 2
+          department_name: 컴퓨터공학부
+          department_id: 5
+          title: 2021학년도 1학기 컴퓨터공학부 개설 교과목별 수업 운영 계획 안내
+          content: 2021학년도 1학기 컴퓨터공학부 개설 교과목의 「교과목별 수업 운영 계획」을 붙임과 같이 안내합니다.
+          created_at: '2021-01-28T14:15:22Z'
+          tags:
+            - 수업
+            - 학사 (학부)
+            - 학사 (대학원)
+            - 제2전공/전과
+          is_pinned: true
+          outlink: 'https://cse.snu.ac.kr/node/47349'
+          files:
+            - id: 1
+              file_name: ' (학생공지) 2021-1학기 수업 운영 계획_컴퓨터공학부 0127.xlsx'
+              file_link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%ED%95%99%EC%83%9D%EA%B3%B5%EC%A7%80%29%202021-1%ED%95%99%EA%B8%B0%20%EC%88%98%EC%97%85%20%EC%9A%B4%EC%98%81%20%EA%B3%84%ED%9A%8D_%EC%BB%B4%ED%93%A8%ED%84%B0%EA%B3%B5%ED%95%99%EB%B6%80%200127.xlsx'
+      properties:
+        id:
+          type: integer
+          description: ''
+        department_name:
+          type: string
+        department_id:
+          type: integer
+        title:
+          type: string
+        content:
+          type: string
+        created_at:
+          type: string
+          description: ''
+          format: date-time
+        tags:
+          type: array
+          items:
+            type: string
+        is_pinned:
+          type: boolean
+        outlink:
+          type: string
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/File'
+    File:
+      title: File
+      type: object
+      description: 첨부파일
+      x-examples:
+        example-1:
+          id: 0
+          file_name: (국문) 2021년 1학기 정원외신청 매뉴얼_학생.pdf
+          file_link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%EA%B5%AD%EB%AC%B8%29%202021%EB%85%84%201%ED%95%99%EA%B8%B0%20%EC%A0%95%EC%9B%90%EC%99%B8%EC%8B%A0%EC%B2%AD%20%EB%A7%A4%EB%89%B4%EC%96%BC_%ED%95%99%EC%83%9D.pdf'
+      properties:
+        id:
+          type: number
+        file_name:
+          type: string
+        file_link:
+          type: string
