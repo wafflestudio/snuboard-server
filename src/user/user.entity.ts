@@ -57,6 +57,9 @@ export class Keyword extends BaseEntity {
   @Column()
   name: string;
 
-  @ManyToOne(() => User, (user) => user.keywords)
-  user: User;
+  @ManyToOne(() => User, (user) => user.keywords, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
+  user!: User;
 }

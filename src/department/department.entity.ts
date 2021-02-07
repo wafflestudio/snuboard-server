@@ -32,8 +32,11 @@ export class Tag extends BaseEntity {
   @Column()
   name: string;
 
-  @ManyToOne(() => Department, (department) => department.tags)
-  department: Department;
+  @ManyToOne(() => Department, (department) => department.tags, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
+  department!: Department;
 
   @OneToMany(() => UserTag, (userTag) => userTag.tag)
   userTags: UserTag[];
@@ -47,11 +50,17 @@ export class UserTag extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, (user) => user.userTags)
-  user: User;
+  @ManyToOne(() => User, (user) => user.userTags, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
+  user!: User;
 
-  @ManyToOne(() => Tag, (tag) => tag.userTags)
-  tag: Tag;
+  @ManyToOne(() => Tag, (tag) => tag.userTags, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
+  tag!: Tag;
 }
 
 @Entity()

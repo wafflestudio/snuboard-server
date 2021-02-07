@@ -7,18 +7,39 @@ import { NoticeModule } from './notice/notice.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Keyword, User } from './user/user.entity';
+import { UserNotice, File, Notice } from './notice/notice.entity';
+import {
+  Department,
+  NoticeTag,
+  Tag,
+  UserTag,
+} from './department/department.entity';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: ['.env', '.env.ci'],
+    }),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DATABASE_HOST,
       port: +process.env.DATABASE_PORT,
-      username: process.env.DATABASE_DBNAME,
+      username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_DBNAME,
-      entities: [],
+      entities: [
+        User,
+        Keyword,
+        UserNotice,
+        File,
+        Notice,
+        UserTag,
+        Tag,
+        Department,
+        NoticeTag,
+      ],
       //need to be set false when production
       synchronize: true,
     }),

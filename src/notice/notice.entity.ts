@@ -17,7 +17,7 @@ export class Notice extends BaseEntity {
   @Column()
   title: string;
 
-  @Column({ length: 65535 })
+  @Column({ length: 10000 })
   content: string;
 
   @Column({ type: 'timestamp' })
@@ -29,8 +29,11 @@ export class Notice extends BaseEntity {
   @Column()
   link: string;
 
-  @ManyToOne(() => Department, (department) => department.notices)
-  department: Department;
+  @ManyToOne(() => Department, (department) => department.notices, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
+  department!: Department;
 
   @OneToMany(() => UserNotice, (userNotice) => userNotice.notice)
   userNotices: UserNotice[];
@@ -53,8 +56,11 @@ export class File extends BaseEntity {
   @Column()
   link: string;
 
-  @ManyToOne(() => Notice, (notice) => notice.files)
-  notice: Notice;
+  @ManyToOne(() => Notice, (notice) => notice.files, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
+  notice!: Notice;
 }
 
 @Entity()
@@ -65,9 +71,15 @@ export class UserNotice extends BaseEntity {
   @Column()
   isScrapped: boolean;
 
-  @ManyToOne(() => User, (user) => user.userNotices)
-  user: User;
+  @ManyToOne(() => User, (user) => user.userNotices, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
+  user!: User;
 
-  @ManyToOne(() => Notice, (notice) => notice.userNotices)
-  notice: Notice;
+  @ManyToOne(() => Notice, (notice) => notice.userNotices, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
+  notice!: Notice;
 }
