@@ -7,7 +7,7 @@ import { NoticeModule } from './notice/notice.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Keyword, User } from './user/user.entity';
+import { Keyword, User, UserKeyword } from './user/user.entity';
 import { UserNotice, File, Notice } from './notice/notice.entity';
 import {
   Department,
@@ -41,6 +41,7 @@ const ENV: string = process.env.NODE_ENV;
         Tag,
         Department,
         NoticeTag,
+        UserKeyword,
       ],
       //need to be set false when production
       synchronize: true,
