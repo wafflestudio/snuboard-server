@@ -1,13 +1,17 @@
 import {
   BaseEntity,
   BeforeInsert,
+  BeforeUpdate,
   Column,
   Entity,
+  FindConditions,
+  JoinColumn,
+  JoinTable,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Exclude } from 'class-transformer';
+import { Exclude, Expose } from 'class-transformer';
 
 import * as bcrypt from 'bcrypt';
 import { UserNotice } from '../notice/notice.entity';
@@ -18,24 +22,31 @@ export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({
+    unique: true,
+  })
   username: string;
 
   @Exclude()
   @Column()
   password: string;
 
-  @Column()
+  @Column({
+    unique: true,
+  })
   nickname: string;
 
+  @Exclude()
   @Column({ default: true })
   isActive: boolean;
 
+  @Exclude()
   @Column({ default: '' })
   refreshToken: string;
 
-  @OneToMany(() => Keyword, (keyword) => keyword.user)
-  keywords: Keyword[];
+  @Exclude()
+  @OneToMany(() => UserKeyword, (userKeyword) => userKeyword.user)
+  userKeywords: UserKeyword[];
 
   @OneToMany(() => UserNotice, (userNotice) => userNotice.user)
   userNotices: UserNotice[];
@@ -43,23 +54,64 @@ export class User extends BaseEntity {
   @OneToMany(() => UserTag, (userTag) => userTag.user)
   userTags: UserTag[];
 
-  @BeforeInsert()
-  async hashPassword() {
-    this.password = await bcrypt.hash(this.password, process.env.SALT_ROUND);
+  @Expose()
+  get keywords(): string[] {
+    return this.userKeywords
+      ? this.userKeywords.map((userKeyword) => userKeyword.keyword.name)
+      : [];
+  }
+
+  access_token?: string;
+  refresh_token?: string;
+
+  static async findOneIfRefreshTokenMatches(
+    refreshToken: string,
+    id: number,
+  ): Promise<User> {
+    const user: User = await this.findOne(id);
+
+    if (await bcrypt.compare(refreshToken, user.refreshToken)) {
+      return user;
+    }
+
+    return null;
+  }
+
+  static findOneWithKeyword(payload: FindConditions<User>): Promise<User> {
+    return this.findOne(payload, {
+      relations: ['userKeywords', 'userKeywords.keyword'],
+    });
   }
 }
 
 @Entity()
 export class Keyword extends BaseEntity {
+  @Exclude()
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
   name: string;
 
-  @ManyToOne(() => User, (user) => user.keywords, {
+  @OneToMany(() => UserKeyword, (userKeyword) => userKeyword.keyword)
+  userKeywords: UserKeyword[];
+}
+
+@Entity()
+export class UserKeyword extends BaseEntity {
+  @Exclude()
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @ManyToOne(() => User, (user) => user.userKeywords, {
     nullable: false,
     onDelete: 'CASCADE',
   })
   user!: User;
+
+  @ManyToOne(() => Keyword, (keyword) => keyword.userKeywords, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
+  keyword!: Keyword;
 }
