@@ -84,12 +84,26 @@ paths:
           name: Authorization
           description: 'Bearer [token]'
       description: id에 해당하는 과의 정보 리턴
-    put:
-      summary: Edit department follow
-      operationId: put-department-follow
+    parameters:
+      - schema:
+          type: string
+        name: department_id
+        in: path
+        required: true
+        description: 과 id
+  '/departments/{department_id}/follow':
+    parameters:
+      - schema:
+          type: string
+        name: department_id
+        in: path
+        required: true
+    post:
+      summary: create department follow
+      operationId: post-departments-department_id-follow
       responses:
-        '200':
-          description: OK
+        '201':
+          description: Created
           content:
             application/json:
               schema:
@@ -108,10 +122,8 @@ paths:
         '400':
           description: Bad Request
         '401':
-          description: |-
-            Unauthorized
-            토큰 재발급 혹은 로그인 필요
-      description: user의 department follow 갱신. 들어오는 값으로 덮어씌워서 갱신합니다.
+          description: Unauthorized
+      description: 'create department follow, 이미 생성되어있다면 400, '
       parameters:
         - schema:
             type: string
@@ -122,29 +134,60 @@ paths:
         content:
           application/json:
             schema:
-              description: ''
               type: object
               properties:
                 follow:
-                  type: array
-                  items:
-                    required: []
-                    properties: {}
+                  type: string
               required:
                 - follow
             examples:
               example-1:
                 value:
-                  follow:
-                    - 장학
-        description: ''
-    parameters:
-      - schema:
-          type: string
-        name: department_id
-        in: path
-        required: true
-        description: 과 id
+                  follow: 장학
+    delete:
+      summary: Delete department follow
+      operationId: delete-departments-department_id-follow
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/department'
+              examples:
+                example-1:
+                  value:
+                    id: 1
+                    name: 컴퓨터공학부
+                    tags:
+                      - 입학
+                      - 졸업
+                      - 수업
+                    follow:
+                      - 졸업
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      description: 'Delete department follow, 이미 지운 것을 다시 지우는 경우 204.204를 리턴하는 경우 department informantion은 제공하지 않는다.'
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: 'Bearer [token]'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                keyword:
+                  type: string
+            examples:
+              example-1:
+                value:
+                  keyword: 장학
 components:
   schemas:
     department:

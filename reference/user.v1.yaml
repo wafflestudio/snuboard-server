@@ -313,6 +313,8 @@ paths:
                     keywords:
                       - 장학
                       - 인턴
+        '400':
+          description: Bad Request
         '401':
           description: Unauthorized
       requestBody:
