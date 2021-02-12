@@ -41,6 +41,15 @@ paths:
           description: |-
             Unauthorized
             토큰 재발급 혹은 로그인 필요
+          content:
+            application/json:
+              schema:
+                $ref: ./user.v1.yaml#/components/schemas/Unauthorized
+              examples:
+                example-1:
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
       operationId: get-departments
       description: 모든 과의 정보 리턴
       parameters:
@@ -76,6 +85,15 @@ paths:
           description: |-
             Unauthorized
             토큰 재발급 혹은 로그인 필요
+          content:
+            application/json:
+              schema:
+                $ref: ./user.v1.yaml#/components/schemas/Unauthorized
+              examples:
+                example-1:
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
       operationId: get-department-follow
       parameters:
         - schema:
@@ -121,8 +139,46 @@ paths:
                       - 졸업
         '400':
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                  message:
+                    type: string
+                    minLength: 1
+                  error:
+                    type: string
+                    minLength: 1
+                required:
+                  - statusCode
+                  - message
+                  - error
+              examples:
+                example-1:
+                  value:
+                    statusCode: 400
+                    message: already followed tag
+                    error: Bad Request
+                example-2:
+                  value:
+                    statusCode: 400
+                    message: 'There is no tag with the given name: 장학rm'
+                    error: Bad Request
         '401':
           description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: ./user.v1.yaml#/components/schemas/Unauthorized
+              examples:
+                example-1:
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
       description: 'create department follow, 이미 생성되어있다면 400, '
       parameters:
         - schema:
@@ -165,10 +221,45 @@ paths:
                       - 수업
                     follow:
                       - 졸업
+        '204':
+          description: No Content
         '400':
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                  message:
+                    type: string
+                    minLength: 1
+                  error:
+                    type: string
+                    minLength: 1
+                required:
+                  - statusCode
+                  - message
+                  - error
+              examples:
+                example-1:
+                  value:
+                    statusCode: 400
+                    message: 'There is no tag with the given name: 장학rm'
+                    error: Bad Request
         '401':
           description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: ./user.v1.yaml#/components/schemas/Unauthorized
+              examples:
+                example-1:
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
       description: 'Delete department follow, 이미 지운 것을 다시 지우는 경우 204.204를 리턴하는 경우 department informantion은 제공하지 않는다.'
       parameters:
         - schema:

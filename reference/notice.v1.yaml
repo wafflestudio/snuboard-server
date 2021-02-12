@@ -50,6 +50,15 @@ paths:
                         link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%EA%B5%AD%EB%AC%B8%29%202021%EB%85%84%201%ED%95%99%EA%B8%B0%20%EC%A0%95%EC%9B%90%EC%99%B8%EC%8B%A0%EC%B2%AD%20%EB%A7%A4%EB%89%B4%EC%96%BC_%ED%95%99%EC%83%9D.pdf'
         '401':
           description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: ./user.v1.yaml#/components/schemas/Unauthorized
+              examples:
+                example-1:
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
         '404':
           description: Notice Not Found
       operationId: get-notices-id
@@ -122,6 +131,15 @@ paths:
           description: Bad Request
         '401':
           description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: ./user.v1.yaml#/components/schemas/Unauthorized
+              examples:
+                example-1:
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
         '404':
           description: Not Found
       description: |-
@@ -212,6 +230,15 @@ paths:
           description: Bad Request
         '401':
           description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: ./user.v1.yaml#/components/schemas/Unauthorized
+              examples:
+                example-1:
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
       operationId: get-notices
       description: |
         팔로우하는 과의 공지사항을 리턴
@@ -289,6 +316,15 @@ paths:
           description: Bad Request
         '401':
           description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: ./user.v1.yaml#/components/schemas/Unauthorized
+              examples:
+                example-1:
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
       operationId: get-notices-search
       parameters:
         - schema:
@@ -391,6 +427,15 @@ paths:
           description: 'Bad Request, invlaid offset or limit'
         '401':
           description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: ./user.v1.yaml#/components/schemas/Unauthorized
+              examples:
+                example-1:
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
       operationId: get-notices-scrap
       parameters:
         - schema:
@@ -428,6 +473,15 @@ paths:
           description: Already scrapped
         '401':
           description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: ./user.v1.yaml#/components/schemas/Unauthorized
+              examples:
+                example-1:
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
         '404':
           description: Not Found
       description: '게시글 스크랩 하기. 이미 스크랩한 경우 400, 게시글이 존재하지 않으면 404를 리턴합니다.'
@@ -441,6 +495,15 @@ paths:
           description: No Content. already deleted
         '401':
           description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: ./user.v1.yaml#/components/schemas/Unauthorized
+              examples:
+                example-1:
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
         '404':
           description: Not Found
       description: '게시글 스크랩을 취소합니다. 스크랩이 되어있지 않은 경우 204, 게시글이 없으면 404를 리턴합니다'

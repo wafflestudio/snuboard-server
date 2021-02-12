@@ -33,18 +33,12 @@ paths:
           content:
             application/json:
               schema:
-                description: ''
-                type: object
-                properties:
-                  message:
-                    type: string
-                    minLength: 1
-                required:
-                  - message
+                $ref: '#/components/schemas/Unauthorized'
               examples:
                 invalid token:
                   value:
-                    message: Invalid token
+                    statusCode: 401
+                    message: Unauthorized
       operationId: get-user-me
       description: Retrieve the information of the user him/herself.
       parameters:
@@ -80,15 +74,28 @@ paths:
                 description: ''
                 type: object
                 properties:
+                  statusCode:
+                    type: number
                   message:
+                    type: array
+                    items:
+                      required: []
+                      properties: {}
+                  error:
                     type: string
                     minLength: 1
                 required:
+                  - statusCode
                   - message
+                  - error
               examples:
                 Bad request:
                   value:
-                    message: Invalid nickname
+                    statusCode: 400
+                    message:
+                      - password must be a string
+                      - nickname must be a string
+                    error: Bad Request
         '401':
           description: |-
             Unauthorized
@@ -96,18 +103,12 @@ paths:
           content:
             application/json:
               schema:
-                description: ''
-                type: object
-                properties:
-                  message:
-                    type: string
-                    minLength: 1
-                required:
-                  - message
+                $ref: '#/components/schemas/Unauthorized'
               examples:
                 Invalid token:
                   value:
-                    message: Invalid token
+                    statusCode: 401
+                    message: Unauthorized
       description: Update the infromation of an existing user.
       requestBody:
         content:
@@ -186,15 +187,29 @@ paths:
                 description: ''
                 type: object
                 properties:
+                  statusCode:
+                    type: number
                   message:
+                    type: array
+                    items:
+                      required: []
+                      properties: {}
+                  error:
                     type: string
                     minLength: 1
                 required:
+                  - statusCode
                   - message
+                  - error
               examples:
                 example-1:
                   value:
-                    message: Invalid Username
+                    statusCode: 400
+                    message:
+                      - username must be a string
+                      - password must be a string
+                      - nickname must be a string
+                    error: Bad Request
       requestBody:
         content:
           application/json:
@@ -241,23 +256,47 @@ paths:
                     access_token: access_token
                     refresh_token: refresh_token
                     keywords: []
-        '403':
-          description: Forbidden
+        '400':
+          description: Bad Request
           content:
             application/json:
               schema:
                 description: ''
                 type: object
                 properties:
+                  statusCode:
+                    type: number
                   message:
+                    type: array
+                    items:
+                      required: []
+                      properties: {}
+                  error:
                     type: string
                     minLength: 1
                 required:
+                  - statusCode
                   - message
+                  - error
               examples:
-                Invalid:
+                example-1:
                   value:
-                    message: Invalid refesh_token
+                    statusCode: 400
+                    message:
+                      - 'only refresh_token should be given to the header, not username'
+                      - 'only refresh_token should be given to the header, not password'
+                    error: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+              examples:
+                example-1:
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
       description: user authentication
       requestBody:
         content:
@@ -311,8 +350,41 @@ paths:
                       - 인턴
         '400':
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                  message:
+                    type: string
+                    minLength: 1
+                  error:
+                    type: string
+                    minLength: 1
+                required:
+                  - statusCode
+                  - message
+                  - error
+              examples:
+                example-1:
+                  value:
+                    statusCode: 400
+                    message: keyword already added to this user
+                    error: Bad Request
         '401':
           description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+              examples:
+                example-1:
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
       requestBody:
         content:
           application/json:
@@ -325,6 +397,7 @@ paths:
               example-1:
                 value:
                   keyword: 장학
+        description: ''
       parameters:
         - schema:
             type: string
@@ -355,6 +428,15 @@ paths:
           description: No Content
         '401':
           description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+              examples:
+                example-1:
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
       requestBody:
         content:
           application/json:
@@ -440,3 +522,19 @@ components:
         - access_token
         - refresh_token
         - keywords
+    Unauthorized:
+      description: ''
+      type: object
+      properties:
+        statusCode:
+          type: number
+        message:
+          type: string
+          minLength: 1
+      required:
+        - statusCode
+        - message
+      x-examples:
+        example-1:
+          statusCode: 401
+          message: Unauthorized
