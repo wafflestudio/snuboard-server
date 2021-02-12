@@ -73,7 +73,10 @@ paths:
       operationId: get-notices-department
       responses:
         '200':
-          description: OK
+          description: |-
+            OK
+
+            - `nextCursor` : 마지막 페이지인 경우 "" 반환 (Empty String)
           content:
             application/json:
               schema:
@@ -165,7 +168,10 @@ paths:
       tags: []
       responses:
         '200':
-          description: OK
+          description: |-
+            OK
+
+            - `nextCursor` : 마지막 페이지인 경우 "" 반환 (Empty String)
           content:
             application/json:
               schema:
@@ -244,7 +250,10 @@ paths:
       tags: []
       responses:
         '200':
-          description: OK
+          description: |-
+            OK
+
+            - `nextCursor` : 마지막 페이지인 경우 "" 반환 (Empty String)
           content:
             application/json:
               schema:
@@ -348,7 +357,10 @@ paths:
       tags: []
       responses:
         '200':
-          description: OK
+          description: |-
+            OK
+
+            - `nextCursor` : 마지막 페이지인 경우 "" 반환 (Empty String)
           content:
             application/json:
               schema:
