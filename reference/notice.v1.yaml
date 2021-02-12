@@ -19,7 +19,10 @@ paths:
       tags: []
       responses:
         '200':
-          description: OK
+          description: |-
+            OK
+            preview: content를 text화 이후 '\n' -> ' ' 이후 200자 제한
+            content: '\n' -> '&#10;'
           content:
             application/json:
               schema:
@@ -31,7 +34,8 @@ paths:
                     department_name: 컴퓨터공학부
                     department_id: 5
                     title: '2021학년도 1학기 컴퓨터공학부 개설 교과목 ''정원 외 신청(구: 초안지)'' 안내'
-                    content: 2021학년도 1학기부터 서울대학교 운영방법 변경에 따라 ...
+                    preview: 2021학년도 1학기부터 서울대학교 운영방법 변경에 따라 ...
+                    content: '<p>&#xD559;&#xC0DD; &#xC5EC;&#xB7EC;&#xBD84;&#xAED8;,</p>'
                     created_at: '2021-02-02T15:38:22Z'
                     tags:
                       - 수업
@@ -397,9 +401,8 @@ paths:
           name: limit
           description: pagination/ 가져오는 notice 수
           required: true
-      description: |+
+      description: |
         유저가 스크랩한 공지사항을 리턴
-
   '/notices/{notice_id}/scrap':
     parameters:
       - schema:
