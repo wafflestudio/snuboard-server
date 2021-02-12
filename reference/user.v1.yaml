@@ -119,10 +119,6 @@ paths:
                   type: string
                 password:
                   type: string
-                keywords:
-                  type: array
-                  items:
-                    type: string
             examples:
               Update nickname:
                 value:
