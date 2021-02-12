@@ -12,22 +12,22 @@ import { Department, NoticeTag } from '../department/department.entity';
 @Entity()
 export class Notice extends BaseEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column()
-  title: string;
+  title!: string;
 
   @Column({ length: 10000 })
-  content: string;
+  content!: string;
 
   @Column({ type: 'timestamp' })
-  createdAt: Date;
+  createdAt!: Date;
 
   @Column({ default: false })
-  isPinned: boolean;
+  isPinned!: boolean;
 
   @Column()
-  link: string;
+  link!: string;
 
   @ManyToOne(() => Department, (department) => department.notices, {
     nullable: false,
@@ -36,25 +36,25 @@ export class Notice extends BaseEntity {
   department!: Department;
 
   @OneToMany(() => UserNotice, (userNotice) => userNotice.notice)
-  userNotices: UserNotice[];
+  userNotices!: UserNotice[];
 
   @OneToMany(() => File, (file) => file.notice)
-  files: File[];
+  files!: File[];
 
   @OneToMany(() => NoticeTag, (noticeTag) => noticeTag.notice)
-  noticeTags: NoticeTag[];
+  noticeTags!: NoticeTag[];
 }
 
 @Entity()
 export class File extends BaseEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column()
-  name: string;
+  name!: string;
 
   @Column()
-  link: string;
+  link!: string;
 
   @ManyToOne(() => Notice, (notice) => notice.files, {
     nullable: false,
@@ -66,10 +66,10 @@ export class File extends BaseEntity {
 @Entity()
 export class UserNotice extends BaseEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column()
-  isScrapped: boolean;
+  isScrapped!: boolean;
 
   @ManyToOne(() => User, (user) => user.userNotices, {
     nullable: false,
