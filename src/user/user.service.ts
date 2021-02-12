@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { Keyword, User, UserKeyword } from './user.entity';
 import { AuthService } from '../auth/auth.service';
@@ -13,51 +18,49 @@ export class UserService {
 
   async create(userData: CreateUserDto): Promise<User> {
     const user: User = User.create(userData);
-    user.password = await bcrypt.hash(user.password, +process.env.SALT_ROUND);
+    user.password = await bcrypt.hash(user.password, +process.env.SALT_ROUND!);
     await User.save(user);
     return this.authService.login(user);
   }
 
   async auth(req: UserRequest): Promise<User> {
-    return await this.authService.login(req.user);
+    return await this.authService.login(req.user!);
   }
 
-  async getUserMe(req: UserRequest): Promise<User> {
-    return await User.findOneWithKeyword({ id: req.user.id });
+  async getUserMe(req: UserRequest): Promise<User | undefined> {
+    return await User.findOneWithKeyword({ id: req.user!.id });
   }
 
-  async update(req: UserRequest, userData: UpdateUserDto): Promise<User> {
+  async update(
+    req: UserRequest,
+    userData: UpdateUserDto,
+  ): Promise<User | undefined> {
     if (userData.password) {
       userData.password = await bcrypt.hash(
         userData.password,
-        +process.env.SALT_ROUND,
+        +process.env.SALT_ROUND!,
       );
     }
     if (Object.keys(userData).length != 0) {
-      await User.update(req.user, userData);
+      await User.update(req.user!, userData);
     }
-    return User.findOneWithKeyword({ id: req.user.id });
+    return User.findOneWithKeyword({ id: req.user!.id });
   }
 
   async createKeyword(
     req: UserRequest,
     keywordData: KeywordDto,
-  ): Promise<User> {
-    let keyword: Keyword = await Keyword.findOne({
+  ): Promise<User | undefined> {
+    let keyword: Keyword = (await Keyword.findOne({
       name: keywordData.keyword,
-    });
+    }))!;
     if (keyword) {
-      const userKeyword: UserKeyword = await UserKeyword.findOne({
+      const userKeyword: UserKeyword = (await UserKeyword.findOne({
         user: req.user,
         keyword,
-      });
+      }))!;
       if (userKeyword)
-        throw new HttpException(
-          {
-            message: 'keyword already added to this user',
-          },
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new BadRequestException('keyword already added to this user');
     } else {
       keyword = Keyword.create({ name: keywordData.keyword });
       await Keyword.save(keyword);
@@ -68,16 +71,16 @@ export class UserService {
       keyword,
     });
     await UserKeyword.save(userKeyword);
-    return User.findOneWithKeyword({ id: req.user.id });
+    return User.findOneWithKeyword({ id: req.user!.id });
   }
 
   async deleteKeyword(
     req: UserRequest,
     keywordData: KeywordDto,
-  ): Promise<User> {
-    let keyword: Keyword = await Keyword.findOne({
+  ): Promise<User | undefined> {
+    let keyword: Keyword = (await Keyword.findOne({
       name: keywordData.keyword,
-    });
+    }))!;
 
     const userKeyword = keyword
       ? await UserKeyword.findOne({
@@ -95,7 +98,7 @@ export class UserService {
       );
     }
     await UserKeyword.delete(userKeyword.id);
-    keyword = await Keyword.findOne(keyword.id);
+    keyword = (await Keyword.findOne(keyword.id))!;
     if (
       keyword &&
       !(await UserKeyword.findOne({
@@ -105,6 +108,6 @@ export class UserService {
       await Keyword.delete(keyword);
     }
 
-    return User.findOneWithKeyword({ id: req.user.id });
+    return User.findOneWithKeyword({ id: req.user!.id });
   }
 }

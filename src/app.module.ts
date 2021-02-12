@@ -16,7 +16,7 @@ import {
   UserTag,
 } from './department/department.entity';
 
-const ENV: string = process.env.NODE_ENV;
+const ENV: string | undefined = process.env.NODE_ENV;
 
 @Module({
   imports: [
@@ -27,7 +27,7 @@ const ENV: string = process.env.NODE_ENV;
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DATABASE_HOST,
-      port: +process.env.DATABASE_PORT,
+      port: +process.env.DATABASE_PORT!,
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_DBNAME,

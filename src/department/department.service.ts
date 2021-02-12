@@ -22,7 +22,7 @@ export class DepartmentService {
     return departments
       ? await Promise.all(
           departments.map(async (department) => {
-            department.follow = await this.getFollow(department, req.user);
+            department.follow = await this.getFollow(department, req.user!);
             return department;
           }),
         )
@@ -33,19 +33,19 @@ export class DepartmentService {
     @Req() req: UserRequest,
     id: number,
   ): Promise<Department> {
-    const department: Department = await Department.findOne(id, {
+    const department: Department = (await Department.findOne(id, {
       relations: ['tags'],
-    });
+    }))!;
     if (!department) {
       throw new NotFoundException('There is no department with the given id');
     }
 
-    department.follow = await this.getFollow(department, req.user);
+    department.follow = await this.getFollow(department, req.user!);
     return department;
   }
 
   async getFollow(department: Department, user: User): Promise<string[]> {
-    user = await User.findOne(user);
+    user = (await User.findOne(user))!;
     const tags: Tag[] = await Tag.find({
       department,
     });
@@ -65,26 +65,26 @@ export class DepartmentService {
     id: number,
     followData: FollowDto,
   ): Promise<PreFollow> {
-    const department: Department = await Department.findOne(id, {
+    const department: Department = (await Department.findOne(id, {
       relations: ['tags'],
-    });
+    }))!;
     if (!department) {
       throw new NotFoundException('There is no department with the id');
     }
 
     const tag: Tag = department.tags.find(
       (tag) => tag.name === followData.follow,
-    );
+    )!;
     if (!tag) {
       throw new BadRequestException(
         `There is no tag with the given name: ${followData.follow}`,
       );
     }
-    const user: User = await User.findOne(req.user);
-    const userTag: UserTag = await UserTag.findOne({
+    const user: User = (await User.findOne(req.user))!;
+    const userTag: UserTag = (await UserTag.findOne({
       user,
       tag,
-    });
+    }))!;
 
     return {
       department,
@@ -95,7 +95,7 @@ export class DepartmentService {
   }
 
   async createFollow(
-    @Req() req,
+    req: UserRequest,
     id: number,
     followData: FollowDto,
   ): Promise<Department> {
@@ -120,7 +120,7 @@ export class DepartmentService {
   }
 
   async deleteFollow(
-    @Req() req,
+    req: UserRequest,
     id: number,
     followData: FollowDto,
   ): Promise<Department> {
