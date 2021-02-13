@@ -165,7 +165,7 @@ paths:
           name: tags
           description: '특정 태그에 해당하는 공지사항만 리턴, 여러개의 태그는 쉼표'',''로 구분, default = ''all'''
         - schema:
-            type: integer
+            type: string
           in: query
           name: cursor
           description: pagination/ cursor (없을 시 첫 번째 페이지)
@@ -260,7 +260,7 @@ paths:
           name: Authorization
           description: 'Bearer [token]'
         - schema:
-            type: integer
+            type: string
           in: query
           name: cursor
           description: pagination/ cursor (없을 시 첫 번째 페이지)
@@ -364,7 +364,7 @@ paths:
           name: content
           description: 'true로 설정되면 내용에 키워드를 포함하고 있는 공지사항을 리턴 '
         - schema:
-            type: integer
+            type: string
           in: query
           name: cursor
           description: pagination/ cursor (없을 시 첫 번째 페이지)
@@ -465,7 +465,7 @@ paths:
           name: Authorization
           description: 'Bearer [token]'
         - schema:
-            type: integer
+            type: string
           in: query
           name: cursor
           description: pagination/ cursor (없을 시 첫 번째 페이지)
