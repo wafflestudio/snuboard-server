@@ -32,23 +32,24 @@ paths:
                 example-1:
                   value:
                     id: 1
-                    departmentName: 컴퓨터공학부
-                    departmentId: 5
+                    department_name: 컴퓨터공학부
+                    department_id: 5
                     title: '2021학년도 1학기 컴퓨터공학부 개설 교과목 ''정원 외 신청(구: 초안지)'' 안내'
                     preview: 2021학년도 1학기부터 서울대학교 운영방법 변경에 따라 ...
                     content: '<p>&#xD559;&#xC0DD; &#xC5EC;&#xB7EC;&#xBD84;&#xAED8;,</p>'
-                    createdAt: '2021-02-02T15:38:22Z'
+                    created_at: '2021-02-02T15:38:22Z'
                     tags:
                       - 수업
                       - 학사 (학부)
                       - 학사 (대학원)
                       - 제2전공/전과
-                    isPinned: true
+                    is_pinned: true
                     link: 'https://cse.snu.ac.kr/node/47377'
                     files:
                       - id: 0
                         name: (국문) 2021년 1학기 정원외신청 매뉴얼_학생.pdf
                         link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%EA%B5%AD%EB%AC%B8%29%202021%EB%85%84%201%ED%95%99%EA%B8%B0%20%EC%A0%95%EC%9B%90%EC%99%B8%EC%8B%A0%EC%B2%AD%20%EB%A7%A4%EB%89%B4%EC%96%BC_%ED%95%99%EC%83%9D.pdf'
+                    is_scrapped: false
         '401':
           description: Unauthorized
           content:
@@ -109,41 +110,43 @@ paths:
                   value:
                     notices:
                       - id: 1
-                        departmentName: 컴퓨터공학부
-                        departmentId: 5
+                        department_name: 컴퓨터공학부
+                        department_id: 5
                         title: '2021학년도 1학기 컴퓨터공학부 개설 교과목 ''정원 외 신청(구: 초안지)'' 안내'
                         preview: 2021학년도 1학기부터 서울대학교 운영방법 변경에 따라 ...
                         content: '<p>&#xD559;&#xC0DD; &#xC5EC;&#xB7EC;&#xBD84;&#xAED8;,</p>'
-                        createdAt: '2021-02-02T15:38:22Z'
+                        created_at: '2021-02-02T15:38:22Z'
                         tags:
                           - 수업
                           - 학사 (학부)
                           - 학사 (대학원)
                           - 제2전공/전과
-                        isPinned: true
+                        is_pinned: true
                         link: 'https://cse.snu.ac.kr/node/47377'
                         files:
                           - id: 0
                             name: (국문) 2021년 1학기 정원외신청 매뉴얼_학생.pdf
                             link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%EA%B5%AD%EB%AC%B8%29%202021%EB%85%84%201%ED%95%99%EA%B8%B0%20%EC%A0%95%EC%9B%90%EC%99%B8%EC%8B%A0%EC%B2%AD%20%EB%A7%A4%EB%89%B4%EC%96%BC_%ED%95%99%EC%83%9D.pdf'
+                        is_scrapped: false
                       - id: 2
-                        departmentName: 컴퓨터공학부
-                        departmentId: 5
+                        department_name: 컴퓨터공학부
+                        department_id: 5
                         title: 2021학년도 1학기 컴퓨터공학부 개설 교과목별 수업 운영 계획 안내
                         preview: 2021학년도 1학기 컴퓨터공학부 개설 교과목의 「교과목별 수업 운영 계획」을 붙임과 같이 안내합니다.
                         content: '<p>&#xD559;&#xC0DD; &#xC5EC;&#xB7EC;&#xBD84;&#xAED8;,</p>'
-                        createdAt: '2021-01-28T14:15:22Z'
+                        created_at: '2021-01-28T14:15:22Z'
                         tags:
                           - 수업
                           - 학사 (학부)
                           - 학사 (대학원)
                           - 제2전공/전과
-                        isPinned: true
+                        is_pinned: true
                         link: 'https://cse.snu.ac.kr/node/47349'
                         files:
                           - id: 1
                             name: ' (학생공지) 2021-1학기 수업 운영 계획_컴퓨터공학부 0127.xlsx'
                             link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%ED%95%99%EC%83%9D%EA%B3%B5%EC%A7%80%29%202021-1%ED%95%99%EA%B8%B0%20%EC%88%98%EC%97%85%20%EC%9A%B4%EC%98%81%20%EA%B3%84%ED%9A%8D_%EC%BB%B4%ED%93%A8%ED%84%B0%EA%B3%B5%ED%95%99%EB%B6%80%200127.xlsx'
+                        is_scrapped: false
                     nextCursor: '123456'
         '400':
           description: Bad Request
@@ -225,41 +228,43 @@ paths:
                   value:
                     notices:
                       - id: 1
-                        departmentName: 컴퓨터공학부
-                        departmentId: 5
+                        department_name: 컴퓨터공학부
+                        department_id: 5
                         title: '2021학년도 1학기 컴퓨터공학부 개설 교과목 ''정원 외 신청(구: 초안지)'' 안내'
                         preview: 2021학년도 1학기부터 서울대학교 운영방법 변경에 따라 ...
                         content: '<p>&#xD559;&#xC0DD; &#xC5EC;&#xB7EC;&#xBD84;&#xAED8;,</p>'
-                        createdAt: '2021-02-02T15:38:22Z'
+                        created_at: '2021-02-02T15:38:22Z'
                         tags:
                           - 수업
                           - 학사 (학부)
                           - 학사 (대학원)
                           - 제2전공/전과
-                        isPinned: true
+                        is_pinned: true
                         link: 'https://cse.snu.ac.kr/node/47377'
                         files:
                           - id: 0
                             name: (국문) 2021년 1학기 정원외신청 매뉴얼_학생.pdf
                             link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%EA%B5%AD%EB%AC%B8%29%202021%EB%85%84%201%ED%95%99%EA%B8%B0%20%EC%A0%95%EC%9B%90%EC%99%B8%EC%8B%A0%EC%B2%AD%20%EB%A7%A4%EB%89%B4%EC%96%BC_%ED%95%99%EC%83%9D.pdf'
+                        is_scrapped: false
                       - id: 2
-                        departmentName: 컴퓨터공학부
-                        departmentId: 5
+                        department_name: 컴퓨터공학부
+                        department_id: 5
                         title: 2021학년도 1학기 컴퓨터공학부 개설 교과목별 수업 운영 계획 안내
                         preview: 2021학년도 1학기 컴퓨터공학부 개설 교과목의 「교과목별 수업 운영 계획」을 붙임과 같이 안내합니다.
                         content: '<p>&#xD559;&#xC0DD; &#xC5EC;&#xB7EC;&#xBD84;&#xAED8;,</p>'
-                        createdAt: '2021-01-28T14:15:22Z'
+                        created_at: '2021-01-28T14:15:22Z'
                         tags:
                           - 수업
                           - 학사 (학부)
                           - 학사 (대학원)
                           - 제2전공/전과
-                        isPinned: true
+                        is_pinned: true
                         link: 'https://cse.snu.ac.kr/node/47349'
                         files:
                           - id: 1
                             name: ' (학생공지) 2021-1학기 수업 운영 계획_컴퓨터공학부 0127.xlsx'
                             link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%ED%95%99%EC%83%9D%EA%B3%B5%EC%A7%80%29%202021-1%ED%95%99%EA%B8%B0%20%EC%88%98%EC%97%85%20%EC%9A%B4%EC%98%81%20%EA%B3%84%ED%9A%8D_%EC%BB%B4%ED%93%A8%ED%84%B0%EA%B3%B5%ED%95%99%EB%B6%80%200127.xlsx'
+                        is_scrapped: false
                     nextCursor: '123456'
         '400':
           description: Bad Request
@@ -326,41 +331,43 @@ paths:
                   value:
                     notices:
                       - id: 1
-                        departmentName: 컴퓨터공학부
-                        departmentId: 5
+                        department_name: 컴퓨터공학부
+                        department_id: 5
                         title: '2021학년도 1학기 컴퓨터공학부 개설 교과목 ''정원 외 신청(구: 초안지)'' 안내'
                         preview: 2021학년도 1학기부터 서울대학교 운영방법 변경에 따라 ...
                         content: '<p>&#xD559;&#xC0DD; &#xC5EC;&#xB7EC;&#xBD84;&#xAED8;,</p>'
-                        createdAt: '2021-02-02T15:38:22Z'
+                        created_at: '2021-02-02T15:38:22Z'
                         tags:
                           - 수업
                           - 학사 (학부)
                           - 학사 (대학원)
                           - 제2전공/전과
-                        isPinned: true
+                        is_pinned: true
                         link: 'https://cse.snu.ac.kr/node/47377'
                         files:
                           - id: 0
                             name: (국문) 2021년 1학기 정원외신청 매뉴얼_학생.pdf
                             link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%EA%B5%AD%EB%AC%B8%29%202021%EB%85%84%201%ED%95%99%EA%B8%B0%20%EC%A0%95%EC%9B%90%EC%99%B8%EC%8B%A0%EC%B2%AD%20%EB%A7%A4%EB%89%B4%EC%96%BC_%ED%95%99%EC%83%9D.pdf'
+                        is_scrapped: false
                       - id: 2
-                        departmentName: 컴퓨터공학부
-                        departmentId: 5
+                        department_name: 컴퓨터공학부
+                        department_id: 5
                         title: 2021학년도 1학기 컴퓨터공학부 개설 교과목별 수업 운영 계획 안내
                         preview: 2021학년도 1학기 컴퓨터공학부 개설 교과목의 「교과목별 수업 운영 계획」을 붙임과 같이 안내합니다.
                         content: '<p>&#xD559;&#xC0DD; &#xC5EC;&#xB7EC;&#xBD84;&#xAED8;,</p>'
-                        createdAt: '2021-01-28T14:15:22Z'
+                        created_at: '2021-01-28T14:15:22Z'
                         tags:
                           - 수업
                           - 학사 (학부)
                           - 학사 (대학원)
                           - 제2전공/전과
-                        isPinned: true
+                        is_pinned: true
                         link: 'https://cse.snu.ac.kr/node/47349'
                         files:
                           - id: 1
                             name: ' (학생공지) 2021-1학기 수업 운영 계획_컴퓨터공학부 0127.xlsx'
                             link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%ED%95%99%EC%83%9D%EA%B3%B5%EC%A7%80%29%202021-1%ED%95%99%EA%B8%B0%20%EC%88%98%EC%97%85%20%EC%9A%B4%EC%98%81%20%EA%B3%84%ED%9A%8D_%EC%BB%B4%ED%93%A8%ED%84%B0%EA%B3%B5%ED%95%99%EB%B6%80%200127.xlsx'
+                        is_scrapped: false
                     nextCursor: '123456'
         '400':
           description: Bad Request
@@ -448,41 +455,43 @@ paths:
                   value:
                     notices:
                       - id: 1
-                        departmentName: 컴퓨터공학부
-                        departmentId: 5
+                        department_name: 컴퓨터공학부
+                        department_id: 5
                         title: '2021학년도 1학기 컴퓨터공학부 개설 교과목 ''정원 외 신청(구: 초안지)'' 안내'
                         preview: 2021학년도 1학기부터 서울대학교 운영방법 변경에 따라 ...
                         content: '<p>&#xD559;&#xC0DD; &#xC5EC;&#xB7EC;&#xBD84;&#xAED8;,</p>'
-                        createdAt: '2021-02-02T15:38:22Z'
+                        created_at: '2021-02-02T15:38:22Z'
                         tags:
                           - 수업
                           - 학사 (학부)
                           - 학사 (대학원)
                           - 제2전공/전과
-                        isPinned: true
+                        is_pinned: true
                         link: 'https://cse.snu.ac.kr/node/47377'
                         files:
                           - id: 0
                             name: (국문) 2021년 1학기 정원외신청 매뉴얼_학생.pdf
                             link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%EA%B5%AD%EB%AC%B8%29%202021%EB%85%84%201%ED%95%99%EA%B8%B0%20%EC%A0%95%EC%9B%90%EC%99%B8%EC%8B%A0%EC%B2%AD%20%EB%A7%A4%EB%89%B4%EC%96%BC_%ED%95%99%EC%83%9D.pdf'
+                        is_scrapped: false
                       - id: 2
-                        departmentName: 컴퓨터공학부
-                        departmentId: 5
+                        department_name: 컴퓨터공학부
+                        department_id: 5
                         title: 2021학년도 1학기 컴퓨터공학부 개설 교과목별 수업 운영 계획 안내
                         preview: 2021학년도 1학기 컴퓨터공학부 개설 교과목의 「교과목별 수업 운영 계획」을 붙임과 같이 안내합니다.
                         content: '<p>&#xD559;&#xC0DD; &#xC5EC;&#xB7EC;&#xBD84;&#xAED8;,</p>'
-                        createdAt: '2021-01-28T14:15:22Z'
+                        created_at: '2021-01-28T14:15:22Z'
                         tags:
                           - 수업
                           - 학사 (학부)
                           - 학사 (대학원)
                           - 제2전공/전과
-                        isPinned: true
+                        is_pinned: true
                         link: 'https://cse.snu.ac.kr/node/47349'
                         files:
                           - id: 1
                             name: ' (학생공지) 2021-1학기 수업 운영 계획_컴퓨터공학부 0127.xlsx'
                             link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%ED%95%99%EC%83%9D%EA%B3%B5%EC%A7%80%29%202021-1%ED%95%99%EA%B8%B0%20%EC%88%98%EC%97%85%20%EC%9A%B4%EC%98%81%20%EA%B3%84%ED%9A%8D_%EC%BB%B4%ED%93%A8%ED%84%B0%EA%B3%B5%ED%95%99%EB%B6%80%200127.xlsx'
+                        is_scrapped: false
                     nextCursor: '123456'
         '400':
           description: 'Bad Request, invlaid offset or limit'
@@ -530,6 +539,32 @@ paths:
       responses:
         '201':
           description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notice'
+              examples:
+                example-1:
+                  value:
+                    id: 1
+                    department_name: 컴퓨터공학부
+                    department_id: 5
+                    title: '2021학년도 1학기 컴퓨터공학부 개설 교과목 ''정원 외 신청(구: 초안지)'' 안내'
+                    preview: 2021학년도 1학기부터 서울대학교 운영방법 변경에 따라 ...
+                    content: '<p>&#xD559;&#xC0DD; &#xC5EC;&#xB7EC;&#xBD84;&#xAED8;,</p>'
+                    created_at: '2021-02-02T15:38:22Z'
+                    tags:
+                      - 수업
+                      - 학사 (학부)
+                      - 학사 (대학원)
+                      - 제2전공/전과
+                    is_pinned: true
+                    link: 'https://cse.snu.ac.kr/node/47377'
+                    files:
+                      - id: 0
+                        name: (국문) 2021년 1학기 정원외신청 매뉴얼_학생.pdf
+                        link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%EA%B5%AD%EB%AC%B8%29%202021%EB%85%84%201%ED%95%99%EA%B8%B0%20%EC%A0%95%EC%9B%90%EC%99%B8%EC%8B%A0%EC%B2%AD%20%EB%A7%A4%EB%89%B4%EC%96%BC_%ED%95%99%EC%83%9D.pdf'
+                    is_scrapped: true
         '400':
           description: Already scrapped
         '401':
@@ -603,41 +638,43 @@ paths:
                   value:
                     notices:
                       - id: 1
-                        departmentName: 컴퓨터공학부
-                        departmentId: 5
+                        department_name: 컴퓨터공학부
+                        department_id: 5
                         title: '2021학년도 1학기 컴퓨터공학부 개설 교과목 ''정원 외 신청(구: 초안지)'' 안내'
                         preview: 2021학년도 1학기부터 서울대학교 운영방법 변경에 따라 ...
                         content: '<p>&#xD559;&#xC0DD; &#xC5EC;&#xB7EC;&#xBD84;&#xAED8;,</p>'
-                        createdAt: '2021-02-02T15:38:22Z'
+                        created_at: '2021-02-02T15:38:22Z'
                         tags:
                           - 수업
                           - 학사 (학부)
                           - 학사 (대학원)
                           - 제2전공/전과
-                        isPinned: true
+                        is_pinned: true
                         link: 'https://cse.snu.ac.kr/node/47377'
                         files:
                           - id: 0
                             name: (국문) 2021년 1학기 정원외신청 매뉴얼_학생.pdf
                             link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%EA%B5%AD%EB%AC%B8%29%202021%EB%85%84%201%ED%95%99%EA%B8%B0%20%EC%A0%95%EC%9B%90%EC%99%B8%EC%8B%A0%EC%B2%AD%20%EB%A7%A4%EB%89%B4%EC%96%BC_%ED%95%99%EC%83%9D.pdf'
+                        is_scrapped: false
                       - id: 2
-                        departmentName: 컴퓨터공학부
-                        departmentId: 5
+                        department_name: 컴퓨터공학부
+                        department_id: 5
                         title: 2021학년도 1학기 컴퓨터공학부 개설 교과목별 수업 운영 계획 안내
                         preview: 2021학년도 1학기 컴퓨터공학부 개설 교과목의 「교과목별 수업 운영 계획」을 붙임과 같이 안내합니다.
                         content: '<p>&#xD559;&#xC0DD; &#xC5EC;&#xB7EC;&#xBD84;&#xAED8;,</p>'
-                        createdAt: '2021-01-28T14:15:22Z'
+                        created_at: '2021-01-28T14:15:22Z'
                         tags:
                           - 수업
                           - 학사 (학부)
                           - 학사 (대학원)
                           - 제2전공/전과
-                        isPinned: true
+                        is_pinned: true
                         link: 'https://cse.snu.ac.kr/node/47349'
                         files:
                           - id: 1
                             name: ' (학생공지) 2021-1학기 수업 운영 계획_컴퓨터공학부 0127.xlsx'
                             link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%ED%95%99%EC%83%9D%EA%B3%B5%EC%A7%80%29%202021-1%ED%95%99%EA%B8%B0%20%EC%88%98%EC%97%85%20%EC%9A%B4%EC%98%81%20%EA%B3%84%ED%9A%8D_%EC%BB%B4%ED%93%A8%ED%84%B0%EA%B3%B5%ED%95%99%EB%B6%80%200127.xlsx'
+                        is_scrapped: false
                     nextCursor: '123456'
       operationId: get-notices-department-department_id-search
       description: |-
@@ -704,49 +741,51 @@ components:
       x-examples:
         example-1:
           id: 1
-          departmentName: 컴퓨터공학부
-          departmentId: 5
+          department_name: 컴퓨터공학부
+          department_id: 5
           title: '2021학년도 1학기 컴퓨터공학부 개설 교과목 ''정원 외 신청(구: 초안지)'' 안내'
           preview: 2021학년도 1학기부터 서울대학교 운영방법 변경에 따라 ...
           content: '<p>&#xD559;&#xC0DD; &#xC5EC;&#xB7EC;&#xBD84;&#xAED8;,</p>'
-          createdAt: '2021-02-02T15:38:22Z'
+          created_at: '2021-02-02T15:38:22Z'
           tags:
             - 수업
             - 학사 (학부)
             - 학사 (대학원)
             - 제2전공/전과
-          isPinned: true
+          is_pinned: true
           link: 'https://cse.snu.ac.kr/node/47377'
           files:
             - id: 0
               name: (국문) 2021년 1학기 정원외신청 매뉴얼_학생.pdf
               link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%EA%B5%AD%EB%AC%B8%29%202021%EB%85%84%201%ED%95%99%EA%B8%B0%20%EC%A0%95%EC%9B%90%EC%99%B8%EC%8B%A0%EC%B2%AD%20%EB%A7%A4%EB%89%B4%EC%96%BC_%ED%95%99%EC%83%9D.pdf'
+          is_scrapped: false
         example-2:
           id: 2
-          departmentName: 컴퓨터공학부
-          departmentId: 5
+          department_name: 컴퓨터공학부
+          department_id: 5
           title: 2021학년도 1학기 컴퓨터공학부 개설 교과목별 수업 운영 계획 안내
           preview: 2021학년도 1학기 컴퓨터공학부 개설 교과목의 「교과목별 수업 운영 계획」을 붙임과 같이 안내합니다.
           content: '<p>&#xD559;&#xC0DD; &#xC5EC;&#xB7EC;&#xBD84;&#xAED8;,</p>'
-          createdAt: '2021-01-28T14:15:22Z'
+          created_at: '2021-01-28T14:15:22Z'
           tags:
             - 수업
             - 학사 (학부)
             - 학사 (대학원)
             - 제2전공/전과
-          isPinned: true
+          is_pinned: true
           link: 'https://cse.snu.ac.kr/node/47349'
           files:
             - id: 1
               name: ' (학생공지) 2021-1학기 수업 운영 계획_컴퓨터공학부 0127.xlsx'
               link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%ED%95%99%EC%83%9D%EA%B3%B5%EC%A7%80%29%202021-1%ED%95%99%EA%B8%B0%20%EC%88%98%EC%97%85%20%EC%9A%B4%EC%98%81%20%EA%B3%84%ED%9A%8D_%EC%BB%B4%ED%93%A8%ED%84%B0%EA%B3%B5%ED%95%99%EB%B6%80%200127.xlsx'
+          is_scrapped: false
       properties:
         id:
           type: integer
           description: ''
-        departmentName:
+        department_name:
           type: string
-        departmentId:
+        department_id:
           type: integer
         title:
           type: string
@@ -755,7 +794,7 @@ components:
         content:
           type: string
           description: ''
-        createdAt:
+        created_at:
           type: string
           description: ''
           format: date-time
@@ -763,7 +802,7 @@ components:
           type: array
           items:
             type: string
-        isPinned:
+        is_pinned:
           type: boolean
         link:
           type: string
@@ -771,6 +810,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/File'
+        is_scrapped:
+          type: boolean
     File:
       title: File
       type: object
