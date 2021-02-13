@@ -8,12 +8,12 @@ export class Payload {
 }
 
 export interface UserRequest extends Request {
-  user?: User;
+  user: User;
 }
 
 export interface PreFollow {
   department: Department;
   tag: Tag;
   user: User;
-  userTag: UserTag;
+  userTag?: UserTag;
 }

@@ -1,8 +1,10 @@
 import {
   BadRequestException,
+  ForbiddenException,
   HttpException,
   HttpStatus,
   Injectable,
+  NotFoundException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { Keyword, User, UserKeyword } from './user.entity';
@@ -24,11 +26,11 @@ export class UserService {
   }
 
   async auth(req: UserRequest): Promise<User> {
-    return await this.authService.login(req.user!);
+    return await this.authService.login(req.user);
   }
 
   async getUserMe(req: UserRequest): Promise<User | undefined> {
-    return await User.findOneWithKeyword({ id: req.user!.id });
+    return await User.findOneWithKeyword({ id: req.user.id });
   }
 
   async update(
@@ -42,23 +44,23 @@ export class UserService {
       );
     }
     if (Object.keys(userData).length != 0) {
-      await User.update(req.user!, userData);
+      await User.update(req.user, userData);
     }
-    return User.findOneWithKeyword({ id: req.user!.id });
+    return User.findOneWithKeyword({ id: req.user.id });
   }
 
   async createKeyword(
     req: UserRequest,
     keywordData: KeywordDto,
-  ): Promise<User | undefined> {
-    let keyword: Keyword = (await Keyword.findOne({
+  ): Promise<User> {
+    let keyword: Keyword | undefined = await Keyword.findOne({
       name: keywordData.keyword,
-    }))!;
+    });
     if (keyword) {
-      const userKeyword: UserKeyword = (await UserKeyword.findOne({
+      const userKeyword: UserKeyword | undefined = await UserKeyword.findOne({
         user: req.user,
         keyword,
-      }))!;
+      });
       if (userKeyword)
         throw new BadRequestException('keyword already added to this user');
     } else {
@@ -71,23 +73,29 @@ export class UserService {
       keyword,
     });
     await UserKeyword.save(userKeyword);
-    return User.findOneWithKeyword({ id: req.user!.id });
+    const user: User | undefined = await User.findOneWithKeyword({
+      id: req.user.id,
+    });
+    if (!user) throw new BadRequestException();
+    return user;
   }
 
   async deleteKeyword(
     req: UserRequest,
     keywordData: KeywordDto,
-  ): Promise<User | undefined> {
-    let keyword: Keyword = (await Keyword.findOne({
+  ): Promise<User> {
+    let keyword: Keyword | undefined = await Keyword.findOne({
       name: keywordData.keyword,
-    }))!;
+    });
 
-    const userKeyword = keyword
+    if (!keyword) throw new BadRequestException();
+
+    const userKeyword: UserKeyword | undefined = keyword
       ? await UserKeyword.findOne({
           user: req.user,
           keyword: keyword,
         })
-      : null;
+      : undefined;
 
     if (!userKeyword) {
       throw new HttpException(
@@ -98,7 +106,7 @@ export class UserService {
       );
     }
     await UserKeyword.delete(userKeyword.id);
-    keyword = (await Keyword.findOne(keyword.id))!;
+    keyword = await Keyword.findOne(keyword.id);
     if (
       keyword &&
       !(await UserKeyword.findOne({
@@ -108,6 +116,11 @@ export class UserService {
       await Keyword.delete(keyword);
     }
 
-    return User.findOneWithKeyword({ id: req.user!.id });
+    const user: User | undefined = await User.findOneWithKeyword({
+      id: req.user.id,
+    });
+    if (!user) throw ForbiddenException;
+
+    return user;
   }
 }

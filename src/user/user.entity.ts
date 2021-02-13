@@ -68,7 +68,8 @@ export class User extends BaseEntity {
     refreshToken: string,
     id: number,
   ): Promise<User | undefined> {
-    const user: User = (await this.findOne(id))!;
+    const user: User | undefined = await this.findOne(id);
+    if (!user) return undefined;
 
     if (await bcrypt.compare(refreshToken, user.refreshToken)) {
       return user;
