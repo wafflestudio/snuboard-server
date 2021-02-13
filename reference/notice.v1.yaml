@@ -89,9 +89,21 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Notice'
+                description: ''
+                type: object
+                properties:
+                  notices:
+                    type: array
+                    uniqueItems: true
+                    minItems: 1
+                    items:
+                      $ref: '#/components/schemas/Notice'
+                  nextCursor:
+                    type: string
+                    minLength: 1
+                required:
+                  - notices
+                  - nextCursor
               examples:
                 example-1:
                   value:
@@ -193,9 +205,21 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Notice'
+                description: ''
+                type: object
+                properties:
+                  notices:
+                    type: array
+                    uniqueItems: true
+                    minItems: 1
+                    items:
+                      $ref: '#/components/schemas/Notice'
+                  nextCursor:
+                    type: string
+                    minLength: 1
+                required:
+                  - notices
+                  - nextCursor
               examples:
                 example-1:
                   value:
@@ -271,9 +295,9 @@ paths:
           required: true
           description: pagination/ 가져오는 notice 수
     parameters: []
-  /notices/search:
+  /notices/follow/search:
     get:
-      summary: Search Notice
+      summary: Search Notice w/ following tags
       tags: []
       responses:
         '200':
@@ -284,9 +308,19 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Notice'
+                description: ''
+                type: object
+                properties:
+                  notices:
+                    type: array
+                    uniqueItems: true
+                    items:
+                      $ref: '#/components/schemas/Notice'
+                  nextCursor:
+                    type: string
+                    minLength: 1
+                required:
+                  - nextCursor
               examples:
                 example-1:
                   value:
@@ -341,13 +375,14 @@ paths:
                   value:
                     statusCode: 401
                     message: Unauthorized
-      operationId: get-notices-search
+      operationId: get-notices-follow-search
       parameters:
         - schema:
             type: string
           in: query
           name: keyword
           description: 검색할 키워드
+          required: true
         - schema:
             type: boolean
           in: query
@@ -374,18 +409,11 @@ paths:
           name: limit
           required: true
           description: pagination/ 가져오는 notice 수
-        - schema:
-            type: boolean
-          in: query
-          name: follow_only
-          description: '팔로우하는 과의 공지사항에서 검색, default = false'
       description: |
-        제목또는 내용에 키워드를 포함한 공지사항을 검색한다
+        유저가 팔로우하는 태그에 해당하는 공지사항 중에 제목 또는 내용에 키워드를 포함한 공지사항들을 검색한다
 
         title과 content가 모두 true이면 제목 및 내용 검색으로 동작(두개의 결과를 OR)
-        title과 content 둘 중 하나는 true여야한다
-
-        기본적으로 전체 공지사항에서 검색, follow_only = true인 경우 팔로우하는 과의 공지사항만 검색 - (팔로우하는 태그에는 관계없이 모든 태그에 대해 검색)
+        title과 content 둘 중 하나는 true여야한다.
     parameters: []
   /notices/scrap:
     get:
@@ -400,9 +428,21 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Notice'
+                description: ''
+                type: object
+                properties:
+                  notices:
+                    type: array
+                    uniqueItems: true
+                    minItems: 1
+                    items:
+                      $ref: '#/components/schemas/Notice'
+                  nextCursor:
+                    type: string
+                    minLength: 1
+                required:
+                  - notices
+                  - nextCursor
               examples:
                 example-1:
                   value:
@@ -528,6 +568,130 @@ paths:
         '404':
           description: Not Found
       description: '게시글 스크랩을 취소합니다. 스크랩이 되어있지 않은 경우 204, 게시글이 없으면 404를 리턴합니다'
+  '/notices/department/{department_id}/search':
+    parameters:
+      - schema:
+          type: string
+        name: department_id
+        in: path
+        required: true
+    get:
+      summary: Search notices w/ department_id
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  notices:
+                    type: array
+                    uniqueItems: true
+                    items:
+                      $ref: '#/components/schemas/Notice'
+                  nextCursor:
+                    type: string
+                    minLength: 1
+                required:
+                  - notices
+                  - nextCursor
+              examples:
+                example-1:
+                  value:
+                    notices:
+                      - id: 1
+                        departmentName: 컴퓨터공학부
+                        departmentId: 5
+                        title: '2021학년도 1학기 컴퓨터공학부 개설 교과목 ''정원 외 신청(구: 초안지)'' 안내'
+                        preview: 2021학년도 1학기부터 서울대학교 운영방법 변경에 따라 ...
+                        content: '<p>&#xD559;&#xC0DD; &#xC5EC;&#xB7EC;&#xBD84;&#xAED8;,</p>'
+                        createdAt: '2021-02-02T15:38:22Z'
+                        tags:
+                          - 수업
+                          - 학사 (학부)
+                          - 학사 (대학원)
+                          - 제2전공/전과
+                        isPinned: true
+                        link: 'https://cse.snu.ac.kr/node/47377'
+                        files:
+                          - id: 0
+                            name: (국문) 2021년 1학기 정원외신청 매뉴얼_학생.pdf
+                            link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%EA%B5%AD%EB%AC%B8%29%202021%EB%85%84%201%ED%95%99%EA%B8%B0%20%EC%A0%95%EC%9B%90%EC%99%B8%EC%8B%A0%EC%B2%AD%20%EB%A7%A4%EB%89%B4%EC%96%BC_%ED%95%99%EC%83%9D.pdf'
+                      - id: 2
+                        departmentName: 컴퓨터공학부
+                        departmentId: 5
+                        title: 2021학년도 1학기 컴퓨터공학부 개설 교과목별 수업 운영 계획 안내
+                        preview: 2021학년도 1학기 컴퓨터공학부 개설 교과목의 「교과목별 수업 운영 계획」을 붙임과 같이 안내합니다.
+                        content: '<p>&#xD559;&#xC0DD; &#xC5EC;&#xB7EC;&#xBD84;&#xAED8;,</p>'
+                        createdAt: '2021-01-28T14:15:22Z'
+                        tags:
+                          - 수업
+                          - 학사 (학부)
+                          - 학사 (대학원)
+                          - 제2전공/전과
+                        isPinned: true
+                        link: 'https://cse.snu.ac.kr/node/47349'
+                        files:
+                          - id: 1
+                            name: ' (학생공지) 2021-1학기 수업 운영 계획_컴퓨터공학부 0127.xlsx'
+                            link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%ED%95%99%EC%83%9D%EA%B3%B5%EC%A7%80%29%202021-1%ED%95%99%EA%B8%B0%20%EC%88%98%EC%97%85%20%EC%9A%B4%EC%98%81%20%EA%B3%84%ED%9A%8D_%EC%BB%B4%ED%93%A8%ED%84%B0%EA%B3%B5%ED%95%99%EB%B6%80%200127.xlsx'
+                    nextCursor: '123456'
+      operationId: get-notices-department-department_id-search
+      description: |-
+        해당 학과 공지사항 중에 제목 또는 내용에 키워드를 포함한 공지사항들을 검색한다
+
+        title과 content가 모두 true이면 제목 및 내용 검색으로 동작(두개의 결과를 OR)
+        title과 content 둘 중 하나는 true여야한다
+
+        tags의 경우 주어진 경우 해당 학과의 주어진 태그에 해당하는 공지사항들만 검색 (주어지지 않은 경우 해당 학과의 모든 태그)
+        pinned의 경우 true로 주어진 경우 해당 학과의 고정된 공지사항들 중에서 검색 (주어지지 않은 경우 해당 학과의 모든 공지사항 중에서 검색)
+        tags와 pinned는 함께 적용 가능
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: 'Bearer [token]'
+        - schema:
+            type: string
+          in: query
+          name: keyword
+          description: 키워드
+          required: true
+        - schema:
+            type: string
+          in: query
+          name: title
+          description: true로 설정되면 제목에 키워드를 포함하는 공지사항을 리턴
+        - schema:
+            type: string
+          in: query
+          name: content
+          description: 'true로 설정되면 내용에 키워드를 포함하고 있는 공지사항을 리턴 '
+        - schema:
+            type: string
+          in: query
+          name: cursor
+          description: pagination/ cursor (없을 시 첫 번째 페이지)
+        - schema:
+            type: string
+          in: query
+          name: limit
+          description: pagination/ 가져오는 notice 수
+          required: true
+        - schema:
+            type: string
+          in: query
+          name: pinned
+          description: true인 경우 pin되어 있는 공지사항만 리턴
+        - schema:
+            type: string
+          in: query
+          name: tags
+          description: '특정 태그에 해당하는 공지사항만 리턴, 여러개의 태그는 쉼표'',''로 구분, default = ''all'''
 components:
   schemas:
     Notice:
