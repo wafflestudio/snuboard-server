@@ -5,6 +5,7 @@ import {
   Injectable,
   NotFoundException,
   Req,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { PreFollow, UserRequest } from '../types/custom-type';
 import { Department, Tag, UserTag } from './department.entity';
@@ -33,7 +34,7 @@ export class DepartmentService {
     @Req() req: UserRequest,
     id: number,
   ): Promise<Department> {
-    const department: Department = await Department.findOne(id, {
+    const department: Department | undefined = await Department.findOne(id, {
       relations: ['tags'],
     });
     if (!department) {
@@ -44,8 +45,12 @@ export class DepartmentService {
     return department;
   }
 
-  async getFollow(department: Department, user: User): Promise<string[]> {
+  async getFollow(
+    department: Department,
+    user: User | undefined,
+  ): Promise<string[]> {
     user = await User.findOne(user);
+    if (!user) throw new UnauthorizedException();
     const tags: Tag[] = await Tag.find({
       department,
     });
@@ -65,14 +70,14 @@ export class DepartmentService {
     id: number,
     followData: FollowDto,
   ): Promise<PreFollow> {
-    const department: Department = await Department.findOne(id, {
+    const department: Department | undefined = await Department.findOne(id, {
       relations: ['tags'],
     });
     if (!department) {
       throw new NotFoundException('There is no department with the id');
     }
 
-    const tag: Tag = department.tags.find(
+    const tag: Tag | undefined = department.tags.find(
       (tag) => tag.name === followData.follow,
     );
     if (!tag) {
@@ -80,8 +85,9 @@ export class DepartmentService {
         `There is no tag with the given name: ${followData.follow}`,
       );
     }
-    const user: User = await User.findOne(req.user);
-    const userTag: UserTag = await UserTag.findOne({
+    const user: User | undefined = await User.findOne(req.user);
+    if (!user) throw new UnauthorizedException();
+    const userTag: UserTag | undefined = await UserTag.findOne({
       user,
       tag,
     });
@@ -95,7 +101,7 @@ export class DepartmentService {
   }
 
   async createFollow(
-    @Req() req,
+    req: UserRequest,
     id: number,
     followData: FollowDto,
   ): Promise<Department> {
@@ -120,7 +126,7 @@ export class DepartmentService {
   }
 
   async deleteFollow(
-    @Req() req,
+    req: UserRequest,
     id: number,
     followData: FollowDto,
   ): Promise<Department> {

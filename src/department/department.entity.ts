@@ -13,17 +13,17 @@ import { Expose, Transform } from 'class-transformer';
 @Entity()
 export class Department extends BaseEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column()
-  name: string;
+  name!: string;
 
   @OneToMany(() => Notice, (notice) => notice.department)
-  notices: Notice[];
+  notices!: Notice[];
 
-  @Transform((tags) => tags.value.map((tag) => tag.name))
+  @Transform((tags) => tags.value.map((tag: Tag) => tag.name))
   @OneToMany(() => Tag, (tag) => tag.department)
-  tags: Tag[];
+  tags!: Tag[];
 
   follow?: string[];
 }
@@ -31,10 +31,10 @@ export class Department extends BaseEntity {
 @Entity()
 export class Tag extends BaseEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column()
-  name: string;
+  name!: string;
 
   @ManyToOne(() => Department, (department) => department.tags, {
     nullable: false,
@@ -43,16 +43,16 @@ export class Tag extends BaseEntity {
   department!: Department;
 
   @OneToMany(() => UserTag, (userTag) => userTag.tag)
-  userTags: UserTag[];
+  userTags!: UserTag[];
 
   @OneToMany(() => NoticeTag, (noticeTag) => noticeTag.tag)
-  noticeTags: NoticeTag[];
+  noticeTags!: NoticeTag[];
 }
 
 @Entity()
 export class UserTag extends BaseEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @ManyToOne(() => User, (user) => user.userTags, {
     nullable: false,
@@ -70,11 +70,11 @@ export class UserTag extends BaseEntity {
 @Entity()
 export class NoticeTag extends BaseEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @ManyToOne(() => Notice, (notice) => notice.noticeTags)
-  notice: Notice;
+  notice!: Notice;
 
   @ManyToOne(() => Tag, (tag) => tag.noticeTags)
-  tag: Tag;
+  tag!: Tag;
 }

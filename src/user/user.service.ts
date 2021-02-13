@@ -1,4 +1,11 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { Keyword, User, UserKeyword } from './user.entity';
 import { AuthService } from '../auth/auth.service';
@@ -13,7 +20,7 @@ export class UserService {
 
   async create(userData: CreateUserDto): Promise<User> {
     const user: User = User.create(userData);
-    user.password = await bcrypt.hash(user.password, +process.env.SALT_ROUND);
+    user.password = await bcrypt.hash(user.password, +process.env.SALT_ROUND!);
     await User.save(user);
     return this.authService.login(user);
   }
@@ -22,15 +29,18 @@ export class UserService {
     return await this.authService.login(req.user);
   }
 
-  async getUserMe(req: UserRequest): Promise<User> {
+  async getUserMe(req: UserRequest): Promise<User | undefined> {
     return await User.findOneWithKeyword({ id: req.user.id });
   }
 
-  async update(req: UserRequest, userData: UpdateUserDto): Promise<User> {
+  async update(
+    req: UserRequest,
+    userData: UpdateUserDto,
+  ): Promise<User | undefined> {
     if (userData.password) {
       userData.password = await bcrypt.hash(
         userData.password,
-        +process.env.SALT_ROUND,
+        +process.env.SALT_ROUND!,
       );
     }
     if (Object.keys(userData).length != 0) {
@@ -43,21 +53,16 @@ export class UserService {
     req: UserRequest,
     keywordData: KeywordDto,
   ): Promise<User> {
-    let keyword: Keyword = await Keyword.findOne({
+    let keyword: Keyword | undefined = await Keyword.findOne({
       name: keywordData.keyword,
     });
     if (keyword) {
-      const userKeyword: UserKeyword = await UserKeyword.findOne({
+      const userKeyword: UserKeyword | undefined = await UserKeyword.findOne({
         user: req.user,
         keyword,
       });
       if (userKeyword)
-        throw new HttpException(
-          {
-            message: 'keyword already added to this user',
-          },
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new BadRequestException('keyword already added to this user');
     } else {
       keyword = Keyword.create({ name: keywordData.keyword });
       await Keyword.save(keyword);
@@ -68,23 +73,29 @@ export class UserService {
       keyword,
     });
     await UserKeyword.save(userKeyword);
-    return User.findOneWithKeyword({ id: req.user.id });
+    const user: User | undefined = await User.findOneWithKeyword({
+      id: req.user.id,
+    });
+    if (!user) throw new BadRequestException();
+    return user;
   }
 
   async deleteKeyword(
     req: UserRequest,
     keywordData: KeywordDto,
   ): Promise<User> {
-    let keyword: Keyword = await Keyword.findOne({
+    let keyword: Keyword | undefined = await Keyword.findOne({
       name: keywordData.keyword,
     });
 
-    const userKeyword = keyword
+    if (!keyword) throw new BadRequestException();
+
+    const userKeyword: UserKeyword | undefined = keyword
       ? await UserKeyword.findOne({
           user: req.user,
           keyword: keyword,
         })
-      : null;
+      : undefined;
 
     if (!userKeyword) {
       throw new HttpException(
@@ -105,6 +116,11 @@ export class UserService {
       await Keyword.delete(keyword);
     }
 
-    return User.findOneWithKeyword({ id: req.user.id });
+    const user: User | undefined = await User.findOneWithKeyword({
+      id: req.user.id,
+    });
+    if (!user) throw ForbiddenException;
+
+    return user;
   }
 }

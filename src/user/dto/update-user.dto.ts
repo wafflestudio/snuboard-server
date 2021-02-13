@@ -7,9 +7,9 @@ export class UpdateUserDto {
   @IsOptional()
   @Validate(UniqueNicknameValidator)
   @IsString()
-  nickname: string;
+  nickname!: string;
 
   @IsOptional()
   @IsString()
-  password: string;
+  password!: string;
 }

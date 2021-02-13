@@ -20,39 +20,39 @@ import { UserTag } from '../department/department.entity';
 @Entity()
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column({
     unique: true,
   })
-  username: string;
+  username!: string;
 
   @Exclude()
   @Column()
-  password: string;
+  password!: string;
 
   @Column({
     unique: true,
   })
-  nickname: string;
+  nickname!: string;
 
   @Exclude()
   @Column({ default: true })
-  isActive: boolean;
+  isActive!: boolean;
 
   @Exclude()
   @Column({ default: '' })
-  refreshToken: string;
+  refreshToken!: string;
 
   @Exclude()
   @OneToMany(() => UserKeyword, (userKeyword) => userKeyword.user)
-  userKeywords: UserKeyword[];
+  userKeywords!: UserKeyword[];
 
   @OneToMany(() => UserNotice, (userNotice) => userNotice.user)
-  userNotices: UserNotice[];
+  userNotices!: UserNotice[];
 
   @OneToMany(() => UserTag, (userTag) => userTag.user)
-  userTags: UserTag[];
+  userTags!: UserTag[];
 
   @Expose()
   get keywords(): string[] {
@@ -67,17 +67,20 @@ export class User extends BaseEntity {
   static async findOneIfRefreshTokenMatches(
     refreshToken: string,
     id: number,
-  ): Promise<User> {
-    const user: User = await this.findOne(id);
+  ): Promise<User | undefined> {
+    const user: User | undefined = await this.findOne(id);
+    if (!user) return undefined;
 
     if (await bcrypt.compare(refreshToken, user.refreshToken)) {
       return user;
     }
 
-    return null;
+    return undefined;
   }
 
-  static findOneWithKeyword(payload: FindConditions<User>): Promise<User> {
+  static findOneWithKeyword(
+    payload: FindConditions<User>,
+  ): Promise<User | undefined> {
     return this.findOne(payload, {
       relations: ['userKeywords', 'userKeywords.keyword'],
     });
@@ -88,20 +91,20 @@ export class User extends BaseEntity {
 export class Keyword extends BaseEntity {
   @Exclude()
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column()
-  name: string;
+  name!: string;
 
   @OneToMany(() => UserKeyword, (userKeyword) => userKeyword.keyword)
-  userKeywords: UserKeyword[];
+  userKeywords!: UserKeyword[];
 }
 
 @Entity()
 export class UserKeyword extends BaseEntity {
   @Exclude()
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @ManyToOne(() => User, (user) => user.userKeywords, {
     nullable: false,

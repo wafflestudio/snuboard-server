@@ -31,11 +31,11 @@ export class UserController {
 
   @UseGuards(JwtAccessGuard)
   @Patch('me')
-  update(
+  async update(
     @Req() req: UserRequest,
     @Body() userData: UpdateUserDto,
-  ): Promise<User> {
-    return this.userService.update(req, userData);
+  ): Promise<User | undefined> {
+    return await this.userService.update(req, userData);
   }
 
   @Post()
@@ -59,7 +59,7 @@ export class UserController {
     @Req() req: UserRequest,
     @Body() keywordData: KeywordDto,
   ): Promise<User> {
-    return this.userService.createKeyword(req, keywordData);
+    return await this.userService.createKeyword(req, keywordData);
   }
 
   @UseGuards(JwtAccessGuard)
@@ -68,6 +68,6 @@ export class UserController {
     @Req() req: UserRequest,
     @Body() keyword: KeywordDto,
   ): Promise<User> {
-    return this.userService.deleteKeyword(req, keyword);
+    return await this.userService.deleteKeyword(req, keyword);
   }
 }

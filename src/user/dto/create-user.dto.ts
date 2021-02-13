@@ -7,12 +7,12 @@ import {
 export class CreateUserDto {
   @IsString()
   @Validate(UniqueUsernameValidator)
-  readonly username: string;
+  readonly username!: string;
 
   @IsString()
-  readonly password: string;
+  readonly password!: string;
 
   @IsString()
   @Validate(UniqueNicknameValidator)
-  readonly nickname: string;
+  readonly nickname!: string;
 }

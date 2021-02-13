@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { User } from '../user/user.entity';
@@ -8,15 +8,20 @@ import { Payload } from '../types/custom-type';
 export class AuthService {
   constructor(private jwtService: JwtService) {}
 
-  async validateUser(username: string, password: string): Promise<User> {
+  async validateUser(
+    username: string,
+    password: string,
+  ): Promise<User | undefined> {
     const user = await User.findOne({ username });
     if (user && (await bcrypt.compare(password, user.password))) {
       return user;
     }
-    return null;
+    return undefined;
   }
 
-  async login(user: User): Promise<User> {
+  async login(user: User | undefined): Promise<User> {
+    if (!user) throw new UnauthorizedException();
+
     const payload: Payload = { username: user.username, id: user.id };
 
     const accessToken = this.jwtService.sign(payload, {
@@ -28,10 +33,12 @@ export class AuthService {
     });
     user.refreshToken = await bcrypt.hash(
       refreshToken,
-      +process.env.SALT_ROUND,
+      +process.env.SALT_ROUND!,
     );
     await User.save(user);
     user = await User.findOneWithKeyword({ id: user.id });
+
+    if (!user) throw new UnauthorizedException();
     user.access_token = accessToken;
     user.refresh_token = refreshToken;
 
