@@ -646,8 +646,11 @@ paths:
         title과 content가 모두 true이면 제목 및 내용 검색으로 동작(두개의 결과를 OR)
         title과 content 둘 중 하나는 true여야한다
 
+
         tags의 경우 주어진 경우 해당 학과의 주어진 태그에 해당하는 공지사항들만 검색 (주어지지 않은 경우 해당 학과의 모든 태그)
+
         pinned의 경우 true로 주어진 경우 해당 학과의 고정된 공지사항들 중에서 검색 (주어지지 않은 경우 해당 학과의 모든 공지사항 중에서 검색)
+
         tags와 pinned는 함께 적용 가능
       parameters:
         - schema:
