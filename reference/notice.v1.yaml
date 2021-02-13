@@ -86,7 +86,7 @@ paths:
           description: |-
             OK
 
-            - `nextCursor` : 마지막 페이지인 경우 "" 반환 (Empty String)
+            - `next_cursor` : 마지막 페이지인 경우 "" 반환 (Empty String)
           content:
             application/json:
               schema:
@@ -99,12 +99,12 @@ paths:
                     minItems: 1
                     items:
                       $ref: '#/components/schemas/Notice'
-                  nextCursor:
+                  next_cursor:
                     type: string
                     minLength: 1
                 required:
                   - notices
-                  - nextCursor
+                  - next_cursor
               examples:
                 example-1:
                   value:
@@ -147,7 +147,7 @@ paths:
                             name: ' (학생공지) 2021-1학기 수업 운영 계획_컴퓨터공학부 0127.xlsx'
                             link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%ED%95%99%EC%83%9D%EA%B3%B5%EC%A7%80%29%202021-1%ED%95%99%EA%B8%B0%20%EC%88%98%EC%97%85%20%EC%9A%B4%EC%98%81%20%EA%B3%84%ED%9A%8D_%EC%BB%B4%ED%93%A8%ED%84%B0%EA%B3%B5%ED%95%99%EB%B6%80%200127.xlsx'
                         is_scrapped: false
-                    nextCursor: '123456'
+                    next_cursor: '123456'
         '400':
           description: Bad Request
         '401':
@@ -204,7 +204,7 @@ paths:
           description: |-
             OK
 
-            - `nextCursor` : 마지막 페이지인 경우 "" 반환 (Empty String)
+            - `next_cursor` : 마지막 페이지인 경우 "" 반환 (Empty String)
           content:
             application/json:
               schema:
@@ -217,12 +217,12 @@ paths:
                     minItems: 1
                     items:
                       $ref: '#/components/schemas/Notice'
-                  nextCursor:
+                  next_cursor:
                     type: string
                     minLength: 1
                 required:
                   - notices
-                  - nextCursor
+                  - next_cursor
               examples:
                 example-1:
                   value:
@@ -265,7 +265,7 @@ paths:
                             name: ' (학생공지) 2021-1학기 수업 운영 계획_컴퓨터공학부 0127.xlsx'
                             link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%ED%95%99%EC%83%9D%EA%B3%B5%EC%A7%80%29%202021-1%ED%95%99%EA%B8%B0%20%EC%88%98%EC%97%85%20%EC%9A%B4%EC%98%81%20%EA%B3%84%ED%9A%8D_%EC%BB%B4%ED%93%A8%ED%84%B0%EA%B3%B5%ED%95%99%EB%B6%80%200127.xlsx'
                         is_scrapped: false
-                    nextCursor: '123456'
+                    next_cursor: '123456'
         '400':
           description: Bad Request
         '401':
@@ -309,7 +309,7 @@ paths:
           description: |-
             OK
 
-            - `nextCursor` : 마지막 페이지인 경우 "" 반환 (Empty String)
+            - `next_cursor` : 마지막 페이지인 경우 "" 반환 (Empty String)
           content:
             application/json:
               schema:
@@ -321,11 +321,11 @@ paths:
                     uniqueItems: true
                     items:
                       $ref: '#/components/schemas/Notice'
-                  nextCursor:
+                  next_cursor:
                     type: string
                     minLength: 1
                 required:
-                  - nextCursor
+                  - next_cursor
               examples:
                 example-1:
                   value:
@@ -368,7 +368,7 @@ paths:
                             name: ' (학생공지) 2021-1학기 수업 운영 계획_컴퓨터공학부 0127.xlsx'
                             link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%ED%95%99%EC%83%9D%EA%B3%B5%EC%A7%80%29%202021-1%ED%95%99%EA%B8%B0%20%EC%88%98%EC%97%85%20%EC%9A%B4%EC%98%81%20%EA%B3%84%ED%9A%8D_%EC%BB%B4%ED%93%A8%ED%84%B0%EA%B3%B5%ED%95%99%EB%B6%80%200127.xlsx'
                         is_scrapped: false
-                    nextCursor: '123456'
+                    next_cursor: '123456'
         '400':
           description: Bad Request
         '401':
@@ -431,7 +431,7 @@ paths:
           description: |-
             OK
 
-            - `nextCursor` : 마지막 페이지인 경우 "" 반환 (Empty String)
+            - `next_cursor` : 마지막 페이지인 경우 "" 반환 (Empty String)
           content:
             application/json:
               schema:
@@ -444,12 +444,12 @@ paths:
                     minItems: 1
                     items:
                       $ref: '#/components/schemas/Notice'
-                  nextCursor:
+                  next_cursor:
                     type: string
                     minLength: 1
                 required:
                   - notices
-                  - nextCursor
+                  - next_cursor
               examples:
                 example-1:
                   value:
@@ -492,7 +492,7 @@ paths:
                             name: ' (학생공지) 2021-1학기 수업 운영 계획_컴퓨터공학부 0127.xlsx'
                             link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%ED%95%99%EC%83%9D%EA%B3%B5%EC%A7%80%29%202021-1%ED%95%99%EA%B8%B0%20%EC%88%98%EC%97%85%20%EC%9A%B4%EC%98%81%20%EA%B3%84%ED%9A%8D_%EC%BB%B4%ED%93%A8%ED%84%B0%EA%B3%B5%ED%95%99%EB%B6%80%200127.xlsx'
                         is_scrapped: false
-                    nextCursor: '123456'
+                    next_cursor: '123456'
         '400':
           description: 'Bad Request, invlaid offset or limit'
         '401':
@@ -615,7 +615,10 @@ paths:
       tags: []
       responses:
         '200':
-          description: OK
+          description: |-
+            OK
+
+            - `next_cursor` : 마지막 페이지인 경우 "" 반환 (Empty String)
           content:
             application/json:
               schema:
@@ -627,12 +630,12 @@ paths:
                     uniqueItems: true
                     items:
                       $ref: '#/components/schemas/Notice'
-                  nextCursor:
+                  next_cursor:
                     type: string
                     minLength: 1
                 required:
                   - notices
-                  - nextCursor
+                  - next_cursor
               examples:
                 example-1:
                   value:
@@ -675,7 +678,7 @@ paths:
                             name: ' (학생공지) 2021-1학기 수업 운영 계획_컴퓨터공학부 0127.xlsx'
                             link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%ED%95%99%EC%83%9D%EA%B3%B5%EC%A7%80%29%202021-1%ED%95%99%EA%B8%B0%20%EC%88%98%EC%97%85%20%EC%9A%B4%EC%98%81%20%EA%B3%84%ED%9A%8D_%EC%BB%B4%ED%93%A8%ED%84%B0%EA%B3%B5%ED%95%99%EB%B6%80%200127.xlsx'
                         is_scrapped: false
-                    nextCursor: '123456'
+                    next_cursor: '123456'
       operationId: get-notices-department-department_id-search
       description: |-
         해당 학과 공지사항 중에 제목 또는 내용에 키워드를 포함한 공지사항들을 검색한다. 공백이 포함된 문자열을 받는 경우 공백을 기준으로 split한 단어들에 대해 OR 연산으로 검색을 진행한다.
