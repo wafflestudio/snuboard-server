@@ -445,6 +445,10 @@ paths:
               properties:
                 keyword:
                   type: string
+            examples:
+              example-1:
+                value:
+                  keyword: 장학
       parameters:
         - schema:
             type: string
