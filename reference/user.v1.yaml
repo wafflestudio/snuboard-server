@@ -136,7 +136,7 @@ paths:
       summary: Create New User
       operationId: post-user
       responses:
-        '200':
+        '201':
           description: |-
             User Created,
 
