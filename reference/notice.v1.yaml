@@ -78,7 +78,7 @@ paths:
         in: path
         required: true
     get:
-      summary: Get Notice by Department ID
+      summary: Get Notices by Department ID
       operationId: get-notices-department
       responses:
         '200':
@@ -194,7 +194,7 @@ paths:
           description: 'Bearer [token]'
   /notices/follow:
     get:
-      summary: Get Notice by Following Info
+      summary: Get Notices by Following Info
       tags: []
       responses:
         '200':
@@ -297,7 +297,7 @@ paths:
     parameters: []
   /notices/follow/search:
     get:
-      summary: Search Notice w/ following tags
+      summary: Search Notices w/ following tags
       tags: []
       responses:
         '200':
