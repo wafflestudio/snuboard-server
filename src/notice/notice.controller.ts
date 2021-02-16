@@ -7,8 +7,8 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { JwtAccessGuard } from 'src/auth/auth.guard';
-import { UserRequest } from 'src/types/custom-type';
+import { JwtAccessGuard } from '../auth/auth.guard';
+import { UserRequest } from '../types/custom-type';
 import { Notice } from './notice.entity';
 import { NoticeService } from './notice.service';
 

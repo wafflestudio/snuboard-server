@@ -1,4 +1,4 @@
-import { Department, NoticeTag, Tag } from 'src/department/department.entity';
+import { Department, NoticeTag, Tag } from '../department/department.entity';
 import { NOTICES, FILES } from './constansts';
 import { Notice, File } from './notice.entity';
 export const noticeInit = async (): Promise<void> => {

@@ -4,13 +4,13 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { User } from 'src/user/user.entity';
+import { User } from '../user/user.entity';
 import { Notice, UserNotice } from './notice.entity';
 import { GetNoticeInDeptDto } from './dto/getNoticeInDept.dto';
 import { NoticesResponseDto } from './dto/noticesResponse.dto';
-import { NoticeTag, Tag, UserTag } from 'src/department/department.entity';
+import { NoticeTag, Tag, UserTag } from '../department/department.entity';
 import { Brackets, SelectQueryBuilder } from 'typeorm';
-import { UserRequest } from 'src/types/custom-type';
+import { UserRequest } from '../types/custom-type';
 import { NoticePaginationDto } from './dto/noticePagination.dto';
 import { SearchFollowedNoticeDto } from './dto/searchFollowedNotice.dto';
 import { SearchNoticeInDeptDto } from './dto/searchNoticeInDept.dto';
