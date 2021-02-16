@@ -8,12 +8,14 @@ import {
 } from '@nestjs/common';
 import { departmentInit } from './department/department.init';
 import { ValidationError } from 'class-validator';
+import { noticeInit } from './notice/notice.init';
 
 const VALIDATION_ERROR = 'validation Error';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   await departmentInit();
+  await noticeInit();
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
