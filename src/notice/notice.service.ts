@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  HttpStatus,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -15,6 +16,7 @@ import { NoticePaginationDto } from './dto/noticePagination.dto';
 import { SearchFollowedNoticeDto } from './dto/searchFollowedNotice.dto';
 import { SearchNoticeInDeptDto } from './dto/searchNoticeInDept.dto';
 import { validate } from 'class-validator';
+const VALIDATION_ERROR = 'validation Error';
 
 @Injectable()
 export class NoticeService {
@@ -280,11 +282,22 @@ export class NoticeService {
   }
 
   async validateQuery(query: NoticePaginationDto) {
-    await validate(query).then((errors) => {
-      if (errors.length > 0) {
-        throw new BadRequestException(errors);
-      }
-    });
+    await validate(query, { whitelist: true, forbidNonWhitelisted: true }).then(
+      (validationErrors) => {
+        if (validationErrors.length > 0) {
+          const message: string =
+            validationErrors[0] && validationErrors[0].constraints
+              ? Object.values(validationErrors[0].constraints)[0]
+              : VALIDATION_ERROR;
+
+          throw new BadRequestException({
+            statusCode: HttpStatus.BAD_REQUEST,
+            message,
+            error: 'Bad Request',
+          });
+        }
+      },
+    );
   }
 
   async makeResponse(

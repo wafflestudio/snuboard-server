@@ -1,7 +1,8 @@
-import { IsNumber, IsOptional } from 'class-validator';
+import { IsNumber, IsOptional, IsPositive } from 'class-validator';
 
 export class NoticePaginationDto {
   @IsNumber()
+  @IsPositive()
   limit!: number;
 
   @IsNumber()
