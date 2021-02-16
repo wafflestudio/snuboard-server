@@ -1,7 +1,15 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
+import {
+  BadRequestException,
+  ClassSerializerInterceptor,
+  HttpStatus,
+  ValidationPipe,
+} from '@nestjs/common';
 import { departmentInit } from './department/department.init';
+import { ValidationError } from 'class-validator';
+
+const VALIDATION_ERROR = 'validation Error';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -11,6 +19,18 @@ async function bootstrap() {
       whitelist: true,
       forbidNonWhitelisted: true,
       transform: true,
+      exceptionFactory: (validationErrors: ValidationError[] = []) => {
+        const message: string =
+          validationErrors[0] && validationErrors[0].constraints
+            ? Object.values(validationErrors[0].constraints)[0]
+            : VALIDATION_ERROR;
+
+        return new BadRequestException({
+          statusCode: HttpStatus.BAD_REQUEST,
+          message,
+          error: 'Bad Request',
+        });
+      },
     }),
   );
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
