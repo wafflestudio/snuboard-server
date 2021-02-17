@@ -32,7 +32,7 @@ export class Notice extends BaseEntity {
   @Column({ default: false })
   isPinned!: boolean;
 
-  @Column()
+  @Column({ length: 1000 })
   link!: string;
 
   @Exclude()
