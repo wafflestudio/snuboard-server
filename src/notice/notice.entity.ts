@@ -88,7 +88,7 @@ export class File extends BaseEntity {
   @Column()
   name!: string;
 
-  @Column()
+  @Column({ length: 1000 })
   link!: string;
 
   @ManyToOne(() => Notice, (notice) => notice.files, {
