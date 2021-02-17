@@ -21,7 +21,7 @@ export class Notice extends BaseEntity {
   @Column({ length: 1000 })
   preview!: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'mediumtext' })
   content!: string;
 
   @Expose({ name: 'created_at' })
@@ -32,7 +32,7 @@ export class Notice extends BaseEntity {
   @Column({ default: false })
   isPinned!: boolean;
 
-  @Column({ length: 1000 })
+  @Column()
   link!: string;
 
   @Exclude()
@@ -88,7 +88,7 @@ export class File extends BaseEntity {
   @Column()
   name!: string;
 
-  @Column()
+  @Column({ length: 1000 })
   link!: string;
 
   @ManyToOne(() => Notice, (notice) => notice.files, {
