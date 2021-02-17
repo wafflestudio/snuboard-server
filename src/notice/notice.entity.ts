@@ -21,7 +21,7 @@ export class Notice extends BaseEntity {
   @Column({ length: 1000 })
   preview!: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'mediumtext' })
   content!: string;
 
   @Expose({ name: 'created_at' })
