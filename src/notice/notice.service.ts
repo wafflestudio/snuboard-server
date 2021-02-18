@@ -1,6 +1,5 @@
 import {
   BadRequestException,
-  HttpStatus,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -16,19 +15,26 @@ import { NoticePaginationDto } from './dto/noticePagination.dto';
 import { SearchFollowedNoticeDto } from './dto/searchFollowedNotice.dto';
 import { SearchNoticeInDeptDto } from './dto/searchNoticeInDept.dto';
 import { validate } from 'class-validator';
-const VALIDATION_ERROR = 'validation Error';
+import { exceptionFormatter } from '../functions/custom-function';
+
+const emptyResponse: NoticesResponseDto = { notices: [], next_cursor: '' };
 
 @Injectable()
 export class NoticeService {
   async getNotice(req: UserRequest, id: number): Promise<Notice> {
+    if (isNaN(id)) {
+      throw new BadRequestException('id should be a number');
+    }
+
     const notice: Notice | undefined = await Notice.findOne(id, {
       relations: ['department', 'files', 'noticeTags', 'noticeTags.tag'],
     });
+
     if (!notice) {
-      throw new NotFoundException(`There is no notice with the id ${id}`);
+      throw new NotFoundException(`there is no notice with the id`);
     }
 
-    await this.appendIsScrapped(req.user, [notice]);
+    await this.attachIsScrapped(req.user, [notice]);
     return notice;
   }
 
@@ -38,29 +44,26 @@ export class NoticeService {
     query: GetNoticeInDeptDto,
   ): Promise<NoticesResponseDto | undefined> {
     const user = await User.findOne(req.user);
-    if (!user) throw new UnauthorizedException();
+    if (!user) {
+      throw new UnauthorizedException();
+    }
     await this.validateQuery(query);
 
-    const tags = query.tags
-      .split(',')
-      .map((tag) => tag.trim())
-      .filter((tag) => tag);
-
+    const tags = this.splitParam(query.tags, ',');
     const noticeQb = Notice.createQueryBuilder('notice')
       .andWhere('notice.departmentId = :departmentId')
       .setParameter('departmentId', departmentId);
-
     if (query.pinned) {
       noticeQb.andWhere('notice.isPinned = true');
     }
+    this.appendTagQb(noticeQb, tags);
 
-    this.appendTagNameQb(noticeQb, tags);
     const response = await this.makeResponse(
       noticeQb,
       query.limit,
       query.cursor,
     );
-    await this.appendIsScrapped(user, response.notices);
+    await this.attachIsScrapped(user, response.notices);
     return response;
   }
 
@@ -70,63 +73,20 @@ export class NoticeService {
     query: SearchNoticeInDeptDto,
   ): Promise<NoticesResponseDto> {
     const user = await User.findOne(req.user);
-    if (!user) throw new UnauthorizedException();
+    if (!user) {
+      throw new UnauthorizedException();
+    }
     await this.validateQuery(query);
-    if (query.keyword.length == 0) {
-      throw new BadRequestException("Keyword' should not be empty");
-    }
-    if (!(query.title || query.content)) {
-      throw new BadRequestException(
-        "At least one of 'title' and 'content' should be true",
-      );
-    }
-    const selectedColumn: string =
-      query.content && query.title
-        ? 'CONCAT(notice.title, notice.content, " ")'
-        : query.title
-        ? 'notice.title'
-        : query.content
-        ? 'notice.content'
-        : 'at least one of query.title and query.content should be true';
 
-    const tags = query.tags
-      .split(',')
-      .map((tag) => tag.trim())
-      .filter((tag) => tag);
-
-    const keywords = query.keyword
-      .split(' ')
-      .map((keyword) => keyword.trim())
-      .filter((keyword) => keyword);
-
+    const tags = this.splitParam(query.tags, ',');
     const noticeQb = Notice.createQueryBuilder('notice')
       .andWhere('notice.departmentId = :departmentId')
       .setParameter('departmentId', departmentId);
-
     if (query.pinned) {
       noticeQb.andWhere('notice.isPinned = true');
     }
 
-    this.appendTagNameQb(noticeQb, tags);
-
-    noticeQb.andWhere(
-      new Brackets((keywordQb) => {
-        for (let i = 0; i < keywords.length; i++) {
-          if (i == 0) {
-            keywordQb.where(selectedColumn + ' like "%' + keywords[i] + '%"');
-          } else {
-            keywordQb.orWhere(selectedColumn + ' like "%' + keywords[i] + '%"');
-          }
-        }
-      }),
-    );
-    const response = await this.makeResponse(
-      noticeQb,
-      query.limit,
-      query.cursor,
-    );
-    await this.appendIsScrapped(user, response.notices);
-    return response;
+    return this.searchNotice(user, query, noticeQb, tags);
   }
 
   async getFollowedNotice(
@@ -134,24 +94,24 @@ export class NoticeService {
     query: NoticePaginationDto,
   ): Promise<NoticesResponseDto> {
     const user = await User.findOne(req.user);
-    if (!user) throw new UnauthorizedException();
+    if (!user) {
+      throw new UnauthorizedException();
+    }
     await this.validateQuery(query);
 
-    const userTags = await UserTag.find({
-      relations: ['tag'],
-      where: { user: user },
-    });
-    const tags = userTags.map((userTag) => userTag.tag.id);
-
+    const tags = await this.getFollowedTag(user);
+    if (tags.length == 0) {
+      return emptyResponse;
+    }
     const noticeQb = Notice.createQueryBuilder('notice');
-    this.appendTagIdQb(noticeQb, tags);
+    this.appendTagQb(noticeQb, tags);
 
     const response = await this.makeResponse(
       noticeQb,
       query.limit,
       query.cursor,
     );
-    await this.appendIsScrapped(user, response.notices);
+    await this.attachIsScrapped(user, response.notices);
     return response;
   }
 
@@ -160,54 +120,15 @@ export class NoticeService {
     query: SearchFollowedNoticeDto,
   ): Promise<NoticesResponseDto> {
     const user = await User.findOne(req.user);
-    if (!user) throw new UnauthorizedException();
-    await this.validateQuery(query);
-    if (!(query.title || query.content)) {
-      throw new BadRequestException(
-        'At least one of "title" and "content" should be true',
-      );
+    if (!user) {
+      throw new UnauthorizedException();
     }
-    const selectedColumn: string =
-      query.content && query.title
-        ? 'CONCAT(notice.title, notice.content, " ")'
-        : query.title
-        ? 'notice.title'
-        : query.content
-        ? 'notice.content'
-        : 'at least one of query.title and query.content should be true';
-
-    const userTags = await UserTag.find({
-      relations: ['tag'],
-      where: { user: user },
-    });
-
-    const tags = userTags.map((userTag) => userTag.tag.id);
-
-    const keywords = query.keyword
-      .split(' ')
-      .map((keyword) => keyword.trim())
-      .filter((keyword) => keyword);
-
+    const tags = await this.getFollowedTag(user);
+    if (tags.length == 0) {
+      return emptyResponse;
+    }
     const noticeQb = Notice.createQueryBuilder('notice');
-    this.appendTagIdQb(noticeQb, tags);
-    noticeQb.andWhere(
-      new Brackets((keywordQb) => {
-        for (let i = 0; i < keywords.length; i++) {
-          if (i == 0) {
-            keywordQb.where(selectedColumn + ' like "%' + keywords[i] + '%"');
-          } else {
-            keywordQb.orWhere(selectedColumn + ' like "%' + keywords[i] + '%"');
-          }
-        }
-      }),
-    );
-    const response = await this.makeResponse(
-      noticeQb,
-      query.limit,
-      query.cursor,
-    );
-    await this.appendIsScrapped(user, response.notices);
-    return response;
+    return await this.searchNotice(user, query, noticeQb, tags);
   }
 
   async getScrappedNotice(
@@ -215,7 +136,9 @@ export class NoticeService {
     query: NoticePaginationDto,
   ): Promise<NoticesResponseDto> {
     const user = await User.findOne(req.user);
-    if (!user) throw new UnauthorizedException();
+    if (!user) {
+      throw new UnauthorizedException();
+    }
     await this.validateQuery(query);
     const userNotices = await UserNotice.find({
       relations: ['notice'],
@@ -229,81 +152,42 @@ export class NoticeService {
       query.limit,
       query.cursor,
     );
-    await this.appendIsScrapped(user, response.notices);
+    await this.attachIsScrapped(user, response.notices);
     return response;
   }
 
-  appendTagIdQb(noticeQb: SelectQueryBuilder<Notice>, tags: number[]) {
-    const tagQb = Notice.createQueryBuilder('notice')
-      .select('noticeTag.noticeId')
-      .from(NoticeTag, 'noticeTag')
-      .innerJoin(Tag, 'tag', 'noticeTag.tagId = tag.id')
-      .where('tag.id IN (:...tags)');
+  async searchNotice(
+    user: User,
+    query: SearchFollowedNoticeDto | SearchNoticeInDeptDto,
+    noticeQb: SelectQueryBuilder<Notice>,
+    tags: string[] | number[],
+  ): Promise<NoticesResponseDto> {
+    await this.validateQuery(query);
 
-    if (tags.length > 0) {
-      noticeQb
-        .innerJoinAndSelect(
-          'notice.noticeTags',
-          'noticeTag',
-          'notice.id = noticeTag.noticeId',
-        )
-        .innerJoinAndSelect('noticeTag.tag', 'tag', 'noticeTag.tagId = tag.id')
-        .andWhere('notice.id IN (' + tagQb.getQuery() + ')')
-        .setParameter('tags', tags);
-    } else {
-      noticeQb
-        .leftJoinAndSelect('notice.noticeTags', 'noticeTag')
-        .leftJoinAndSelect('noticeTag.tag', 'tags');
-    }
-  }
+    const selectedColumn: string =
+      query.content && query.title
+        ? 'CONCAT(notice.title, notice.content, " ")'
+        : query.title
+        ? 'notice.title'
+        : 'notice.content';
 
-  appendTagNameQb(noticeQb: SelectQueryBuilder<Notice>, tags: string[]) {
-    const tagQb = Notice.createQueryBuilder('notice')
-      .select('noticeTag.noticeId')
-      .from(NoticeTag, 'noticeTag')
-      .innerJoin(Tag, 'tag', 'noticeTag.tagId = tag.id')
-      .where('tag.name IN (:...tags)');
+    const keywords = this.splitParam(query.keywords, ' ');
+    this.appendTagQb(noticeQb, tags);
+    this.appendKeywordQb(noticeQb, keywords, selectedColumn);
 
-    if (tags.length > 0) {
-      noticeQb
-        .innerJoinAndSelect(
-          'notice.noticeTags',
-          'noticeTag',
-          'notice.id = noticeTag.noticeId',
-        )
-        .innerJoinAndSelect('noticeTag.tag', 'tag', 'noticeTag.tagId = tag.id')
-        .andWhere('notice.id IN (' + tagQb.getQuery() + ')')
-        .setParameter('tags', tags);
-    } else {
-      noticeQb
-        .leftJoinAndSelect('notice.noticeTags', 'noticeTag')
-        .leftJoinAndSelect('noticeTag.tag', 'tags');
-    }
-  }
-
-  async validateQuery(query: NoticePaginationDto) {
-    await validate(query, { whitelist: true, forbidNonWhitelisted: true }).then(
-      (validationErrors) => {
-        if (validationErrors.length > 0) {
-          const message: string =
-            validationErrors[0] && validationErrors[0].constraints
-              ? Object.values(validationErrors[0].constraints)[0]
-              : VALIDATION_ERROR;
-
-          throw new BadRequestException({
-            statusCode: HttpStatus.BAD_REQUEST,
-            message,
-            error: 'Bad Request',
-          });
-        }
-      },
+    const response = await this.makeResponse(
+      noticeQb,
+      query.limit,
+      query.cursor,
     );
+    await this.attachIsScrapped(user, response.notices);
+    return response;
   }
 
   async makeResponse(
     noticeQb: SelectQueryBuilder<Notice>,
     limit: number,
-    cursor: number,
+    cursor: string,
   ): Promise<NoticesResponseDto> {
     noticeQb
       .innerJoinAndSelect('notice.department', 'department')
@@ -311,9 +195,10 @@ export class NoticeService {
       .orderBy('notice.cursor', 'DESC')
       .take(limit + 1);
 
-    if (cursor != 0) {
-      noticeQb.andWhere('notice.cursor < :cursor', { cursor: cursor });
+    if (cursor.length != 0) {
+      noticeQb.andWhere('notice.cursor < :cursor', { cursor: Number(cursor) });
     }
+
     const noticesResponse = new NoticesResponseDto();
 
     const notices = await noticeQb.getMany();
@@ -326,7 +211,87 @@ export class NoticeService {
     return noticesResponse;
   }
 
-  async appendIsScrapped(user: User, notices: Notice[]) {
+  async validateQuery(query: NoticePaginationDto) {
+    await validate(query, {
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    }).then((errors) => {
+      if (errors.length > 0) {
+        throw exceptionFormatter(errors);
+      }
+    });
+    if (query.cursor.length > 0 && isNaN(Number(query.cursor))) {
+      throw new BadRequestException('invalid cursor format');
+    }
+    if (this.isSearchQuery(query)) {
+      if (query.keywords.length == 0) {
+        throw new BadRequestException("'keywords' should not be empty");
+      }
+      if (!(query.title || query.content)) {
+        throw new BadRequestException(
+          "At least one of 'title' and 'content' should be true",
+        );
+      }
+    }
+  }
+
+  appendKeywordQb(
+    noticeQb: SelectQueryBuilder<Notice>,
+    keywords: string[],
+    selectedColumn: string,
+  ) {
+    noticeQb.andWhere(
+      new Brackets((keywordQb) => {
+        for (let i = 0; i < keywords.length; i++) {
+          if (i == 0) {
+            keywordQb.where(selectedColumn + ' like "%' + keywords[i] + '%"');
+          } else {
+            keywordQb.orWhere(selectedColumn + ' like "%' + keywords[i] + '%"');
+          }
+        }
+      }),
+    );
+  }
+
+  appendTagQb(noticeQb: SelectQueryBuilder<Notice>, tags: string[] | number[]) {
+    if (tags.length == 0) {
+      noticeQb
+        .leftJoinAndSelect('notice.noticeTags', 'noticeTag')
+        .leftJoinAndSelect('noticeTag.tag', 'tags');
+      return;
+    }
+
+    const tagQb = Notice.createQueryBuilder('notice')
+      .select('noticeTag.noticeId')
+      .from(NoticeTag, 'noticeTag')
+      .innerJoin(Tag, 'tag', 'noticeTag.tagId = tag.id');
+
+    if (typeof tags[0] === 'string') {
+      tagQb.where('tag.name IN (:...tags)');
+    } else {
+      tagQb.where('tag.id IN (:...tags)');
+    }
+
+    noticeQb
+      .innerJoinAndSelect(
+        'notice.noticeTags',
+        'noticeTag',
+        'notice.id = noticeTag.noticeId',
+      )
+      .innerJoinAndSelect('noticeTag.tag', 'tag', 'noticeTag.tagId = tag.id')
+      .andWhere('notice.id IN (' + tagQb.getQuery() + ')')
+      .setParameter('tags', tags);
+  }
+
+  async getFollowedTag(user: User): Promise<number[]> {
+    const userTags = await UserTag.find({
+      relations: ['tag'],
+      where: { user: user },
+    });
+    return userTags.map((userTag) => userTag.tag.id);
+  }
+
+  async attachIsScrapped(user: User, notices: Notice[]) {
     const userNotices = await UserNotice.find({
       relations: ['notice'],
       where: { user: user, isScrapped: true },
@@ -343,5 +308,25 @@ export class NoticeService {
       }
       return notice;
     });
+  }
+
+  isSearchQuery(
+    query: NoticePaginationDto,
+  ): query is SearchNoticeInDeptDto | SearchFollowedNoticeDto {
+    return (
+      (<SearchNoticeInDeptDto | SearchFollowedNoticeDto>query).keywords !==
+        undefined &&
+      (<SearchNoticeInDeptDto | SearchFollowedNoticeDto>query).content !==
+        undefined &&
+      (<SearchNoticeInDeptDto | SearchFollowedNoticeDto>query).title !==
+        undefined
+    );
+  }
+
+  splitParam(params: string, separator: string): string[] {
+    return params
+      .split(separator)
+      .map((param) => param.trim())
+      .filter((param) => param);
   }
 }

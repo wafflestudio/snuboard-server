@@ -7,5 +7,5 @@ export class GetNoticeInDeptDto extends NoticePaginationDto {
 
   @IsString()
   @IsOptional()
-  tags!: string;
+  tags = '';
 }

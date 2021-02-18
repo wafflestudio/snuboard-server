@@ -3,7 +3,7 @@ import { NoticePaginationDto } from './noticePagination.dto';
 
 export class SearchFollowedNoticeDto extends NoticePaginationDto {
   @IsString()
-  keyword!: string;
+  keywords!: string;
 
   @IsBoolean()
   title!: boolean;

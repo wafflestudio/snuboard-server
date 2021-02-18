@@ -5,7 +5,6 @@ export class NoticePaginationDto {
   @IsPositive()
   limit!: number;
 
-  @IsNumber()
   @IsOptional()
-  cursor!: number;
+  cursor = '';
 }

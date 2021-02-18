@@ -1,4 +1,3 @@
-import { Logger } from '@nestjs/common';
 import { Department, NoticeTag, Tag } from '../department/department.entity';
 import { NOTICES, FILES } from './constansts';
 import { Notice, File } from './notice.entity';

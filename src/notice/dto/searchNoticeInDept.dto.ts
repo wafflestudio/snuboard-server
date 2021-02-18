@@ -1,9 +1,9 @@
-import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsOptional, IsString } from 'class-validator';
 import { NoticePaginationDto } from './noticePagination.dto';
 
 export class SearchNoticeInDeptDto extends NoticePaginationDto {
   @IsString()
-  keyword!: string;
+  keywords!: string;
 
   @IsBoolean()
   title!: boolean;
@@ -12,8 +12,9 @@ export class SearchNoticeInDeptDto extends NoticePaginationDto {
   content!: boolean;
 
   @IsBoolean()
-  pinned!: boolean;
+  pinned = false;
 
   @IsString()
-  tags!: string;
+  @IsOptional()
+  tags = '';
 }

@@ -72,9 +72,15 @@ export class NoticeTag extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @ManyToOne(() => Notice, (notice) => notice.noticeTags)
+  @ManyToOne(() => Notice, (notice) => notice.noticeTags, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
   notice!: Notice;
 
-  @ManyToOne(() => Tag, (tag) => tag.noticeTags)
+  @ManyToOne(() => Tag, (tag) => tag.noticeTags, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
   tag!: Tag;
 }
