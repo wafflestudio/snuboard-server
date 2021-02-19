@@ -26,11 +26,15 @@ export const noticeInit = async (): Promise<void> => {
         await Notice.save(notice);
 
         noticeData.noticeTags.map(async (tagName) => {
-          const tag = await Tag.findOne({
+          const tag: Tag | undefined = await Tag.findOne({
             name: tagName,
             department: departmentObj,
           });
-          NoticeTag.save(NoticeTag.create({ notice: notice, tag: tag }));
+          if (tag) {
+            await NoticeTag.save(
+              NoticeTag.create({ notice: notice, tag: tag }),
+            );
+          }
         });
       }
     }
@@ -38,10 +42,15 @@ export const noticeInit = async (): Promise<void> => {
 
   for (const fileData of FILES) {
     const { name, link, noticeTitle } = fileData;
-    const notice = await Notice.findOne({ title: noticeTitle });
-    const file = await File.findOne({ name: name, notice: notice });
+    const notice: Notice | undefined = await Notice.findOne({
+      title: noticeTitle,
+    });
+    const file: File | undefined = await File.findOne({
+      name: name,
+      notice: notice,
+    });
     if (!file) {
-      File.save(File.create({ name: name, link: link, notice: notice }));
+      await File.save(File.create({ name: name, link: link, notice: notice }));
     }
   }
 };

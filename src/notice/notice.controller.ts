@@ -34,18 +34,18 @@ export class NoticeController {
     @Query() rawQuery: string,
     @Req() req: UserRequest,
   ): Promise<NoticesResponseDto> {
-    const query = plainToClass(SearchNoticeInDeptDto, rawQuery, {
-      enableImplicitConversion: true,
-    });
+    const query: SearchNoticeInDeptDto = plainToClass(
+      SearchNoticeInDeptDto,
+      rawQuery,
+      {
+        enableImplicitConversion: true,
+      },
+    );
     query.pinned = pinned;
     query.title = title;
     query.content = content;
 
-    return this.noticeService.searchNoticeInDepartment(
-      req,
-      departmentId,
-      query,
-    );
+    return this.noticeService.getNoticeInDepartment(req, departmentId, query);
   }
 
   @Get('department/:departmentId')
@@ -54,10 +54,14 @@ export class NoticeController {
     @Query('pinned', ParseBoolPipe) pinned: boolean,
     @Query() rawQuery: string,
     @Req() req: UserRequest,
-  ): Promise<NoticesResponseDto | undefined> {
-    const query = plainToClass(GetNoticeInDeptDto, rawQuery, {
-      enableImplicitConversion: true,
-    });
+  ): Promise<NoticesResponseDto> {
+    const query: GetNoticeInDeptDto = plainToClass(
+      GetNoticeInDeptDto,
+      rawQuery,
+      {
+        enableImplicitConversion: true,
+      },
+    );
     query.pinned = pinned;
     return this.noticeService.getNoticeInDepartment(req, departmentId, query);
   }
@@ -69,12 +73,16 @@ export class NoticeController {
     @Query() rawQuery: string,
     @Req() req: UserRequest,
   ): Promise<NoticesResponseDto> {
-    const query = plainToClass(SearchFollowedNoticeDto, rawQuery, {
-      enableImplicitConversion: true,
-    });
+    const query: SearchFollowedNoticeDto = plainToClass(
+      SearchFollowedNoticeDto,
+      rawQuery,
+      {
+        enableImplicitConversion: true,
+      },
+    );
     query.title = title;
     query.content = content;
-    return this.noticeService.searchFollowedNotice(req, query);
+    return this.noticeService.getFollowedNotice(req, query);
   }
 
   @Get('follow')
@@ -82,9 +90,13 @@ export class NoticeController {
     @Query() rawQuery: string,
     @Req() req: UserRequest,
   ): Promise<NoticesResponseDto> {
-    const query = plainToClass(NoticePaginationDto, rawQuery, {
-      enableImplicitConversion: true,
-    });
+    const query: NoticePaginationDto = plainToClass(
+      NoticePaginationDto,
+      rawQuery,
+      {
+        enableImplicitConversion: true,
+      },
+    );
     return this.noticeService.getFollowedNotice(req, query);
   }
 
@@ -93,9 +105,13 @@ export class NoticeController {
     @Query() rawQuery: string,
     @Req() req: UserRequest,
   ): Promise<NoticesResponseDto> {
-    const query = plainToClass(NoticePaginationDto, rawQuery, {
-      enableImplicitConversion: true,
-    });
+    const query: NoticePaginationDto = plainToClass(
+      NoticePaginationDto,
+      rawQuery,
+      {
+        enableImplicitConversion: true,
+      },
+    );
     return this.noticeService.getScrappedNotice(req, query);
   }
 

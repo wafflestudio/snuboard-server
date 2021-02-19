@@ -1,20 +1,14 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import {
-  BadRequestException,
-  ClassSerializerInterceptor,
-  HttpStatus,
-  ValidationPipe,
-} from '@nestjs/common';
-import { departmentInit } from './department/department.init';
-import { ValidationError } from 'class-validator';
-import { noticeInit } from './notice/notice.init';
-import { exceptionFormatter } from './functions/custom-function';
+  exceptionFormatter,
+  initializeTestDB,
+} from './functions/custom-function';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await departmentInit();
-  await noticeInit();
+  await initializeTestDB();
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,

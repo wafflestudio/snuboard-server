@@ -8,9 +8,13 @@ import { User } from '../user/user.entity';
 import { Notice, UserNotice } from './notice.entity';
 import { GetNoticeInDeptDto } from './dto/getNoticeInDept.dto';
 import { NoticesResponseDto } from './dto/noticesResponse.dto';
-import { NoticeTag, Tag, UserTag } from '../department/department.entity';
+import {
+  Department,
+  NoticeTag,
+  UserTag,
+} from '../department/department.entity';
 import { Brackets, SelectQueryBuilder } from 'typeorm';
-import { UserRequest } from '../types/custom-type';
+import { PreQuery, UserRequest } from '../types/custom-type';
 import { NoticePaginationDto } from './dto/noticePagination.dto';
 import { SearchFollowedNoticeDto } from './dto/searchFollowedNotice.dto';
 import { SearchNoticeInDeptDto } from './dto/searchNoticeInDept.dto';
@@ -22,6 +26,8 @@ const emptyResponse: NoticesResponseDto = { notices: [], next_cursor: '' };
 @Injectable()
 export class NoticeService {
   async getNotice(req: UserRequest, id: number): Promise<Notice> {
+    const user: User = await this.getValidatedUser(req.user);
+
     if (isNaN(id)) {
       throw new BadRequestException('id should be a number');
     }
@@ -31,139 +37,92 @@ export class NoticeService {
     });
 
     if (!notice) {
-      throw new NotFoundException(`there is no notice with the id`);
+      throw new NotFoundException(`There is no notice with the id ${id}`);
     }
 
-    await this.attachIsScrapped(req.user, [notice]);
+    await this.attachIsScrapped(user, [notice]);
     return notice;
   }
 
   async getNoticeInDepartment(
     req: UserRequest,
     departmentId: number,
-    query: GetNoticeInDeptDto,
-  ): Promise<NoticesResponseDto | undefined> {
-    const user = await User.findOne(req.user);
-    if (!user) {
-      throw new UnauthorizedException();
-    }
-    await this.validateQuery(query);
-
-    const tags = this.splitParam(query.tags, ',');
-    const noticeQb = Notice.createQueryBuilder('notice')
-      .andWhere('notice.departmentId = :departmentId')
-      .setParameter('departmentId', departmentId);
-    if (query.pinned) {
-      noticeQb.andWhere('notice.isPinned = true');
-    }
-    this.appendTagQb(noticeQb, tags);
-
-    const response = await this.makeResponse(
-      noticeQb,
-      query.limit,
-      query.cursor,
-    );
-    await this.attachIsScrapped(user, response.notices);
-    return response;
-  }
-
-  async searchNoticeInDepartment(
-    req: UserRequest,
-    departmentId: number,
-    query: SearchNoticeInDeptDto,
+    query: GetNoticeInDeptDto | SearchNoticeInDeptDto,
   ): Promise<NoticesResponseDto> {
-    const user = await User.findOne(req.user);
-    if (!user) {
-      throw new UnauthorizedException();
-    }
-    await this.validateQuery(query);
+    const user: User = await this.validateQuery({
+      query: query,
+      user: req.user,
+      departmentId: departmentId,
+    });
 
-    const tags = this.splitParam(query.tags, ',');
-    const noticeQb = Notice.createQueryBuilder('notice')
-      .andWhere('notice.departmentId = :departmentId')
-      .setParameter('departmentId', departmentId);
-    if (query.pinned) {
-      noticeQb.andWhere('notice.isPinned = true');
+    const tags: string[] = this.splitParam(query.tags, ',');
+    const noticeQb: SelectQueryBuilder<Notice> = Notice.createQueryBuilder(
+      'notice',
+    );
+    this.appendDepartmentQb(noticeQb, departmentId, query.pinned);
+    if (this.isSearchQuery(query)) {
+      return await this.searchNotice(noticeQb, user, query, tags);
+    } else {
+      this.appendTagQb(noticeQb, tags);
+      return await this.makeResponse(noticeQb, user, query.limit, query.cursor);
     }
-
-    return this.searchNotice(user, query, noticeQb, tags);
   }
 
   async getFollowedNotice(
     req: UserRequest,
     query: NoticePaginationDto,
   ): Promise<NoticesResponseDto> {
-    const user = await User.findOne(req.user);
-    if (!user) {
-      throw new UnauthorizedException();
-    }
-    await this.validateQuery(query);
+    const user: User = await this.validateQuery({
+      query: query,
+      user: req.user,
+    });
 
-    const tags = await this.getFollowedTag(user);
+    const tags: number[] = await this.getFollowedTag(user);
     if (tags.length == 0) {
       return emptyResponse;
     }
-    const noticeQb = Notice.createQueryBuilder('notice');
-    this.appendTagQb(noticeQb, tags);
-
-    const response = await this.makeResponse(
-      noticeQb,
-      query.limit,
-      query.cursor,
+    const noticeQb: SelectQueryBuilder<Notice> = Notice.createQueryBuilder(
+      'notice',
     );
-    await this.attachIsScrapped(user, response.notices);
-    return response;
-  }
-
-  async searchFollowedNotice(
-    req: UserRequest,
-    query: SearchFollowedNoticeDto,
-  ): Promise<NoticesResponseDto> {
-    const user = await User.findOne(req.user);
-    if (!user) {
-      throw new UnauthorizedException();
+    if (this.isSearchQuery(query)) {
+      return await this.searchNotice(noticeQb, user, query, tags);
+    } else {
+      this.appendTagQb(noticeQb, tags);
+      return await this.makeResponse(noticeQb, user, query.limit, query.cursor);
     }
-    const tags = await this.getFollowedTag(user);
-    if (tags.length == 0) {
-      return emptyResponse;
-    }
-    const noticeQb = Notice.createQueryBuilder('notice');
-    return await this.searchNotice(user, query, noticeQb, tags);
   }
 
   async getScrappedNotice(
     req: UserRequest,
     query: NoticePaginationDto,
   ): Promise<NoticesResponseDto> {
-    const user = await User.findOne(req.user);
-    if (!user) {
-      throw new UnauthorizedException();
-    }
-    await this.validateQuery(query);
-    const userNotices = await UserNotice.find({
+    const user: User = await this.validateQuery({
+      query: query,
+      user: req.user,
+    });
+
+    const userNotices: UserNotice[] = await UserNotice.find({
       relations: ['notice'],
       where: { user: user, isScrapped: true },
     });
-    const noticeIds = userNotices.map((userNotice) => userNotice.notice.id);
-    const noticeQb = Notice.createQueryBuilder('notice').whereInIds(noticeIds);
-
-    const response = await this.makeResponse(
-      noticeQb,
-      query.limit,
-      query.cursor,
+    if (userNotices.length == 0) {
+      return emptyResponse;
+    }
+    const noticeIds: number[] = userNotices.map(
+      (userNotice) => userNotice.notice.id,
     );
-    await this.attachIsScrapped(user, response.notices);
-    return response;
+    const noticeQb: SelectQueryBuilder<Notice> = Notice.createQueryBuilder(
+      'notice',
+    ).whereInIds(noticeIds);
+    return await this.makeResponse(noticeQb, user, query.limit, query.cursor);
   }
 
   async searchNotice(
+    noticeQb: SelectQueryBuilder<Notice>,
     user: User,
     query: SearchFollowedNoticeDto | SearchNoticeInDeptDto,
-    noticeQb: SelectQueryBuilder<Notice>,
     tags: string[] | number[],
   ): Promise<NoticesResponseDto> {
-    await this.validateQuery(query);
-
     const selectedColumn: string =
       query.content && query.title
         ? 'CONCAT(notice.title, notice.content, " ")'
@@ -171,21 +130,15 @@ export class NoticeService {
         ? 'notice.title'
         : 'notice.content';
 
-    const keywords = this.splitParam(query.keywords, ' ');
+    const keywords: string[] = this.splitParam(query.keywords, ' ');
     this.appendTagQb(noticeQb, tags);
     this.appendKeywordQb(noticeQb, keywords, selectedColumn);
-
-    const response = await this.makeResponse(
-      noticeQb,
-      query.limit,
-      query.cursor,
-    );
-    await this.attachIsScrapped(user, response.notices);
-    return response;
+    return await this.makeResponse(noticeQb, user, query.limit, query.cursor);
   }
 
   async makeResponse(
     noticeQb: SelectQueryBuilder<Notice>,
+    user: User,
     limit: number,
     cursor: string,
   ): Promise<NoticesResponseDto> {
@@ -199,19 +152,23 @@ export class NoticeService {
       noticeQb.andWhere('notice.cursor < :cursor', { cursor: Number(cursor) });
     }
 
-    const noticesResponse = new NoticesResponseDto();
+    const noticesResponse: NoticesResponseDto = new NoticesResponseDto();
 
-    const notices = await noticeQb.getMany();
+    const notices: Notice[] = await noticeQb.getMany();
 
     noticesResponse.notices = notices.slice(0, limit);
 
     noticesResponse.next_cursor =
       notices.length > limit ? notices[limit - 1].cursor.toString() : '';
 
+    await this.attachIsScrapped(user, noticesResponse.notices);
     return noticesResponse;
   }
 
-  async validateQuery(query: NoticePaginationDto) {
+  async validateQuery(preQuery: PreQuery): Promise<User> {
+    const query: NoticePaginationDto = preQuery.query;
+    const departmentId: number | undefined = preQuery.departmentId;
+    const user: User = await this.getValidatedUser(preQuery.user);
     await validate(query, {
       whitelist: true,
       forbidNonWhitelisted: true,
@@ -233,13 +190,37 @@ export class NoticeService {
         );
       }
     }
+    if (departmentId) {
+      const department: Department | undefined = await Department.findOne(
+        departmentId,
+      );
+      if (!department) {
+        throw new BadRequestException(
+          `There is no department with the id ${departmentId}`,
+        );
+      }
+    }
+    return user;
+  }
+
+  appendDepartmentQb(
+    noticeQb: SelectQueryBuilder<Notice>,
+    departmentId: number,
+    pinned: boolean,
+  ): void {
+    noticeQb
+      .andWhere('notice.departmentId = :departmentId')
+      .setParameter('departmentId', departmentId);
+    if (pinned) {
+      noticeQb.andWhere('notice.isPinned = true');
+    }
   }
 
   appendKeywordQb(
     noticeQb: SelectQueryBuilder<Notice>,
     keywords: string[],
     selectedColumn: string,
-  ) {
+  ): void {
     noticeQb.andWhere(
       new Brackets((keywordQb) => {
         for (let i = 0; i < keywords.length; i++) {
@@ -253,7 +234,10 @@ export class NoticeService {
     );
   }
 
-  appendTagQb(noticeQb: SelectQueryBuilder<Notice>, tags: string[] | number[]) {
+  appendTagQb(
+    noticeQb: SelectQueryBuilder<Notice>,
+    tags: string[] | number[],
+  ): void {
     if (tags.length == 0) {
       noticeQb
         .leftJoinAndSelect('notice.noticeTags', 'noticeTag')
@@ -261,10 +245,11 @@ export class NoticeService {
       return;
     }
 
-    const tagQb = Notice.createQueryBuilder('notice')
+    const tagQb: SelectQueryBuilder<NoticeTag> = NoticeTag.createQueryBuilder(
+      'noticeTag',
+    )
       .select('noticeTag.noticeId')
-      .from(NoticeTag, 'noticeTag')
-      .innerJoin(Tag, 'tag', 'noticeTag.tagId = tag.id');
+      .innerJoin('noticeTag.tag', 'tag', 'noticeTag.tagId = tag.id');
 
     if (typeof tags[0] === 'string') {
       tagQb.where('tag.name IN (:...tags)');
@@ -283,16 +268,24 @@ export class NoticeService {
       .setParameter('tags', tags);
   }
 
+  async getValidatedUser(reqUser: User): Promise<User> {
+    const user: User | undefined = await User.findOne(reqUser);
+    if (!user) {
+      throw new UnauthorizedException();
+    }
+    return user;
+  }
+
   async getFollowedTag(user: User): Promise<number[]> {
-    const userTags = await UserTag.find({
+    const userTags: UserTag[] = await UserTag.find({
       relations: ['tag'],
       where: { user: user },
     });
     return userTags.map((userTag) => userTag.tag.id);
   }
 
-  async attachIsScrapped(user: User, notices: Notice[]) {
-    const userNotices = await UserNotice.find({
+  async attachIsScrapped(user: User, notices: Notice[]): Promise<void> {
+    const userNotices: UserNotice[] = await UserNotice.find({
       relations: ['notice'],
       where: { user: user, isScrapped: true },
     });
