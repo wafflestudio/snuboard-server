@@ -50,6 +50,13 @@ paths:
                         name: (국문) 2021년 1학기 정원외신청 매뉴얼_학생.pdf
                         link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%EA%B5%AD%EB%AC%B8%29%202021%EB%85%84%201%ED%95%99%EA%B8%B0%20%EC%A0%95%EC%9B%90%EC%99%B8%EC%8B%A0%EC%B2%AD%20%EB%A7%A4%EB%89%B4%EC%96%BC_%ED%95%99%EC%83%9D.pdf'
                     is_scrapped: false
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
         '401':
           description: Unauthorized
           content:
@@ -147,9 +154,43 @@ paths:
                             name: ' (학생공지) 2021-1학기 수업 운영 계획_컴퓨터공학부 0127.xlsx'
                             link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%ED%95%99%EC%83%9D%EA%B3%B5%EC%A7%80%29%202021-1%ED%95%99%EA%B8%B0%20%EC%88%98%EC%97%85%20%EC%9A%B4%EC%98%81%20%EA%B3%84%ED%9A%8D_%EC%BB%B4%ED%93%A8%ED%84%B0%EA%B3%B5%ED%95%99%EB%B6%80%200127.xlsx'
                         is_scrapped: false
-                    next_cursor: '123456'
+                    next_cursor: '1612518960002'
         '400':
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                  message:
+                    type: string
+                    minLength: 1
+                  error:
+                    type: string
+                    minLength: 1
+                required:
+                  - statusCode
+                  - message
+                  - error
+              examples:
+                example-1:
+                  value:
+                    statusCode: 400
+                    message: limit must be a positive number
+                    error: Bad Request
+                example-2:
+                  value:
+                    statusCode: 400
+                    message: invalid cursor format
+                    error: Bad Request
+                example-3:
+                  value:
+                    statusCode: 400
+                    message: There is no department with the id 3
+                    error: Bad Request
         '401':
           description: Unauthorized
           content:
@@ -161,13 +202,8 @@ paths:
                   value:
                     statusCode: 401
                     message: Unauthorized
-        '404':
-          description: Not Found
-      description: |-
+      description: |
         해당 과의 (모든/pin 되어있는/태그별) 공지사항 리턴
-
-
-        404 - 해당하는 Id를 가진 department가 없는 경우
       parameters:
         - schema:
             type: boolean
@@ -265,9 +301,33 @@ paths:
                             name: ' (학생공지) 2021-1학기 수업 운영 계획_컴퓨터공학부 0127.xlsx'
                             link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%ED%95%99%EC%83%9D%EA%B3%B5%EC%A7%80%29%202021-1%ED%95%99%EA%B8%B0%20%EC%88%98%EC%97%85%20%EC%9A%B4%EC%98%81%20%EA%B3%84%ED%9A%8D_%EC%BB%B4%ED%93%A8%ED%84%B0%EA%B3%B5%ED%95%99%EB%B6%80%200127.xlsx'
                         is_scrapped: false
-                    next_cursor: '123456'
+                    next_cursor: '1612518960002'
         '400':
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                  message:
+                    type: string
+                    minLength: 1
+                  error:
+                    type: string
+                    minLength: 1
+                required:
+                  - statusCode
+                  - message
+                  - error
+              examples:
+                example-1:
+                  value:
+                    statusCode: 400
+                    message: limit must be a positive number
+                    error: Bad Request
         '401':
           description: Unauthorized
           content:
@@ -368,9 +428,48 @@ paths:
                             name: ' (학생공지) 2021-1학기 수업 운영 계획_컴퓨터공학부 0127.xlsx'
                             link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%ED%95%99%EC%83%9D%EA%B3%B5%EC%A7%80%29%202021-1%ED%95%99%EA%B8%B0%20%EC%88%98%EC%97%85%20%EC%9A%B4%EC%98%81%20%EA%B3%84%ED%9A%8D_%EC%BB%B4%ED%93%A8%ED%84%B0%EA%B3%B5%ED%95%99%EB%B6%80%200127.xlsx'
                         is_scrapped: false
-                    next_cursor: '123456'
+                    next_cursor: '1612518960002'
         '400':
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                  message:
+                    type: string
+                    minLength: 1
+                  error:
+                    type: string
+                    minLength: 1
+                required:
+                  - statusCode
+                  - message
+                  - error
+              examples:
+                example-1:
+                  value:
+                    statusCode: 400
+                    message: limit must be a positive number
+                    error: Bad Request
+                example-2:
+                  value:
+                    statusCode: 400
+                    message: keywords must be a string
+                    error: Bad Request
+                example-3:
+                  value:
+                    statusCode: 400
+                    message: '''keywords'' should not be empty'
+                    error: Bad Request
+                example-4:
+                  value:
+                    statusCode: 400
+                    message: At least one of 'title' and 'content' should be true
+                    error: Bad Request
         '401':
           description: Unauthorized
           content:
@@ -387,7 +486,7 @@ paths:
         - schema:
             type: string
           in: query
-          name: keyword
+          name: keywords
           description: 검색할 키워드
           required: true
         - schema:
@@ -492,9 +591,33 @@ paths:
                             name: ' (학생공지) 2021-1학기 수업 운영 계획_컴퓨터공학부 0127.xlsx'
                             link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%ED%95%99%EC%83%9D%EA%B3%B5%EC%A7%80%29%202021-1%ED%95%99%EA%B8%B0%20%EC%88%98%EC%97%85%20%EC%9A%B4%EC%98%81%20%EA%B3%84%ED%9A%8D_%EC%BB%B4%ED%93%A8%ED%84%B0%EA%B3%B5%ED%95%99%EB%B6%80%200127.xlsx'
                         is_scrapped: false
-                    next_cursor: '123456'
+                    next_cursor: '1612518960002'
         '400':
           description: 'Bad Request, invlaid offset or limit'
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                  message:
+                    type: string
+                    minLength: 1
+                  error:
+                    type: string
+                    minLength: 1
+                required:
+                  - statusCode
+                  - message
+                  - error
+              examples:
+                example-1:
+                  value:
+                    statusCode: 400
+                    message: limit must be a positive number
+                    error: Bad Request
         '401':
           description: Unauthorized
           content:
@@ -678,7 +801,50 @@ paths:
                             name: ' (학생공지) 2021-1학기 수업 운영 계획_컴퓨터공학부 0127.xlsx'
                             link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%ED%95%99%EC%83%9D%EA%B3%B5%EC%A7%80%29%202021-1%ED%95%99%EA%B8%B0%20%EC%88%98%EC%97%85%20%EC%9A%B4%EC%98%81%20%EA%B3%84%ED%9A%8D_%EC%BB%B4%ED%93%A8%ED%84%B0%EA%B3%B5%ED%95%99%EB%B6%80%200127.xlsx'
                         is_scrapped: false
-                    next_cursor: '123456'
+                    next_cursor: '1612518960002'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                  message:
+                    type: string
+                    minLength: 1
+                  error:
+                    type: string
+                    minLength: 1
+                required:
+                  - statusCode
+                  - message
+                  - error
+              examples:
+                example-1:
+                  value:
+                    statusCode: 400
+                    message: limit must be a positive number
+                    error: Bad Request
+                example-2:
+                  value:
+                    statusCode: 400
+                    message: keywords must be a string
+                    error: Bad Request
+                example-3:
+                  value:
+                    statusCode: 400
+                    message: '''keywords'' should not be empty'
+                    error: Bad Request
+                example-4:
+                  value:
+                    statusCode: 400
+                    message: At least one of 'title' and 'content' should be true
+                    error: Bad Request
+        '401':
+          description: Unauthorized
       operationId: get-notices-department-department_id-search
       description: |-
         해당 학과 공지사항 중에 제목 또는 내용에 키워드를 포함한 공지사항들을 검색한다. 공백이 포함된 문자열을 받는 경우 공백을 기준으로 split한 단어들에 대해 OR 연산으로 검색을 진행한다.
@@ -701,7 +867,7 @@ paths:
         - schema:
             type: string
           in: query
-          name: keyword
+          name: keywords
           description: 키워드
           required: true
         - schema:
