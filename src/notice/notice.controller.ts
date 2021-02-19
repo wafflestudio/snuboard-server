@@ -1,8 +1,10 @@
 import {
   Controller,
+  Delete,
   Get,
   Param,
   ParseBoolPipe,
+  Post,
   Query,
   Req,
   UseGuards,
@@ -118,5 +120,21 @@ export class NoticeController {
   @Get(':id')
   getNotice(@Req() req: UserRequest, @Param('id') id: number): Promise<Notice> {
     return this.noticeService.getNotice(req, id);
+  }
+
+  @Post(':id/scrap')
+  createScrap(
+    @Req() req: UserRequest,
+    @Param('id') id: number,
+  ): Promise<Notice> {
+    return this.noticeService.createScrap(req, id);
+  }
+
+  @Delete(':id/scrap')
+  deleteScrap(
+    @Req() req: UserRequest,
+    @Param('id') id: number,
+  ): Promise<Notice> {
+    return this.noticeService.deleteScrap(req, id);
   }
 }
