@@ -3,9 +3,10 @@ import { NoticePaginationDto } from './noticePagination.dto';
 
 export class GetNoticeInDeptDto extends NoticePaginationDto {
   @IsBoolean()
-  pinned = false;
+  @IsOptional()
+  pinned: boolean = false;
 
   @IsString()
   @IsOptional()
-  tags = '';
+  tags: string = '';
 }

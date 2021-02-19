@@ -6,15 +6,18 @@ export class SearchNoticeInDeptDto extends NoticePaginationDto {
   keywords!: string;
 
   @IsBoolean()
-  title!: boolean;
+  @IsOptional()
+  title: boolean = false;
 
   @IsBoolean()
-  content!: boolean;
+  @IsOptional()
+  content: boolean = false;
 
   @IsBoolean()
-  pinned = false;
+  @IsOptional()
+  pinned: boolean = false;
 
   @IsString()
   @IsOptional()
-  tags = '';
+  tags: string = '';
 }
