@@ -1,5 +1,7 @@
 import {
   BadRequestException,
+  HttpException,
+  HttpStatus,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -14,7 +16,7 @@ import {
   UserTag,
 } from '../department/department.entity';
 import { Brackets, SelectQueryBuilder } from 'typeorm';
-import { PreQuery, UserRequest } from '../types/custom-type';
+import { PreNotice, PreQuery, UserRequest } from '../types/custom-type';
 import { NoticePaginationDto } from './dto/noticePagination.dto';
 import { SearchFollowedNoticeDto } from './dto/searchFollowedNotice.dto';
 import { SearchNoticeInDeptDto } from './dto/searchNoticeInDept.dto';
@@ -26,20 +28,7 @@ const emptyResponse: NoticesResponseDto = { notices: [], next_cursor: '' };
 @Injectable()
 export class NoticeService {
   async getNotice(req: UserRequest, id: number): Promise<Notice> {
-    const user: User = await this.getValidatedUser(req.user);
-
-    if (isNaN(id)) {
-      throw new BadRequestException('id should be a number');
-    }
-
-    const notice: Notice | undefined = await Notice.findOne(id, {
-      relations: ['department', 'files', 'noticeTags', 'noticeTags.tag'],
-    });
-
-    if (!notice) {
-      throw new NotFoundException(`There is no notice with the id ${id}`);
-    }
-
+    const { user, notice } = await this.validateNotice(req, id);
     await this.attachIsScrapped(user, [notice]);
     return notice;
   }
@@ -321,5 +310,68 @@ export class NoticeService {
       .split(separator)
       .map((param) => param.trim())
       .filter((param) => param);
+  }
+
+  async validateNotice(req: UserRequest, id: number): Promise<PreNotice> {
+    const user: User = await this.getValidatedUser(req.user);
+
+    if (isNaN(id)) {
+      throw new BadRequestException('id should be a number');
+    }
+
+    const notice: Notice | undefined = await Notice.findOne(id, {
+      relations: ['department', 'files', 'noticeTags', 'noticeTags.tag'],
+    });
+
+    if (!notice) {
+      throw new NotFoundException(`There is no notice with the id ${id}`);
+    }
+
+    const userNotice: UserNotice | undefined = await UserNotice.findOne({
+      user,
+      notice,
+    });
+
+    return {
+      user,
+      notice,
+      userNotice,
+    };
+  }
+
+  async createScrap(req: UserRequest, id: number): Promise<Notice> {
+    const preNotice: PreNotice = await this.validateNotice(req, id);
+    const { user, notice } = preNotice;
+    let { userNotice } = preNotice;
+
+    if (userNotice && userNotice.isScrapped) {
+      throw new BadRequestException('Already Scrapped notice');
+    }
+
+    if (userNotice) {
+      userNotice.isScrapped = true;
+    } else {
+      userNotice = UserNotice.create({
+        user,
+        notice,
+        isScrapped: true,
+      });
+    }
+    await UserNotice.save(userNotice);
+    await this.attachIsScrapped(user, [notice]);
+    return notice;
+  }
+
+  async deleteScrap(req: UserRequest, id: number): Promise<Notice> {
+    const { user, notice, userNotice } = await this.validateNotice(req, id);
+
+    if (!userNotice || !userNotice.isScrapped) {
+      throw new HttpException('Not scrapped notice', HttpStatus.NO_CONTENT);
+    }
+
+    userNotice.isScrapped = false;
+    await UserNotice.save(userNotice);
+    await this.attachIsScrapped(user, [notice]);
+    return notice;
   }
 }
