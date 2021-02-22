@@ -314,8 +314,6 @@ paths:
                 password:
                   type: string
                   minLength: 1
-                refresh_token:
-                  type: string
               required:
                 - grant_type
             examples:
@@ -327,7 +325,16 @@ paths:
               refresh_token authentication:
                 value:
                   grant_type: refresh_token
-                  refresh_token: '{example_token}'
+        description: |-
+          refresh_token 인증 방법을 이용할 시 
+
+          header에 refresh_token이 Authorization으로 제공되어야 합니다.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: 'Bearer [refresh_token]'
   /users/me/keyword:
     post:
       summary: Create user keyword
