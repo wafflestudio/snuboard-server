@@ -77,10 +77,8 @@ paths:
                   statusCode:
                     type: number
                   message:
-                    type: array
-                    items:
-                      required: []
-                      properties: {}
+                    type: string
+                    minLength: 1
                   error:
                     type: string
                     minLength: 1
@@ -92,9 +90,7 @@ paths:
                 Bad request:
                   value:
                     statusCode: 400
-                    message:
-                      - password must be a string
-                      - nickname must be a string
+                    message: Duplicate Username Error
                     error: Bad Request
         '401':
           description: |-
@@ -148,11 +144,11 @@ paths:
               examples:
                 post user example:
                   value:
-                    id: 1
-                    username: eldpswp99
-                    nickname: nickname
-                    access_token: access_token
-                    refresh_token: refresh_token
+                    id: 21
+                    username: mmmas
+                    nickname: mmmas
+                    access_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1tbWFzIiwiaWQiOjIxLCJpYXQiOjE2MTMyNzk1NjgsImV4cCI6MTYxMzI4MzE2OH0.f-3buI9Hku6j15r7MRFmTFrkopYEgeBBvkGxXMweMGw
+                    refresh_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1tbWFzIiwiaWQiOjIxLCJpYXQiOjE2MTMyNzk1Njh9.Sl-785nKn45ZKAZyX1r2IYrqc8OnctuOSCTaWryIeEc
                     keywords: []
             application/xml:
               schema:
@@ -190,10 +186,8 @@ paths:
                   statusCode:
                     type: number
                   message:
-                    type: array
-                    items:
-                      required: []
-                      properties: {}
+                    type: string
+                    minLength: 1
                   error:
                     type: string
                     minLength: 1
@@ -205,10 +199,7 @@ paths:
                 example-1:
                   value:
                     statusCode: 400
-                    message:
-                      - username must be a string
-                      - password must be a string
-                      - nickname must be a string
+                    message: Duplicate Username Error
                     error: Bad Request
       requestBody:
         content:
@@ -267,10 +258,8 @@ paths:
                   statusCode:
                     type: number
                   message:
-                    type: array
-                    items:
-                      required: []
-                      properties: {}
+                    type: string
+                    minLength: 1
                   error:
                     type: string
                     minLength: 1
@@ -282,9 +271,7 @@ paths:
                 example-1:
                   value:
                     statusCode: 400
-                    message:
-                      - 'only refresh_token should be given to the header, not username'
-                      - 'only refresh_token should be given to the header, not password'
+                    message: 'grant_type must be one of the following values: password, refresh_token'
                     error: Bad Request
         '401':
           description: Unauthorized
