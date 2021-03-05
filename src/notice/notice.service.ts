@@ -103,6 +103,7 @@ export class NoticeService {
     const noticeQb: SelectQueryBuilder<Notice> = Notice.createQueryBuilder(
       'notice',
     ).whereInIds(noticeIds);
+    this.appendTagQb(noticeQb, []);
     return await this.makeResponse(noticeQb, user, query.limit, query.cursor);
   }
 
