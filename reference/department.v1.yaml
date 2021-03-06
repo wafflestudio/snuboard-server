@@ -24,6 +24,7 @@ paths:
                   value:
                     - id: 1
                       name: 컴퓨터공학부
+                      college: 공과대학
                       tags:
                         - 입학
                         - 졸업
@@ -32,6 +33,7 @@ paths:
                         - 졸업
                     - id: 2
                       name: 기계공학부
+                      college: 공과대학
                       tags:
                         - 학부
                         - 대학원
@@ -75,6 +77,7 @@ paths:
                   value:
                     id: 1
                     name: 컴퓨터공학부
+                    college: 공과대학
                     tags:
                       - 입학
                       - 졸업
@@ -215,6 +218,7 @@ paths:
                   value:
                     id: 1
                     name: 컴퓨터공학부
+                    college: 공과대학
                     tags:
                       - 입학
                       - 졸업
@@ -288,6 +292,7 @@ components:
         example-1:
           id: 1
           name: 컴퓨터공학부
+          college: 공과대학
           tags:
             - 입학
             - 졸업
@@ -308,6 +313,8 @@ components:
           type: array
           items:
             type: string
+        college:
+          type: string
       required:
         - id
         - name
