@@ -18,6 +18,9 @@ export class Department extends BaseEntity {
   @Column()
   name!: string;
 
+  @Column()
+  college!: string;
+
   @OneToMany(() => Notice, (notice) => notice.department)
   notices!: Notice[];
 

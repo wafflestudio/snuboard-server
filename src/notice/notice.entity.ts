@@ -72,7 +72,11 @@ export class Notice extends BaseEntity {
   @Expose()
   get tags(): string[] {
     return this.noticeTags
-      ? this.noticeTags.map((noticeTag) => noticeTag.tag.name)
+      ? this.noticeTags
+          .sort((lhs, rhs) => {
+            return lhs.tag.id - rhs.tag.id;
+          })
+          .map((noticeTag) => noticeTag.tag.name)
       : [];
   }
 
