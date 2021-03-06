@@ -8,7 +8,7 @@ import {
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await initializeTestDB();
+  //await initializeTestDB();
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
