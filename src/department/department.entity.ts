@@ -5,6 +5,7 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  RelationId,
 } from 'typeorm';
 import { User } from '../user/user.entity';
 import { Notice } from '../notice/notice.entity';
@@ -86,4 +87,7 @@ export class NoticeTag extends BaseEntity {
     onDelete: 'CASCADE',
   })
   tag!: Tag;
+
+  @RelationId((noticeTag: NoticeTag) => noticeTag.notice)
+  noticeId!: number;
 }
