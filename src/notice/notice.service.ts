@@ -15,7 +15,7 @@ import {
   NoticeTag,
   UserTag,
 } from '../department/department.entity';
-import { Brackets, SelectQueryBuilder } from 'typeorm';
+import { Brackets, In, SelectQueryBuilder } from 'typeorm';
 import { PreNotice, PreQuery, UserRequest } from '../types/custom-type';
 import { NoticePaginationDto } from './dto/noticePagination.dto';
 import { SearchFollowedNoticeDto } from './dto/searchFollowedNotice.dto';
@@ -132,19 +132,31 @@ export class NoticeService {
     limit: number,
     cursor: string,
   ): Promise<NoticesResponseDto> {
-    noticeQb
-      .innerJoinAndSelect('notice.department', 'department')
-      .leftJoinAndSelect('notice.files', 'files')
-      .orderBy('notice.cursor', 'DESC')
-      .take(limit + 1);
+    noticeQb.orderBy('notice.cursor', 'DESC').take(limit + 1);
 
     if (cursor.length != 0) {
       noticeQb.andWhere('notice.cursor < :cursor', { cursor: Number(cursor) });
     }
 
+    noticeQb
+      .innerJoinAndSelect('notice.department', 'department')
+      .leftJoinAndSelect('notice.files', 'files');
+
     const noticesResponse: NoticesResponseDto = new NoticesResponseDto();
 
     const notices: Notice[] = await noticeQb.getMany();
+    const noticeTags: NoticeTag[] = await NoticeTag.find({
+      where: {
+        notice: In(notices.map((notice) => notice.id)),
+      },
+      relations: ['tag'],
+    });
+
+    notices.forEach((notice) => {
+      notice.noticeTags = noticeTags.filter((noticeTag) => {
+        return noticeTag.noticeId === notice.id;
+      });
+    });
 
     noticesResponse.notices = notices.slice(0, limit);
 
@@ -229,9 +241,6 @@ export class NoticeService {
     tags: string[] | number[],
   ): void {
     if (tags.length == 0) {
-      noticeQb
-        .leftJoinAndSelect('notice.noticeTags', 'noticeTag')
-        .leftJoinAndSelect('noticeTag.tag', 'tags');
       return;
     }
 
@@ -248,12 +257,6 @@ export class NoticeService {
     }
 
     noticeQb
-      .innerJoinAndSelect(
-        'notice.noticeTags',
-        'noticeTag',
-        'notice.id = noticeTag.noticeId',
-      )
-      .innerJoinAndSelect('noticeTag.tag', 'tag', 'noticeTag.tagId = tag.id')
       .andWhere('notice.id IN (' + tagQb.getQuery() + ')')
       .setParameter('tags', tags);
   }
