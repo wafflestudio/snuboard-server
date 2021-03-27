@@ -1,7 +1,20 @@
-version: 2.1
-orbs:
-  node: circleci/node@3.0.0
+version: 2
+
+jobs:
+  deploy:
+    docker:
+      - image: cimg/base:2020.01
+    steps:
+      - run:
+          name: Deploy Over SSH
+          command: |
+            ssh $SSH_USER@$SSH_HOST "sudo systemctl restart snuboard-server"
+
 workflows:
-  node-tests:
+  version: 2
+  deploy:
     jobs:
-      - node/test
+      - deploy:
+          filters:
+            branches:
+              only: main
