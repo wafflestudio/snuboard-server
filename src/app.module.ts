@@ -25,7 +25,7 @@ const ENV: string | undefined = process.env.NODE_ENV;
       envFilePath: [ENV === 'prod' ? '.env.prod' : '.env.dev', '.env.ci'],
     }),
     TypeOrmModule.forRoot({
-      type: 'mysql',
+      type: 'mariadb',
       host: process.env.DATABASE_HOST,
       port: +(process.env.DATABASE_PORT ?? 3306),
       username: process.env.DATABASE_USER,
