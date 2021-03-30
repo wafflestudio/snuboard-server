@@ -53,7 +53,27 @@ paths:
                     statusCode: 401
                     message: Unauthorized
       operationId: get-departments
-      description: 모든 과의 정보 리턴
+      description: |-
+        모든 과의 정보 리턴
+
+        가능한 단과대학의 종류는 다음과 같다.
+        ```
+        export const ENGINEERING = '공과대학';
+        export const HUMANITIES = '인문대학';
+        export const SOCIAL = '사회과학대학';
+        export const SCIENCE = '자연과학대학';
+        export const NURSING = '간호대학';
+        export const CBA = '경영대학';
+        export const CALS = '농업생명과학대학';
+        export const ART = '미술대학';
+        export const EDU = '사범대학';
+        export const CHE = '생활과학대학';
+        export const VET = '수의과대학';
+        export const PHARM = '약학대학';
+        export const MUSIC = '음악대학';
+        export const MEDICINE = '의과대학';
+        export const CLS = '자유전공학부';
+        ```
       parameters:
         - schema:
             type: string
