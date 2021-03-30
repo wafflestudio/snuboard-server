@@ -53,6 +53,8 @@ paths:
       operationId: get-departments
       description: |-
         모든 과의 정보 리턴
+
+        가능한 단과대학의 종류는 다음과 같다.
         ```
         export const ENGINEERING = '공과대학';
         export const HUMANITIES = '인문대학';
