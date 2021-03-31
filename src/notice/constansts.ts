@@ -108,3 +108,5 @@ export const FILES = [
       "2021학년도 1학기 컴퓨터공학부 개설 교과목 '정원 외 신청(구: 초안지)' 안내",
   },
 ];
+
+export const PREVIEW_LENGTH = 250;

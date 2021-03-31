@@ -20,9 +20,7 @@ export const noticeInit = async (): Promise<void> => {
           isPinned: noticeData.isPinned,
           link: noticeData.link,
         });
-        notice.cursor = notice.createdAt.getTime();
         await Notice.save(notice); // save notice to generate id
-        notice.cursor = notice.createdAt.getTime() + (notice.id % 1000);
         await Notice.save(notice);
 
         noticeData.noticeTags.map(async (tagName) => {

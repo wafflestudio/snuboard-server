@@ -22,7 +22,7 @@ const ENV: string | undefined = process.env.NODE_ENV;
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: [ENV === 'prod' ? '.env.prod' : '.env.dev', '.env.ci'],
+      envFilePath: [ENV === 'production' ? '.env.prod' : '.env.dev', '.env.ci'],
     }),
     TypeOrmModule.forRoot({
       type: 'mariadb',

@@ -7,6 +7,7 @@ import {
   Post,
   Query,
   Req,
+  SerializeOptions,
   UseGuards,
 } from '@nestjs/common';
 import { JwtAccessGuard } from '../auth/auth.guard';
@@ -24,6 +25,9 @@ import { plainToClass } from 'class-transformer';
 
 @UseGuards(JwtAccessGuard)
 @Controller('notices')
+@SerializeOptions({
+  excludePrefixes: ['content', 'files'],
+})
 export class NoticeController {
   constructor(private noticeService: NoticeService) {}
 
@@ -117,6 +121,7 @@ export class NoticeController {
     return this.noticeService.getScrappedNotice(req, query);
   }
 
+  @SerializeOptions({})
   @Get(':id')
   getNotice(@Req() req: UserRequest, @Param('id') id: number): Promise<Notice> {
     return this.noticeService.getNotice(req, id);

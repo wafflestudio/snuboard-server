@@ -115,10 +115,10 @@ export class NoticeService {
   ): Promise<NoticesResponseDto> {
     const selectedColumn: string =
       query.content && query.title
-        ? 'CONCAT(notice.title, notice.content, " ")'
+        ? 'CONCAT(notice.title, notice.contentText, " ")'
         : query.title
         ? 'notice.title'
-        : 'notice.content';
+        : 'notice.contentText';
 
     const keywords: string[] = this.splitParam(query.keywords, ' ');
     this.appendTagQb(noticeQb, tags);
@@ -132,10 +132,29 @@ export class NoticeService {
     limit: number,
     cursor: string,
   ): Promise<NoticesResponseDto> {
-    noticeQb.orderBy('notice.cursor', 'DESC').take(limit + 1);
+    noticeQb
+      .orderBy('notice.createdAt', 'DESC')
+      .addOrderBy('notice.id', 'DESC')
+      .take(limit + 1);
 
-    if (cursor.length != 0) {
-      noticeQb.andWhere('notice.cursor < :cursor', { cursor: Number(cursor) });
+    if (cursor.length != 0 && cursor.split('-').length === 2) {
+      const cursorInfo = cursor.split('-');
+      const cursorCreatedAt = new Date(+cursorInfo[0]);
+      const cursorId = +cursorInfo[1];
+
+      noticeQb.andWhere(
+        new Brackets((qb) => {
+          qb.where('notice.createdAt < :cursorCreatedAt', {
+            cursorCreatedAt,
+          }).orWhere(
+            new Brackets((qb) => {
+              qb.where('notice.createdAt = :cursorCreatedAt', {
+                cursorCreatedAt,
+              }).andWhere('notice.id < :cursorId', { cursorId });
+            }),
+          );
+        }),
+      );
     }
 
     noticeQb
@@ -160,8 +179,14 @@ export class NoticeService {
 
     noticesResponse.notices = notices.slice(0, limit);
 
-    noticesResponse.next_cursor =
-      notices.length > limit ? notices[limit - 1].cursor.toString() : '';
+    if (notices.length > limit) {
+      const lastNotice = notices[limit - 1];
+      noticesResponse.next_cursor = `${lastNotice.createdAt.getTime()}-${
+        lastNotice.id
+      }`;
+    } else {
+      noticesResponse.next_cursor = '';
+    }
 
     await this.attachIsScrapped(user, noticesResponse.notices);
     return noticesResponse;
@@ -179,7 +204,7 @@ export class NoticeService {
         throw exceptionFormatter(errors);
       }
     });
-    if (query.cursor.length > 0 && isNaN(Number(query.cursor))) {
+    if (query.cursor.length > 0 && query.cursor.split('-').length !== 2) {
       throw new BadRequestException('invalid cursor format');
     }
     if (this.isSearchQuery(query)) {

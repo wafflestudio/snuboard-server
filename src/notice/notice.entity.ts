@@ -2,6 +2,7 @@ import {
   BaseEntity,
   Column,
   Entity,
+  Index,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -9,8 +10,10 @@ import {
 import { User } from '../user/user.entity';
 import { Department, NoticeTag } from '../department/department.entity';
 import { Exclude, Expose } from 'class-transformer';
+import { PREVIEW_LENGTH } from './constansts';
 
 @Entity()
+@Index(['createdAt', 'id'], { unique: true })
 export class Notice extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
@@ -18,8 +21,13 @@ export class Notice extends BaseEntity {
   @Column()
   title!: string;
 
-  @Column({ length: 1000 })
-  preview!: string;
+  @Expose()
+  get preview(): string {
+    return this.contentText.substring(0, PREVIEW_LENGTH);
+  }
+
+  @Column({ type: 'mediumtext' })
+  contentText!: string;
 
   @Column({ type: 'mediumtext' })
   content!: string;
@@ -34,13 +42,6 @@ export class Notice extends BaseEntity {
 
   @Column({ length: 1000 })
   link!: string;
-
-  @Exclude()
-  @Column({
-    unique: true,
-    type: 'bigint',
-  })
-  cursor!: number;
 
   @Exclude()
   @ManyToOne(() => Department, (department) => department.notices, {
