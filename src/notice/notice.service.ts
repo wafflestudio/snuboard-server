@@ -204,7 +204,15 @@ export class NoticeService {
         throw exceptionFormatter(errors);
       }
     });
-    if (query.cursor.length > 0 && query.cursor.split('-').length !== 2) {
+
+    const cursorSplit = query.cursor.split('-');
+
+    if (
+      query.cursor.length > 0 &&
+      (cursorSplit.length !== 2 ||
+        Number.isNaN(+cursorSplit[0]) ||
+        Number.isNaN(+cursorSplit[1]))
+    ) {
       throw new BadRequestException('invalid cursor format');
     }
     if (this.isSearchQuery(query)) {
