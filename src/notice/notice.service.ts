@@ -137,7 +137,7 @@ export class NoticeService {
       .addOrderBy('notice.id', 'DESC')
       .take(limit + 1);
 
-    if (cursor.length != 0 && cursor.split('-').length === 2) {
+    if (cursor.length != 0) {
       const cursorInfo = cursor.split('-');
       const cursorCreatedAt = new Date(+cursorInfo[0]);
       const cursorId = +cursorInfo[1];
