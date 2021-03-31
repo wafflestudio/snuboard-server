@@ -13,7 +13,7 @@ import { Exclude, Expose } from 'class-transformer';
 import { PREVIEW_LENGTH } from './constansts';
 
 @Entity()
-@Index(['createdAt', 'id'], { unique: true })
+@Index(['createdAt', 'id'])
 export class Notice extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
