@@ -1,7 +1,5 @@
 import { BadRequestException, HttpStatus } from '@nestjs/common';
 import { ValidationError } from 'class-validator';
-import { departmentInit } from 'src/department/department.init';
-import { noticeInit } from 'src/notice/notice.init';
 
 export function exceptionFormatter(
   validationErrors: ValidationError[] = [],
@@ -17,9 +15,4 @@ export function exceptionFormatter(
     message,
     error: 'Bad Request',
   });
-}
-
-export async function initializeTestDB(): Promise<void> {
-  await departmentInit();
-  await noticeInit();
 }

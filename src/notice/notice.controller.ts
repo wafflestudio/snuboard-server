@@ -121,7 +121,7 @@ export class NoticeController {
     return this.noticeService.getScrappedNotice(req, query);
   }
 
-  @SerializeOptions({ excludePrefixes: ['preview'] })
+  @SerializeOptions({ excludePrefixes: ['preview', 'contentText'] })
   @Get(':id')
   getNotice(@Req() req: UserRequest, @Param('id') id: number): Promise<Notice> {
     return this.noticeService.getNotice(req, id);
