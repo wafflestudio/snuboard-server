@@ -31,25 +31,18 @@ paths:
               examples:
                 example-1:
                   value:
-                    id: 1
-                    department_name: 컴퓨터공학부
-                    department_id: 5
-                    title: '2021학년도 1학기 컴퓨터공학부 개설 교과목 ''정원 외 신청(구: 초안지)'' 안내'
-                    preview: 2021학년도 1학기부터 서울대학교 운영방법 변경에 따라 ...
-                    content: '<p>&#xD559;&#xC0DD; &#xC5EC;&#xB7EC;&#xBD84;&#xAED8;,</p>'
-                    created_at: '2021-02-02T15:38:22Z'
-                    tags:
-                      - 수업
-                      - 학사 (학부)
-                      - 학사 (대학원)
-                      - 제2전공/전과
+                    id: 27695
+                    title: 캠퍼스 라이선스 소프트웨어 및 폰트파일 사용시 주의사항 안내
+                    content: "<p>서울대학교 캠퍼스 라이선스 소프트웨어 이용 활성화와<strong> 불법 소프트웨어 사용 근절</strong>을 안내 드립니다.</p>\n\n<p>또한 최근 <strong>폰트파일 저작권</strong> 침해 이슈에 따라 폰트파일 사용시 주의사항을 안내드리오니,\_<br>\n<br>\n소프트웨어 및 폰트파일 사용에 유의하시기 바랍니다.<br>\n\_</p>\n\n<p align=\"left\" class=\"MsoNoSpacing\" style=\"margin: 0cm 0cm 0pt; text-align: left;\"><span style=\"font-family: 돋움, dotum;\"><span style=\"font-family: 돋움, dotum;\"><span style=\"color: rgb(255, 0, 0); font-family: 돋움, dotum; font-size: 10pt;\"><span style=\"color: rgb(255, 0, 0); font-size: 10pt;\"><span style=\"color: rgb(0, 158, 37);\"><span style=\"color: rgb(0, 158, 37);\"><span style=\"color: rgb(0, 158, 37);\"><span style=\"color: rgb(0, 158, 37);\"><span style=\"color: rgb(0, 158, 37);\"><span style=\"color: rgb(0, 158, 37);\"><font color=\"#61b977\"><span style=\"font-size: 12pt;\"><span style=\"line-height: 107%; font-family: 굴림; font-size: 9pt;\"><span><span lang=\"EN-US\"><strong><font color=\"#320251\" face=\"Gulim\"><a href=\"http://board.snu.ac.kr/apiboard/140/10000000155075?boardId=140\" target=\"_blank\">※ 서울대학교 캠퍼스 라이선스 소프트웨어 이용안내 및 불법 소프트웨어 사용 금지 공지 보기 (클릭)</a></font></strong></span></span></span></span></font></span></span></span></span></span></span></span></span></span></span><br>\n<br>\n붙임 1. <a href=\"/sites/me.snu.ac.kr/files/board/notice/%28%EB%B6%99%EC%9E%841%292015%EB%85%84%20%EC%BA%A0%ED%8D%BC%EC%8A%A4%20%EB%9D%BC%EC%9D%B4%EC%84%A0%EC%8A%A4%20%EC%86%8C%ED%94%84%ED%8A%B8%EC%9B%A8%EC%96%B4%20%EC%9D%B4%EC%9A%A9%EC%95%88%EB%82%B4.hwp\" target=\"_blank\">2015년 캠퍼스 라이선스 소프트웨어 이용안내 1부</a><br>\n\_\_\_\_\_\_ 2. <a href=\"/sites/me.snu.ac.kr/files/board/notice/%28%EB%B6%99%EC%9E%842%29%EB%B6%88%EB%B2%95%20%EC%86%8C%ED%94%84%ED%8A%B8%EC%9B%A8%EC%96%B4%20%EC%82%AC%EC%9A%A9%20%EA%B8%88%EC%A7%80%20%EC%95%88%EB%82%B4.hwp\" target=\"_blank\">불법 소프트웨어 사용 금지 안내 1부</a><br>\n\_\_ \_\_\_ 3. <a href=\"/sites/me.snu.ac.kr/files/board/notice/%28%EB%B6%99%EC%9E%843%29%ED%8F%B0%ED%8A%B8%ED%8C%8C%EC%9D%BC%20%EC%82%AC%EC%9A%A9%EC%8B%9C%20%EC%A3%BC%EC%9D%98%EC%82%AC%ED%95%AD%20%EC%95%88%EB%82%B4.hwp\" target=\"_blank\">폰트파일 사용시 주의사항 안내 1부</a><br>\n\_\_\_\_\_ \_4. <a href=\"/sites/me.snu.ac.kr/files/board/notice/%28%EB%B6%99%EC%9E%844%29%EB%AC%B8%ED%99%94%EC%B2%B4%EC%9C%A1%EA%B4%80%EA%B4%91%EB%B6%80%20%ED%8F%B0%ED%8A%B8%ED%8C%8C%EC%9D%BC%20%EC%A0%80%EC%9E%91%EA%B6%8C%20%EC%95%88%EB%82%B4.pdf\" target=\"_blank\">문화체육관광부 폰트파일 저작권 안내 1부</a><br>\n\_\_ \_\_\_ 5. <a href=\"/sites/me.snu.ac.kr/files/board/notice/%28%EB%B6%99%EC%9E%845%29%ED%95%9C%EC%BB%B4%EC%98%A4%ED%94%BC%EC%8A%A4%20%EB%B2%88%EB%93%A4%EC%84%9C%EC%B2%B4%20%EB%9D%BC%EC%9D%B4%EC%84%A0%EC%8A%A4%20%EC%95%88%EB%82%B4%EC%9D%98%20%EA%B1%B4.pdf\" target=\"_blank\">한컴오피스 번들서체 라이선스 안내의 건 1부</a><br>\n\_\_ \_\_\_\_6. <a href=\"/sites/me.snu.ac.kr/files/board/notice/%EC%84%9C%EC%9A%B8%EB%8C%80%ED%95%99%EA%B5%90%20%EC%86%8C%ED%94%84%ED%8A%B8%EC%9B%A8%EC%96%B4%20%EA%B4%80%EB%A6%AC%20%EC%A7%80%EC%B9%A8.pdf\" target=\"_blank\">서울대학교 소프트웨어 관리 지침 1부</a>.\_ 끝.</p>\n\t\t"
+                    created_at: '2017-12-05T08:39:58.000Z'
                     is_pinned: true
-                    link: 'https://cse.snu.ac.kr/node/47377'
-                    files:
-                      - id: 0
-                        name: (국문) 2021년 1학기 정원외신청 매뉴얼_학생.pdf
-                        link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%EA%B5%AD%EB%AC%B8%29%202021%EB%85%84%201%ED%95%99%EA%B8%B0%20%EC%A0%95%EC%9B%90%EC%99%B8%EC%8B%A0%EC%B2%AD%20%EB%A7%A4%EB%89%B4%EC%96%BC_%ED%95%99%EC%83%9D.pdf'
+                    link: 'https://me.snu.ac.kr/ko/board/freeboard/view/10984'
+                    files: []
                     is_scrapped: false
+                    department_id: 71
+                    department_name: 기계공학부
+                    tags:
+                      - 자유게시판
         '400':
           description: Bad Request
           content:
@@ -105,7 +98,7 @@ paths:
                     uniqueItems: true
                     minItems: 1
                     items:
-                      $ref: '#/components/schemas/Notice'
+                      $ref: '#/components/schemas/NoticeSummary'
                   next_cursor:
                     type: string
                     minLength: 1
@@ -116,45 +109,19 @@ paths:
                 example-1:
                   value:
                     notices:
-                      - id: 1
-                        department_name: 컴퓨터공학부
-                        department_id: 5
-                        title: '2021학년도 1학기 컴퓨터공학부 개설 교과목 ''정원 외 신청(구: 초안지)'' 안내'
-                        preview: 2021학년도 1학기부터 서울대학교 운영방법 변경에 따라 ...
-                        content: '<p>&#xD559;&#xC0DD; &#xC5EC;&#xB7EC;&#xBD84;&#xAED8;,</p>'
-                        created_at: '2021-02-02T15:38:22Z'
-                        tags:
-                          - 수업
-                          - 학사 (학부)
-                          - 학사 (대학원)
-                          - 제2전공/전과
-                        is_pinned: true
-                        link: 'https://cse.snu.ac.kr/node/47377'
-                        files:
-                          - id: 0
-                            name: (국문) 2021년 1학기 정원외신청 매뉴얼_학생.pdf
-                            link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%EA%B5%AD%EB%AC%B8%29%202021%EB%85%84%201%ED%95%99%EA%B8%B0%20%EC%A0%95%EC%9B%90%EC%99%B8%EC%8B%A0%EC%B2%AD%20%EB%A7%A4%EB%89%B4%EC%96%BC_%ED%95%99%EC%83%9D.pdf'
+                      - id: 27923
+                        title: 2021학년도 일주학술문화재단 해외박사 장학생 선발 안내
+                        created_at: '2021-04-01T06:48:00.000Z'
+                        is_pinned: false
+                        link: 'https://cse.snu.ac.kr/node/49005'
                         is_scrapped: false
-                      - id: 2
+                        preview: "안녕하세요,\n\n동 재단에서 2021학년도 해외박사 장학생을 아래와 같이 선발함을 알려드립니다.\n\_\n\n가. 지원기간: 2021.4.6(화) 9:00 ~ 4.23(금) 18:00\n\n나. 지원방법: 홈페이지 (www.iljufoundation.org) 온라인 접수\n\n다. 지원자격 ※ 아래 3가지 요건 모두 충족 시\n\n1) 해외 우수 대학원 박사과정(PhD)의 입학허가 받은 신입생(재학생 지원 불가)\n\n2) 대한민국 국적 보유자 (국외 영주권자 또는 "
+                        department_id: 65
                         department_name: 컴퓨터공학부
-                        department_id: 5
-                        title: 2021학년도 1학기 컴퓨터공학부 개설 교과목별 수업 운영 계획 안내
-                        preview: 2021학년도 1학기 컴퓨터공학부 개설 교과목의 「교과목별 수업 운영 계획」을 붙임과 같이 안내합니다.
-                        content: '<p>&#xD559;&#xC0DD; &#xC5EC;&#xB7EC;&#xBD84;&#xAED8;,</p>'
-                        created_at: '2021-01-28T14:15:22Z'
                         tags:
-                          - 수업
-                          - 학사 (학부)
                           - 학사 (대학원)
-                          - 제2전공/전과
-                        is_pinned: true
-                        link: 'https://cse.snu.ac.kr/node/47349'
-                        files:
-                          - id: 1
-                            name: ' (학생공지) 2021-1학기 수업 운영 계획_컴퓨터공학부 0127.xlsx'
-                            link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%ED%95%99%EC%83%9D%EA%B3%B5%EC%A7%80%29%202021-1%ED%95%99%EA%B8%B0%20%EC%88%98%EC%97%85%20%EC%9A%B4%EC%98%81%20%EA%B3%84%ED%9A%8D_%EC%BB%B4%ED%93%A8%ED%84%B0%EA%B3%B5%ED%95%99%EB%B6%80%200127.xlsx'
-                        is_scrapped: false
-                    next_cursor: '1612518960002'
+                          - 장학
+                    next_cursor: 1617080460000-28105
         '400':
           description: Bad Request
           content:
@@ -252,7 +219,7 @@ paths:
                     uniqueItems: true
                     minItems: 1
                     items:
-                      $ref: '#/components/schemas/Notice'
+                      $ref: '#/components/schemas/NoticeSummary'
                   next_cursor:
                     type: string
                     minLength: 1
@@ -263,45 +230,19 @@ paths:
                 example-1:
                   value:
                     notices:
-                      - id: 1
-                        department_name: 컴퓨터공학부
-                        department_id: 5
-                        title: '2021학년도 1학기 컴퓨터공학부 개설 교과목 ''정원 외 신청(구: 초안지)'' 안내'
-                        preview: 2021학년도 1학기부터 서울대학교 운영방법 변경에 따라 ...
-                        content: '<p>&#xD559;&#xC0DD; &#xC5EC;&#xB7EC;&#xBD84;&#xAED8;,</p>'
-                        created_at: '2021-02-02T15:38:22Z'
-                        tags:
-                          - 수업
-                          - 학사 (학부)
-                          - 학사 (대학원)
-                          - 제2전공/전과
-                        is_pinned: true
-                        link: 'https://cse.snu.ac.kr/node/47377'
-                        files:
-                          - id: 0
-                            name: (국문) 2021년 1학기 정원외신청 매뉴얼_학생.pdf
-                            link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%EA%B5%AD%EB%AC%B8%29%202021%EB%85%84%201%ED%95%99%EA%B8%B0%20%EC%A0%95%EC%9B%90%EC%99%B8%EC%8B%A0%EC%B2%AD%20%EB%A7%A4%EB%89%B4%EC%96%BC_%ED%95%99%EC%83%9D.pdf'
+                      - id: 27923
+                        title: 2021학년도 일주학술문화재단 해외박사 장학생 선발 안내
+                        created_at: '2021-04-01T06:48:00.000Z'
+                        is_pinned: false
+                        link: 'https://cse.snu.ac.kr/node/49005'
                         is_scrapped: false
-                      - id: 2
+                        preview: "안녕하세요,\n\n동 재단에서 2021학년도 해외박사 장학생을 아래와 같이 선발함을 알려드립니다.\n\_\n\n가. 지원기간: 2021.4.6(화) 9:00 ~ 4.23(금) 18:00\n\n나. 지원방법: 홈페이지 (www.iljufoundation.org) 온라인 접수\n\n다. 지원자격 ※ 아래 3가지 요건 모두 충족 시\n\n1) 해외 우수 대학원 박사과정(PhD)의 입학허가 받은 신입생(재학생 지원 불가)\n\n2) 대한민국 국적 보유자 (국외 영주권자 또는 "
+                        department_id: 65
                         department_name: 컴퓨터공학부
-                        department_id: 5
-                        title: 2021학년도 1학기 컴퓨터공학부 개설 교과목별 수업 운영 계획 안내
-                        preview: 2021학년도 1학기 컴퓨터공학부 개설 교과목의 「교과목별 수업 운영 계획」을 붙임과 같이 안내합니다.
-                        content: '<p>&#xD559;&#xC0DD; &#xC5EC;&#xB7EC;&#xBD84;&#xAED8;,</p>'
-                        created_at: '2021-01-28T14:15:22Z'
                         tags:
-                          - 수업
-                          - 학사 (학부)
                           - 학사 (대학원)
-                          - 제2전공/전과
-                        is_pinned: true
-                        link: 'https://cse.snu.ac.kr/node/47349'
-                        files:
-                          - id: 1
-                            name: ' (학생공지) 2021-1학기 수업 운영 계획_컴퓨터공학부 0127.xlsx'
-                            link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%ED%95%99%EC%83%9D%EA%B3%B5%EC%A7%80%29%202021-1%ED%95%99%EA%B8%B0%20%EC%88%98%EC%97%85%20%EC%9A%B4%EC%98%81%20%EA%B3%84%ED%9A%8D_%EC%BB%B4%ED%93%A8%ED%84%B0%EA%B3%B5%ED%95%99%EB%B6%80%200127.xlsx'
-                        is_scrapped: false
-                    next_cursor: '1612518960002'
+                          - 장학
+                    next_cursor: 1617080460000-28105
         '400':
           description: Bad Request
           content:
@@ -380,7 +321,7 @@ paths:
                     type: array
                     uniqueItems: true
                     items:
-                      $ref: '#/components/schemas/Notice'
+                      $ref: '#/components/schemas/NoticeSummary'
                   next_cursor:
                     type: string
                     minLength: 1
@@ -390,45 +331,19 @@ paths:
                 example-1:
                   value:
                     notices:
-                      - id: 1
-                        department_name: 컴퓨터공학부
-                        department_id: 5
-                        title: '2021학년도 1학기 컴퓨터공학부 개설 교과목 ''정원 외 신청(구: 초안지)'' 안내'
-                        preview: 2021학년도 1학기부터 서울대학교 운영방법 변경에 따라 ...
-                        content: '<p>&#xD559;&#xC0DD; &#xC5EC;&#xB7EC;&#xBD84;&#xAED8;,</p>'
-                        created_at: '2021-02-02T15:38:22Z'
-                        tags:
-                          - 수업
-                          - 학사 (학부)
-                          - 학사 (대학원)
-                          - 제2전공/전과
-                        is_pinned: true
-                        link: 'https://cse.snu.ac.kr/node/47377'
-                        files:
-                          - id: 0
-                            name: (국문) 2021년 1학기 정원외신청 매뉴얼_학생.pdf
-                            link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%EA%B5%AD%EB%AC%B8%29%202021%EB%85%84%201%ED%95%99%EA%B8%B0%20%EC%A0%95%EC%9B%90%EC%99%B8%EC%8B%A0%EC%B2%AD%20%EB%A7%A4%EB%89%B4%EC%96%BC_%ED%95%99%EC%83%9D.pdf'
+                      - id: 27923
+                        title: 2021학년도 일주학술문화재단 해외박사 장학생 선발 안내
+                        created_at: '2021-04-01T06:48:00.000Z'
+                        is_pinned: false
+                        link: 'https://cse.snu.ac.kr/node/49005'
                         is_scrapped: false
-                      - id: 2
+                        preview: "안녕하세요,\n\n동 재단에서 2021학년도 해외박사 장학생을 아래와 같이 선발함을 알려드립니다.\n\_\n\n가. 지원기간: 2021.4.6(화) 9:00 ~ 4.23(금) 18:00\n\n나. 지원방법: 홈페이지 (www.iljufoundation.org) 온라인 접수\n\n다. 지원자격 ※ 아래 3가지 요건 모두 충족 시\n\n1) 해외 우수 대학원 박사과정(PhD)의 입학허가 받은 신입생(재학생 지원 불가)\n\n2) 대한민국 국적 보유자 (국외 영주권자 또는 "
+                        department_id: 65
                         department_name: 컴퓨터공학부
-                        department_id: 5
-                        title: 2021학년도 1학기 컴퓨터공학부 개설 교과목별 수업 운영 계획 안내
-                        preview: 2021학년도 1학기 컴퓨터공학부 개설 교과목의 「교과목별 수업 운영 계획」을 붙임과 같이 안내합니다.
-                        content: '<p>&#xD559;&#xC0DD; &#xC5EC;&#xB7EC;&#xBD84;&#xAED8;,</p>'
-                        created_at: '2021-01-28T14:15:22Z'
                         tags:
-                          - 수업
-                          - 학사 (학부)
                           - 학사 (대학원)
-                          - 제2전공/전과
-                        is_pinned: true
-                        link: 'https://cse.snu.ac.kr/node/47349'
-                        files:
-                          - id: 1
-                            name: ' (학생공지) 2021-1학기 수업 운영 계획_컴퓨터공학부 0127.xlsx'
-                            link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%ED%95%99%EC%83%9D%EA%B3%B5%EC%A7%80%29%202021-1%ED%95%99%EA%B8%B0%20%EC%88%98%EC%97%85%20%EC%9A%B4%EC%98%81%20%EA%B3%84%ED%9A%8D_%EC%BB%B4%ED%93%A8%ED%84%B0%EA%B3%B5%ED%95%99%EB%B6%80%200127.xlsx'
-                        is_scrapped: false
-                    next_cursor: '1612518960002'
+                          - 장학
+                    next_cursor: 1617080460000-28105
         '400':
           description: Bad Request
           content:
@@ -542,7 +457,7 @@ paths:
                     uniqueItems: true
                     minItems: 1
                     items:
-                      $ref: '#/components/schemas/Notice'
+                      $ref: '#/components/schemas/NoticeSummary'
                   next_cursor:
                     type: string
                     minLength: 1
@@ -553,45 +468,19 @@ paths:
                 example-1:
                   value:
                     notices:
-                      - id: 1
-                        department_name: 컴퓨터공학부
-                        department_id: 5
-                        title: '2021학년도 1학기 컴퓨터공학부 개설 교과목 ''정원 외 신청(구: 초안지)'' 안내'
-                        preview: 2021학년도 1학기부터 서울대학교 운영방법 변경에 따라 ...
-                        content: '<p>&#xD559;&#xC0DD; &#xC5EC;&#xB7EC;&#xBD84;&#xAED8;,</p>'
-                        created_at: '2021-02-02T15:38:22Z'
-                        tags:
-                          - 수업
-                          - 학사 (학부)
-                          - 학사 (대학원)
-                          - 제2전공/전과
-                        is_pinned: true
-                        link: 'https://cse.snu.ac.kr/node/47377'
-                        files:
-                          - id: 0
-                            name: (국문) 2021년 1학기 정원외신청 매뉴얼_학생.pdf
-                            link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%EA%B5%AD%EB%AC%B8%29%202021%EB%85%84%201%ED%95%99%EA%B8%B0%20%EC%A0%95%EC%9B%90%EC%99%B8%EC%8B%A0%EC%B2%AD%20%EB%A7%A4%EB%89%B4%EC%96%BC_%ED%95%99%EC%83%9D.pdf'
+                      - id: 27923
+                        title: 2021학년도 일주학술문화재단 해외박사 장학생 선발 안내
+                        created_at: '2021-04-01T06:48:00.000Z'
+                        is_pinned: false
+                        link: 'https://cse.snu.ac.kr/node/49005'
                         is_scrapped: false
-                      - id: 2
+                        preview: "안녕하세요,\n\n동 재단에서 2021학년도 해외박사 장학생을 아래와 같이 선발함을 알려드립니다.\n\_\n\n가. 지원기간: 2021.4.6(화) 9:00 ~ 4.23(금) 18:00\n\n나. 지원방법: 홈페이지 (www.iljufoundation.org) 온라인 접수\n\n다. 지원자격 ※ 아래 3가지 요건 모두 충족 시\n\n1) 해외 우수 대학원 박사과정(PhD)의 입학허가 받은 신입생(재학생 지원 불가)\n\n2) 대한민국 국적 보유자 (국외 영주권자 또는 "
+                        department_id: 65
                         department_name: 컴퓨터공학부
-                        department_id: 5
-                        title: 2021학년도 1학기 컴퓨터공학부 개설 교과목별 수업 운영 계획 안내
-                        preview: 2021학년도 1학기 컴퓨터공학부 개설 교과목의 「교과목별 수업 운영 계획」을 붙임과 같이 안내합니다.
-                        content: '<p>&#xD559;&#xC0DD; &#xC5EC;&#xB7EC;&#xBD84;&#xAED8;,</p>'
-                        created_at: '2021-01-28T14:15:22Z'
                         tags:
-                          - 수업
-                          - 학사 (학부)
                           - 학사 (대학원)
-                          - 제2전공/전과
-                        is_pinned: true
-                        link: 'https://cse.snu.ac.kr/node/47349'
-                        files:
-                          - id: 1
-                            name: ' (학생공지) 2021-1학기 수업 운영 계획_컴퓨터공학부 0127.xlsx'
-                            link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%ED%95%99%EC%83%9D%EA%B3%B5%EC%A7%80%29%202021-1%ED%95%99%EA%B8%B0%20%EC%88%98%EC%97%85%20%EC%9A%B4%EC%98%81%20%EA%B3%84%ED%9A%8D_%EC%BB%B4%ED%93%A8%ED%84%B0%EA%B3%B5%ED%95%99%EB%B6%80%200127.xlsx'
-                        is_scrapped: false
-                    next_cursor: '1612518960002'
+                          - 장학
+                    next_cursor: 1617080460000-28105
         '400':
           description: 'Bad Request, invlaid offset or limit'
           content:
@@ -778,7 +667,7 @@ paths:
                     type: array
                     uniqueItems: true
                     items:
-                      $ref: '#/components/schemas/Notice'
+                      $ref: '#/components/schemas/NoticeSummary'
                   next_cursor:
                     type: string
                     minLength: 1
@@ -789,45 +678,19 @@ paths:
                 example-1:
                   value:
                     notices:
-                      - id: 1
-                        department_name: 컴퓨터공학부
-                        department_id: 5
-                        title: '2021학년도 1학기 컴퓨터공학부 개설 교과목 ''정원 외 신청(구: 초안지)'' 안내'
-                        preview: 2021학년도 1학기부터 서울대학교 운영방법 변경에 따라 ...
-                        content: '<p>&#xD559;&#xC0DD; &#xC5EC;&#xB7EC;&#xBD84;&#xAED8;,</p>'
-                        created_at: '2021-02-02T15:38:22Z'
-                        tags:
-                          - 수업
-                          - 학사 (학부)
-                          - 학사 (대학원)
-                          - 제2전공/전과
-                        is_pinned: true
-                        link: 'https://cse.snu.ac.kr/node/47377'
-                        files:
-                          - id: 0
-                            name: (국문) 2021년 1학기 정원외신청 매뉴얼_학생.pdf
-                            link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%EA%B5%AD%EB%AC%B8%29%202021%EB%85%84%201%ED%95%99%EA%B8%B0%20%EC%A0%95%EC%9B%90%EC%99%B8%EC%8B%A0%EC%B2%AD%20%EB%A7%A4%EB%89%B4%EC%96%BC_%ED%95%99%EC%83%9D.pdf'
+                      - id: 27923
+                        title: 2021학년도 일주학술문화재단 해외박사 장학생 선발 안내
+                        created_at: '2021-04-01T06:48:00.000Z'
+                        is_pinned: false
+                        link: 'https://cse.snu.ac.kr/node/49005'
                         is_scrapped: false
-                      - id: 2
+                        preview: "안녕하세요,\n\n동 재단에서 2021학년도 해외박사 장학생을 아래와 같이 선발함을 알려드립니다.\n\_\n\n가. 지원기간: 2021.4.6(화) 9:00 ~ 4.23(금) 18:00\n\n나. 지원방법: 홈페이지 (www.iljufoundation.org) 온라인 접수\n\n다. 지원자격 ※ 아래 3가지 요건 모두 충족 시\n\n1) 해외 우수 대학원 박사과정(PhD)의 입학허가 받은 신입생(재학생 지원 불가)\n\n2) 대한민국 국적 보유자 (국외 영주권자 또는 "
+                        department_id: 65
                         department_name: 컴퓨터공학부
-                        department_id: 5
-                        title: 2021학년도 1학기 컴퓨터공학부 개설 교과목별 수업 운영 계획 안내
-                        preview: 2021학년도 1학기 컴퓨터공학부 개설 교과목의 「교과목별 수업 운영 계획」을 붙임과 같이 안내합니다.
-                        content: '<p>&#xD559;&#xC0DD; &#xC5EC;&#xB7EC;&#xBD84;&#xAED8;,</p>'
-                        created_at: '2021-01-28T14:15:22Z'
                         tags:
-                          - 수업
-                          - 학사 (학부)
                           - 학사 (대학원)
-                          - 제2전공/전과
-                        is_pinned: true
-                        link: 'https://cse.snu.ac.kr/node/47349'
-                        files:
-                          - id: 1
-                            name: ' (학생공지) 2021-1학기 수업 운영 계획_컴퓨터공학부 0127.xlsx'
-                            link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%ED%95%99%EC%83%9D%EA%B3%B5%EC%A7%80%29%202021-1%ED%95%99%EA%B8%B0%20%EC%88%98%EC%97%85%20%EC%9A%B4%EC%98%81%20%EA%B3%84%ED%9A%8D_%EC%BB%B4%ED%93%A8%ED%84%B0%EA%B3%B5%ED%95%99%EB%B6%80%200127.xlsx'
-                        is_scrapped: false
-                    next_cursor: '1612518960002'
+                          - 장학
+                    next_cursor: 1617080460000-28105
         '400':
           description: Bad Request
           content:
@@ -930,83 +793,68 @@ paths:
 components:
   schemas:
     Notice:
-      title: Notice
+      description: ''
       type: object
-      description: 공지사항
-      x-examples:
-        example-1:
-          id: 1
-          department_name: 컴퓨터공학부
-          department_id: 5
-          title: '2021학년도 1학기 컴퓨터공학부 개설 교과목 ''정원 외 신청(구: 초안지)'' 안내'
-          preview: 2021학년도 1학기부터 서울대학교 운영방법 변경에 따라 ...
-          content: '<p>&#xD559;&#xC0DD; &#xC5EC;&#xB7EC;&#xBD84;&#xAED8;,</p>'
-          created_at: '2021-02-02T15:38:22Z'
-          tags:
-            - 수업
-            - 학사 (학부)
-            - 학사 (대학원)
-            - 제2전공/전과
-          is_pinned: true
-          link: 'https://cse.snu.ac.kr/node/47377'
-          files:
-            - id: 0
-              name: (국문) 2021년 1학기 정원외신청 매뉴얼_학생.pdf
-              link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%EA%B5%AD%EB%AC%B8%29%202021%EB%85%84%201%ED%95%99%EA%B8%B0%20%EC%A0%95%EC%9B%90%EC%99%B8%EC%8B%A0%EC%B2%AD%20%EB%A7%A4%EB%89%B4%EC%96%BC_%ED%95%99%EC%83%9D.pdf'
-          is_scrapped: false
-        example-2:
-          id: 2
-          department_name: 컴퓨터공학부
-          department_id: 5
-          title: 2021학년도 1학기 컴퓨터공학부 개설 교과목별 수업 운영 계획 안내
-          preview: 2021학년도 1학기 컴퓨터공학부 개설 교과목의 「교과목별 수업 운영 계획」을 붙임과 같이 안내합니다.
-          content: '<p>&#xD559;&#xC0DD; &#xC5EC;&#xB7EC;&#xBD84;&#xAED8;,</p>'
-          created_at: '2021-01-28T14:15:22Z'
-          tags:
-            - 수업
-            - 학사 (학부)
-            - 학사 (대학원)
-            - 제2전공/전과
-          is_pinned: true
-          link: 'https://cse.snu.ac.kr/node/47349'
-          files:
-            - id: 1
-              name: ' (학생공지) 2021-1학기 수업 운영 계획_컴퓨터공학부 0127.xlsx'
-              link: 'https://cse.snu.ac.kr/sites/default/files/node--notice/%28%ED%95%99%EC%83%9D%EA%B3%B5%EC%A7%80%29%202021-1%ED%95%99%EA%B8%B0%20%EC%88%98%EC%97%85%20%EC%9A%B4%EC%98%81%20%EA%B3%84%ED%9A%8D_%EC%BB%B4%ED%93%A8%ED%84%B0%EA%B3%B5%ED%95%99%EB%B6%80%200127.xlsx'
-          is_scrapped: false
       properties:
         id:
-          type: integer
-          description: ''
-        department_name:
-          type: string
-        department_id:
-          type: integer
+          type: number
         title:
           type: string
-        preview:
-          type: string
+          minLength: 1
         content:
           type: string
-          description: ''
+          minLength: 1
         created_at:
           type: string
-          description: ''
-          format: date-time
-        tags:
-          type: array
-          items:
-            type: string
+          minLength: 1
         is_pinned:
           type: boolean
         link:
           type: string
+          minLength: 1
         files:
           type: array
           items:
-            $ref: '#/components/schemas/File'
+            required: []
+            properties: {}
         is_scrapped:
           type: boolean
+        department_id:
+          type: number
+        department_name:
+          type: string
+          minLength: 1
+        tags:
+          type: array
+          items:
+            required: []
+            properties: {}
+      required:
+        - id
+        - title
+        - content
+        - created_at
+        - is_pinned
+        - link
+        - files
+        - is_scrapped
+        - department_id
+        - department_name
+        - tags
+      x-examples:
+        example-1:
+          id: 27695
+          title: 캠퍼스 라이선스 소프트웨어 및 폰트파일 사용시 주의사항 안내
+          content: "<p>서울대학교 캠퍼스 라이선스 소프트웨어 이용 활성화와<strong> 불법 소프트웨어 사용 근절</strong>을 안내 드립니다.</p>\n\n<p>또한 최근 <strong>폰트파일 저작권</strong> 침해 이슈에 따라 폰트파일 사용시 주의사항을 안내드리오니,\_<br>\n<br>\n소프트웨어 및 폰트파일 사용에 유의하시기 바랍니다.<br>\n\_</p>\n\n<p align=\"left\" class=\"MsoNoSpacing\" style=\"margin: 0cm 0cm 0pt; text-align: left;\"><span style=\"font-family: 돋움, dotum;\"><span style=\"font-family: 돋움, dotum;\"><span style=\"color: rgb(255, 0, 0); font-family: 돋움, dotum; font-size: 10pt;\"><span style=\"color: rgb(255, 0, 0); font-size: 10pt;\"><span style=\"color: rgb(0, 158, 37);\"><span style=\"color: rgb(0, 158, 37);\"><span style=\"color: rgb(0, 158, 37);\"><span style=\"color: rgb(0, 158, 37);\"><span style=\"color: rgb(0, 158, 37);\"><span style=\"color: rgb(0, 158, 37);\"><font color=\"#61b977\"><span style=\"font-size: 12pt;\"><span style=\"line-height: 107%; font-family: 굴림; font-size: 9pt;\"><span><span lang=\"EN-US\"><strong><font color=\"#320251\" face=\"Gulim\"><a href=\"http://board.snu.ac.kr/apiboard/140/10000000155075?boardId=140\" target=\"_blank\">※ 서울대학교 캠퍼스 라이선스 소프트웨어 이용안내 및 불법 소프트웨어 사용 금지 공지 보기 (클릭)</a></font></strong></span></span></span></span></font></span></span></span></span></span></span></span></span></span></span><br>\n<br>\n붙임 1. <a href=\"/sites/me.snu.ac.kr/files/board/notice/%28%EB%B6%99%EC%9E%841%292015%EB%85%84%20%EC%BA%A0%ED%8D%BC%EC%8A%A4%20%EB%9D%BC%EC%9D%B4%EC%84%A0%EC%8A%A4%20%EC%86%8C%ED%94%84%ED%8A%B8%EC%9B%A8%EC%96%B4%20%EC%9D%B4%EC%9A%A9%EC%95%88%EB%82%B4.hwp\" target=\"_blank\">2015년 캠퍼스 라이선스 소프트웨어 이용안내 1부</a><br>\n\_\_\_\_\_\_ 2. <a href=\"/sites/me.snu.ac.kr/files/board/notice/%28%EB%B6%99%EC%9E%842%29%EB%B6%88%EB%B2%95%20%EC%86%8C%ED%94%84%ED%8A%B8%EC%9B%A8%EC%96%B4%20%EC%82%AC%EC%9A%A9%20%EA%B8%88%EC%A7%80%20%EC%95%88%EB%82%B4.hwp\" target=\"_blank\">불법 소프트웨어 사용 금지 안내 1부</a><br>\n\_\_ \_\_\_ 3. <a href=\"/sites/me.snu.ac.kr/files/board/notice/%28%EB%B6%99%EC%9E%843%29%ED%8F%B0%ED%8A%B8%ED%8C%8C%EC%9D%BC%20%EC%82%AC%EC%9A%A9%EC%8B%9C%20%EC%A3%BC%EC%9D%98%EC%82%AC%ED%95%AD%20%EC%95%88%EB%82%B4.hwp\" target=\"_blank\">폰트파일 사용시 주의사항 안내 1부</a><br>\n\_\_\_\_\_ \_4. <a href=\"/sites/me.snu.ac.kr/files/board/notice/%28%EB%B6%99%EC%9E%844%29%EB%AC%B8%ED%99%94%EC%B2%B4%EC%9C%A1%EA%B4%80%EA%B4%91%EB%B6%80%20%ED%8F%B0%ED%8A%B8%ED%8C%8C%EC%9D%BC%20%EC%A0%80%EC%9E%91%EA%B6%8C%20%EC%95%88%EB%82%B4.pdf\" target=\"_blank\">문화체육관광부 폰트파일 저작권 안내 1부</a><br>\n\_\_ \_\_\_ 5. <a href=\"/sites/me.snu.ac.kr/files/board/notice/%28%EB%B6%99%EC%9E%845%29%ED%95%9C%EC%BB%B4%EC%98%A4%ED%94%BC%EC%8A%A4%20%EB%B2%88%EB%93%A4%EC%84%9C%EC%B2%B4%20%EB%9D%BC%EC%9D%B4%EC%84%A0%EC%8A%A4%20%EC%95%88%EB%82%B4%EC%9D%98%20%EA%B1%B4.pdf\" target=\"_blank\">한컴오피스 번들서체 라이선스 안내의 건 1부</a><br>\n\_\_ \_\_\_\_6. <a href=\"/sites/me.snu.ac.kr/files/board/notice/%EC%84%9C%EC%9A%B8%EB%8C%80%ED%95%99%EA%B5%90%20%EC%86%8C%ED%94%84%ED%8A%B8%EC%9B%A8%EC%96%B4%20%EA%B4%80%EB%A6%AC%20%EC%A7%80%EC%B9%A8.pdf\" target=\"_blank\">서울대학교 소프트웨어 관리 지침 1부</a>.\_ 끝.</p>\n\t\t"
+          created_at: '2017-12-05T08:39:58.000Z'
+          is_pinned: true
+          link: 'https://me.snu.ac.kr/ko/board/freeboard/view/10984'
+          files: []
+          is_scrapped: false
+          department_id: 71
+          department_name: 기계공학부
+          tags:
+            - 자유게시판
     File:
       title: File
       type: object
@@ -1023,3 +871,61 @@ components:
           type: string
         link:
           type: string
+    NoticeSummary:
+      description: ''
+      type: object
+      properties:
+        id:
+          type: number
+        title:
+          type: string
+          minLength: 1
+        created_at:
+          type: string
+          minLength: 1
+        is_pinned:
+          type: boolean
+        link:
+          type: string
+          minLength: 1
+        is_scrapped:
+          type: boolean
+        preview:
+          type: string
+          minLength: 1
+        department_id:
+          type: number
+        department_name:
+          type: string
+          minLength: 1
+        tags:
+          type: array
+          items:
+            required: []
+            properties: {}
+      required:
+        - id
+        - title
+        - created_at
+        - is_pinned
+        - link
+        - is_scrapped
+        - preview
+        - department_id
+        - department_name
+        - tags
+      x-examples:
+        example-1:
+          id: 27923
+          title: 2021학년도 일주학술문화재단 해외박사 장학생 선발 안내
+          created_at: '2021-04-01T06:48:00.000Z'
+          is_pinned: false
+          link: 'https://cse.snu.ac.kr/node/49005'
+          is_scrapped: false
+          preview: "안녕하세요,\n\n동 재단에서 2021학년도 해외박사 장학생을 아래와 같이 선발함을 알려드립니다.\n\_\n\n가. 지원기간: 2021.4.6(화) 9:00 ~ 4.23(금) 18:00\n\n나. 지원방법: 홈페이지 (www.iljufoundation.org) 온라인 접수\n\n다. 지원자격 ※ 아래 3가지 요건 모두 충족 시\n\n1) 해외 우수 대학원 박사과정(PhD)의 입학허가 받은 신입생(재학생 지원 불가)\n\n2) 대한민국 국적 보유자 (국외 영주권자 또는 "
+          department_id: 65
+          department_name: 컴퓨터공학부
+          tags:
+            - 학사 (대학원)
+            - 장학
+      title: ''
