@@ -8,13 +8,31 @@ jobs:
       - run:
           name: Deploy Over SSH
           command: |
-            ssh $SSH_USER@$SSH_HOST "sudo systemctl restart snuboard-server"
+            # refer to https://medium.com/@Sayadi/how-to-ssh-to-an-aws-ec2-instance-running-linux-from-a-circleci-build-fffa45003715#id_token=eyJhbGciOiJSUzI1NiIsImtpZCI6IjEzZThkNDVhNDNjYjIyNDIxNTRjN2Y0ZGFmYWMyOTMzZmVhMjAzNzQiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJuYmYiOjE2MTY5NDgxMDQsImF1ZCI6IjIxNjI5NjAzNTgzNC1rMWs2cWUwNjBzMnRwMmEyamFtNGxqZGNtczAwc3R0Zy5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsInN1YiI6IjEwMjE0MjA3NzI3Njg0MzE5NzI5MCIsImVtYWlsIjoibnJnMTM5MkBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXpwIjoiMjE2Mjk2MDM1ODM0LWsxazZxZTA2MHMydHAyYTJqYW00bGpkY21zMDBzdHRnLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwibmFtZSI6Iuuwleuqhe2biCIsInBpY3R1cmUiOiJodHRwczovL2xoNC5nb29nbGV1c2VyY29udGVudC5jb20vLWF0dWlKdUdOUkhFL0FBQUFBQUFBQUFJL0FBQUFBQUFBQUFBL0FNWnV1Y2xqT0N2TlhKdWlob2tEcUstcmktaFJiR21IQ0Evczk2LWMvcGhvdG8uanBnIiwiZ2l2ZW5fbmFtZSI6Iuuqhe2biCIsImZhbWlseV9uYW1lIjoi67CVIiwiaWF0IjoxNjE2OTQ4NDA0LCJleHAiOjE2MTY5NTIwMDQsImp0aSI6IjI2Y2JiYTNmNzVlODZlYmI5ZTUxYjY3ZmFjY2YzYWM0NTg5MzNlZjgifQ.AzgD7JC0nmiQYQapojSDjSRW_-Rw-Ag7wXsqyyQA3BveDXlXGV74jVEoGVFP5lAGjgOAt4pAD5j_d0exB37DyzoVbHjXAqULU-kbVwBTyDMrnDr7gFuk4dYrdUBZbZ3OxryWIlpmylHXfESgtSbPMZTXTWh0aKrAL-EaILvE_AsQIxEAbrnISo3d_PXqwiIj0eeIGuy2U0uXpJGl94rh2hNi3ZYgc9ATHrsnXGTFbMo_Kd_gnxeHyub63_rxwePro4WFnCljQilt2azoLxieQJQ8PBT1g-IaKiagf0pfx4tbMPz0TNXScP1BMid64QjvzJd1MVYuMwc-qA4Oly_Adw
+            # 1 - Install AWS CLI
+            curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
+            unzip awscli-bundle.zip
+            ./awscli-bundle/install -b ~/bin/aws
+
+            # 2 - Get the public IP of the current CircleCI runner
+            PUBLIC_IP=$(curl ipinfo.io/ip)
+            
+            # 5 - Add ingress rule to the sg
+            ~/bin/aws ec2 authorize-security-group-ingress --region $AWS_REGION --group-id $SG_ID --protocol tcp --port 22 --cidr $PUBLIC_IP/32
+
+            # 6 - Give ingress rule time to propagate
+            sleep 5
+
+            # 7 - SSH to ec2
+            ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST "sudo systemctl restart snuboard-server"
+
+            # 8 - Remove ingress rule
+            ~/bin/aws ec2 revoke-security-group-ingress --region $AWS_REGION --group-id $SG_ID --protocol tcp --port 22 --cidr $PUBLIC_IP/32
+
+
 
 workflows:
   version: 2
   deploy:
     jobs:
-      - deploy:
-          filters:
-            branches:
-              only: main 
+      - deploy
