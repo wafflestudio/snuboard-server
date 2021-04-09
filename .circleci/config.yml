@@ -3,7 +3,7 @@ version: 2
 jobs:
   deploy:
     docker:
-      - image: cimg/base:2020.01
+      - image: circleci/node:14
     steps:
       - run:
           name: Deploy Over SSH
