@@ -3,12 +3,33 @@ version: 2
 jobs:
   deploy:
     docker:
-      - image: cimg/base:2020.01
+      - image: circleci/node:14
     steps:
       - run:
           name: Deploy Over SSH
           command: |
-            ssh $SSH_USER@$SSH_HOST "sudo systemctl restart snuboard-server"
+            # refer to https://medium.com/@Sayadi/how-to-ssh-to-an-aws-ec2-instance-running-linux-from-a-circleci-build-fffa45003715
+            # 1 - Install AWS CLI
+            curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
+            unzip awscli-bundle.zip
+            ./awscli-bundle/install -b ~/bin/aws
+
+            # 2 - Get the public IP of the current CircleCI runner
+            PUBLIC_IP=$(curl ipinfo.io/ip)
+            
+            # 5 - Add ingress rule to the sg
+            ~/bin/aws ec2 authorize-security-group-ingress --region $AWS_REGION --group-id $SG_ID --protocol tcp --port 22 --cidr $PUBLIC_IP/32
+
+            # 6 - Give ingress rule time to propagate
+            sleep 5
+
+            # 7 - SSH to ec2
+            ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST "sudo systemctl restart snuboard-server"
+
+            # 8 - Remove ingress rule
+            ~/bin/aws ec2 revoke-security-group-ingress --region $AWS_REGION --group-id $SG_ID --protocol tcp --port 22 --cidr $PUBLIC_IP/32
+
+
 
 workflows:
   version: 2
@@ -17,4 +38,4 @@ workflows:
       - deploy:
           filters:
             branches:
-              only: main 
+              only: main
