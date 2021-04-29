@@ -28,7 +28,7 @@ import { plainToClass } from 'class-transformer';
 @SerializeOptions({
   excludePrefixes: ['content', 'files'],
 })
-export class NoticeController {
+export class NoticeSummaryController {
   constructor(private noticeService: NoticeService) {}
 
   @Get('department/:departmentId/search')
@@ -120,8 +120,14 @@ export class NoticeController {
     );
     return this.noticeService.getScrappedNotice(req, query);
   }
+}
 
-  @SerializeOptions({ excludePrefixes: ['preview', 'contentText'] })
+@UseGuards(JwtAccessGuard)
+@Controller('notices')
+@SerializeOptions({ excludePrefixes: ['contentText'] })
+export class NoticeDetailController {
+  constructor(private noticeService: NoticeService) {}
+
   @Get(':id')
   getNotice(@Req() req: UserRequest, @Param('id') id: number): Promise<Notice> {
     return this.noticeService.getNotice(req, id);
