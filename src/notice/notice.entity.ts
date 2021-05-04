@@ -40,6 +40,7 @@ export class Notice extends BaseEntity {
   @Column({ default: false })
   isPinned!: boolean;
 
+  // Index link(255) applied by migration
   @Column({ length: 1000 })
   link!: string;
 
@@ -93,6 +94,7 @@ export class File extends BaseEntity {
   @Column()
   name!: string;
 
+  // Index link(255) applied by migration
   @Column({ length: 1000 })
   link!: string;
 
