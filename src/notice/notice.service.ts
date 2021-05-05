@@ -115,7 +115,7 @@ export class NoticeService {
   ): Promise<NoticesResponseDto> {
     const selectedColumn: string =
       query.content && query.title
-        ? 'CONCAT(notice.title, notice.contentText, " ")'
+        ? 'CONCAT(notice.title, notice.contentText)'
         : query.title
         ? 'notice.title'
         : 'notice.contentText';
@@ -132,11 +132,6 @@ export class NoticeService {
     limit: number,
     cursor: string,
   ): Promise<NoticesResponseDto> {
-    noticeQb
-      .orderBy('notice.createdAt', 'DESC')
-      .addOrderBy('notice.id', 'DESC')
-      .take(limit + 1);
-
     if (cursor.length != 0) {
       const cursorInfo = cursor.split('-');
       const cursorCreatedAt = new Date(+cursorInfo[0]);
@@ -156,13 +151,14 @@ export class NoticeService {
         }),
       );
     }
-
     noticeQb
       .innerJoinAndSelect('notice.department', 'department')
-      .leftJoinAndSelect('notice.files', 'files');
+      .leftJoinAndSelect('notice.files', 'files')
+      .orderBy('notice.createdAt', 'DESC')
+      .addOrderBy('notice.id', 'DESC')
+      .take(limit + 1);
 
     const noticesResponse: NoticesResponseDto = new NoticesResponseDto();
-
     const notices: Notice[] = await noticeQb.getMany();
     const noticeTags: NoticeTag[] = await NoticeTag.find({
       where: {
@@ -256,17 +252,11 @@ export class NoticeService {
     keywords: string[],
     selectedColumn: string,
   ): void {
-    noticeQb.andWhere(
-      new Brackets((keywordQb) => {
-        for (let i = 0; i < keywords.length; i++) {
-          if (i == 0) {
-            keywordQb.where(selectedColumn + ' like "%' + keywords[i] + '%"');
-          } else {
-            keywordQb.orWhere(selectedColumn + ' like "%' + keywords[i] + '%"');
-          }
-        }
-      }),
-    );
+    keywords.forEach((keyword, index) => {
+      noticeQb
+        .andWhere(selectedColumn + ` like :keyword${index}`)
+        .setParameter(`keyword${index}`, `%${keyword}%`);
+    });
   }
 
   appendTagQb(
@@ -320,11 +310,7 @@ export class NoticeService {
     });
 
     notices.map((notice) => {
-      if (scrappedNotices.includes(notice.id)) {
-        notice.isScrapped = true;
-      } else {
-        notice.isScrapped = false;
-      }
+      notice.isScrapped = scrappedNotices.includes(notice.id);
       return notice;
     });
   }
