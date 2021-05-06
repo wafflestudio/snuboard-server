@@ -153,7 +153,6 @@ export class NoticeService {
     }
     noticeQb
       .innerJoinAndSelect('notice.department', 'department')
-      .leftJoinAndSelect('notice.files', 'files')
       .orderBy('notice.createdAt', 'DESC')
       .addOrderBy('notice.id', 'DESC')
       .take(limit + 1);
