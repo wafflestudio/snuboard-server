@@ -42,7 +42,7 @@ const ormConfig: ConnectionOptions = {
     UserKeyword,
   ],
   //need to be set false when production
-  synchronize: false,
+  synchronize: ENV === 'ci',
   migrations: ['dist/migration/*.js'],
   migrationsRun: true,
   cli: {
