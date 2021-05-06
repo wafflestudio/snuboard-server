@@ -431,7 +431,7 @@ paths:
           required: true
           description: pagination/ 가져오는 notice 수
       description: |
-        유저가 팔로우하는 태그에 해당하는 공지사항 중에 제목 또는 내용에 키워드를 포함한 공지사항들을 검색한다. 공백이 포함된 문자열을 받는 경우 공백을 기준으로 split한 단어들에 대해 OR 연산으로 검색을 진행한다.
+        유저가 팔로우하는 태그에 해당하는 공지사항 중에 제목 또는 내용에 키워드를 포함한 공지사항들을 검색한다. 공백이 포함된 문자열을 받는 경우 공백을 기준으로 split한 단어들에 대해 AND 연산으로 검색을 진행한다.
 
         title과 content가 모두 true이면 제목 및 내용 검색으로 동작(두개의 결과를 OR)
         title과 content 둘 중 하나는 true여야한다.
@@ -736,7 +736,7 @@ paths:
           description: Unauthorized
       operationId: get-notices-department-department_id-search
       description: |-
-        해당 학과 공지사항 중에 제목 또는 내용에 키워드를 포함한 공지사항들을 검색한다. 공백이 포함된 문자열을 받는 경우 공백을 기준으로 split한 단어들에 대해 OR 연산으로 검색을 진행한다.
+        해당 학과 공지사항 중에 제목 또는 내용에 키워드를 포함한 공지사항들을 검색한다. 공백이 포함된 문자열을 받는 경우 공백을 기준으로 split한 단어들에 대해 AND 연산으로 검색을 진행한다.
 
         title과 content가 모두 true이면 제목 및 내용 검색으로 동작(두개의 결과를 OR)
         title과 content 둘 중 하나는 true여야한다
