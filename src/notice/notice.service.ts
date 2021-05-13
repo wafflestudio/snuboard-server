@@ -13,10 +13,16 @@ import { NoticesResponseDto } from './dto/noticesResponse.dto';
 import {
   Department,
   NoticeTag,
+  Tag,
   UserTag,
 } from '../department/department.entity';
 import { Brackets, In, SelectQueryBuilder } from 'typeorm';
-import { PreNotice, PreQuery, UserRequest } from '../types/custom-type';
+import {
+  PreNotice,
+  PreQuery,
+  UserDepartment,
+  UserRequest,
+} from '../types/custom-type';
 import { NoticePaginationDto } from './dto/noticePagination.dto';
 import { SearchFollowedNoticeDto } from './dto/searchFollowedNotice.dto';
 import { SearchNoticeInDeptDto } from './dto/searchNoticeInDept.dto';
@@ -38,13 +44,21 @@ export class NoticeService {
     departmentId: number,
     query: GetNoticeInDeptDto | SearchNoticeInDeptDto,
   ): Promise<NoticesResponseDto> {
-    const user: User = await this.validateQuery({
+    const { user, department } = await this.validateQuery({
       query: query,
       user: req.user,
       departmentId: departmentId,
     });
 
-    const tags: string[] = this.splitParam(query.tags, ',');
+    if (department === undefined)
+      throw new BadRequestException(
+        `There is no department with the id ${departmentId}`,
+      );
+    const tags: number[] = await this.getTagIdsFromName(
+      this.splitParam(query.tags, ','),
+      department,
+    );
+
     const noticeQb: SelectQueryBuilder<Notice> = Notice.createQueryBuilder(
       'notice',
     );
@@ -52,7 +66,7 @@ export class NoticeService {
     if (this.isSearchQuery(query)) {
       return await this.searchNotice(noticeQb, user, query, tags);
     } else {
-      this.appendTagQb(noticeQb, tags);
+      await this.appendTagQb(noticeQb, tags);
       return await this.makeResponse(noticeQb, user, query.limit, query.cursor);
     }
   }
@@ -61,7 +75,7 @@ export class NoticeService {
     req: UserRequest,
     query: NoticePaginationDto,
   ): Promise<NoticesResponseDto> {
-    const user: User = await this.validateQuery({
+    const { user } = await this.validateQuery({
       query: query,
       user: req.user,
     });
@@ -76,7 +90,7 @@ export class NoticeService {
     if (this.isSearchQuery(query)) {
       return await this.searchNotice(noticeQb, user, query, tags);
     } else {
-      this.appendTagQb(noticeQb, tags);
+      await this.appendTagQb(noticeQb, tags);
       return await this.makeResponse(noticeQb, user, query.limit, query.cursor);
     }
   }
@@ -85,7 +99,7 @@ export class NoticeService {
     req: UserRequest,
     query: NoticePaginationDto,
   ): Promise<NoticesResponseDto> {
-    const user: User = await this.validateQuery({
+    const { user } = await this.validateQuery({
       query: query,
       user: req.user,
     });
@@ -103,7 +117,7 @@ export class NoticeService {
     const noticeQb: SelectQueryBuilder<Notice> = Notice.createQueryBuilder(
       'notice',
     ).whereInIds(noticeIds);
-    this.appendTagQb(noticeQb, []);
+    await this.appendTagQb(noticeQb, []);
     return await this.makeResponse(noticeQb, user, query.limit, query.cursor);
   }
 
@@ -111,7 +125,7 @@ export class NoticeService {
     noticeQb: SelectQueryBuilder<Notice>,
     user: User,
     query: SearchFollowedNoticeDto | SearchNoticeInDeptDto,
-    tags: string[] | number[],
+    tags: number[],
   ): Promise<NoticesResponseDto> {
     const selectedColumn: string =
       query.content && query.title
@@ -187,7 +201,7 @@ export class NoticeService {
     return noticesResponse;
   }
 
-  async validateQuery(preQuery: PreQuery): Promise<User> {
+  async validateQuery(preQuery: PreQuery): Promise<UserDepartment> {
     const query: NoticePaginationDto = preQuery.query;
     const departmentId: number | undefined = preQuery.departmentId;
     const user: User = await this.getValidatedUser(preQuery.user);
@@ -229,8 +243,9 @@ export class NoticeService {
           `There is no department with the id ${departmentId}`,
         );
       }
+      return { user, department };
     }
-    return user;
+    return { user, department: undefined };
   }
 
   appendDepartmentQb(
@@ -258,10 +273,10 @@ export class NoticeService {
     });
   }
 
-  appendTagQb(
+  async appendTagQb(
     noticeQb: SelectQueryBuilder<Notice>,
-    tags: string[] | number[],
-  ): void {
+    tags: number[],
+  ): Promise<void> {
     if (tags.length == 0) {
       return;
     }
@@ -272,14 +287,14 @@ export class NoticeService {
       .select('noticeTag.noticeId')
       .innerJoin('noticeTag.tag', 'tag', 'noticeTag.tagId = tag.id');
 
-    if (typeof tags[0] === 'string') {
-      tagQb.where('tag.name IN (:...tags)');
-    } else {
-      tagQb.where('tag.id IN (:...tags)');
-    }
+    tagQb.where('tag.id IN (:...tags)');
 
     noticeQb
-      .andWhere('notice.id IN (' + tagQb.getQuery() + ')')
+      .innerJoin(
+        `(${tagQb.getQuery()})`,
+        'noticeTag',
+        `noticeTag.noticeId=notice.id`,
+      )
       .setParameter('tags', tags);
   }
 
@@ -297,6 +312,22 @@ export class NoticeService {
       where: { user: user },
     });
     return userTags.map((userTag) => userTag.tag.id);
+  }
+
+  async getTagIdsFromName(
+    tagNames: string[],
+    department: Department,
+  ): Promise<number[]> {
+    return (
+      (
+        await Tag.find({
+          where: {
+            name: In(tagNames),
+            department,
+          },
+        })
+      )?.map((tag) => tag.id) ?? []
+    );
   }
 
   async attachIsScrapped(user: User, notices: Notice[]): Promise<void> {

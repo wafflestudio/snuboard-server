@@ -31,3 +31,8 @@ export interface PreNotice {
   notice: Notice;
   userNotice?: UserNotice;
 }
+
+export interface UserDepartment {
+  user: User;
+  department?: Department;
+}
