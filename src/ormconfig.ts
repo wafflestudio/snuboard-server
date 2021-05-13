@@ -44,7 +44,7 @@ const ormConfig: ConnectionOptions = {
   //need to be set false when production
   synchronize: false,
   migrations: ['dist/migration/*.js'],
-  migrationsRun: false,
+  migrationsRun: true,
   cli: {
     migrationsDir: 'src/migration',
   },
