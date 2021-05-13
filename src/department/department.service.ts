@@ -20,14 +20,33 @@ export class DepartmentService {
       relations: ['tags'],
     });
 
-    return departments
-      ? await Promise.all(
-          departments.map(async (department) => {
-            department.follow = await this.getFollow(department, req.user);
-            return department;
-          }),
-        )
-      : [];
+    return this.attachFollow(departments, req.user);
+  }
+
+  async attachFollow(
+    departments: Department[],
+    user: User,
+  ): Promise<Department[]> {
+    departments.forEach((department) => {
+      department.follow = [];
+    });
+
+    const follows: UserTag[] = await UserTag.find({
+      where: {
+        user,
+      },
+      relations: ['tag', 'tag.department'],
+    });
+    follows.forEach((userTag) => {
+      const department = departments.find(
+        (department) => department.id === userTag.tag.department.id,
+      );
+      if (department !== undefined) {
+        department.follow?.push(userTag.tag);
+      }
+    });
+
+    return departments;
   }
 
   async getDepartment(
@@ -48,7 +67,7 @@ export class DepartmentService {
   async getFollow(
     department: Department,
     user: User | undefined,
-  ): Promise<string[]> {
+  ): Promise<Tag[]> {
     user = await User.findOne(user);
     if (!user) throw new UnauthorizedException();
     const tags: Tag[] = await Tag.find({
@@ -62,7 +81,7 @@ export class DepartmentService {
       relations: ['tag'],
     });
 
-    return userTags ? userTags.map((userTag) => userTag.tag.name) : [];
+    return userTags ? userTags.map((userTag) => userTag.tag) : [];
   }
 
   async validateIdFollow(
