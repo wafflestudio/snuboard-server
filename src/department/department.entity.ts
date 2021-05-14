@@ -2,6 +2,7 @@ import {
   BaseEntity,
   Column,
   Entity,
+  Index,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -29,7 +30,8 @@ export class Department extends BaseEntity {
   @OneToMany(() => Tag, (tag) => tag.department)
   tags!: Tag[];
 
-  follow?: string[];
+  @Transform((tags) => tags.value.map((tag: Tag) => tag.name))
+  follow?: Tag[];
 }
 
 @Entity()
