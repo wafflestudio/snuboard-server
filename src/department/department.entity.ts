@@ -32,6 +32,9 @@ export class Department extends BaseEntity {
 
   @Transform((tags) => tags.value.map((tag: Tag) => tag.name))
   follow?: Tag[];
+
+  @Column()
+  link!: string;
 }
 
 @Entity()

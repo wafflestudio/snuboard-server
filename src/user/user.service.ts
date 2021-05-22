@@ -5,6 +5,7 @@ import {
   HttpStatus,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { Keyword, User, UserKeyword } from './user.entity';
@@ -13,6 +14,7 @@ import { UserRequest } from '../types/custom-type';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { KeywordDto } from './dto/keyword.dto';
 import * as bcrypt from 'bcrypt';
+import { DeleteResult } from 'typeorm';
 
 @Injectable()
 export class UserService {
@@ -31,6 +33,13 @@ export class UserService {
 
   async getUserMe(req: UserRequest): Promise<User | undefined> {
     return await User.findOneWithKeyword({ id: req.user.id });
+  }
+  // 에러처리 필요
+  async delete(req: UserRequest): Promise<User> {
+    const user = await User.findOneWithKeyword({ id: req.user.id });
+    if (user === undefined)
+      throw new UnauthorizedException('not authorized user cannot be deleted');
+    return await User.remove(user);
   }
 
   async update(
