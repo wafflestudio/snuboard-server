@@ -4,7 +4,6 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
-  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -14,7 +13,6 @@ import { UserRequest } from '../types/custom-type';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { KeywordDto } from './dto/keyword.dto';
 import * as bcrypt from 'bcrypt';
-import { DeleteResult } from 'typeorm';
 
 @Injectable()
 export class UserService {

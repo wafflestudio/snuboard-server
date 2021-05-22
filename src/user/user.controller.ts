@@ -17,7 +17,6 @@ import { AuthDto } from './dto/auth-user.dto';
 import { UserRequest } from '../types/custom-type';
 import { KeywordDto } from './dto/keyword.dto';
 import { AuthTokenGuard, JwtAccessGuard } from '../auth/auth.guard';
-import { DeleteResult } from 'typeorm';
 
 @Controller('users')
 export class UserController {
