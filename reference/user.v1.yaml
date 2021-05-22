@@ -127,6 +127,55 @@ paths:
           in: header
           name: Authorization
           description: 'Bearer [token]'
+    delete:
+      summary: ''
+      operationId: delete-users-me
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                삭제:
+                  value:
+                    username: username1
+                    nickname: nickname111
+                    keywords:
+                      - asdf
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                  message:
+                    type: string
+                    minLength: 1
+                required:
+                  - statusCode
+                  - message
+                x-examples:
+                  example-1:
+                    statusCode: 401
+                    message: Unauthorized
+              examples:
+                example-1:
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
+      description: 유저 삭제
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: 'Bearer [token]'
   /users/:
     post:
       summary: Create New User
@@ -196,11 +245,20 @@ paths:
                   - message
                   - error
               examples:
-                example-1:
+                아이디 중복 시:
                   value:
                     statusCode: 400
-                    message: Duplicate Username Error
+                    message: 이미 동일한 아이디가 사용중입니다.
                     error: Bad Request
+                닉네임 중복 시:
+                  value:
+                    statusCode: 400
+                    message: 이미 동일한 닉네임이 사용중입니다.
+                    error: Bad Request
+            application/xml:
+              schema:
+                type: object
+                properties: {}
       requestBody:
         content:
           application/json:
@@ -278,12 +336,35 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Unauthorized'
+                description: ''
+                type: object
+                x-examples:
+                  example-1:
+                    statusCode: 401
+                    message: 아이디 혹은 비밀번호가 잘못되었습니다.
+                    error: Unauthorized
+                properties:
+                  statusCode:
+                    type: number
+                  message:
+                    type: string
+                    minLength: 1
+                  error:
+                    type: string
+                    minLength: 1
+                required:
+                  - statusCode
+                  - message
               examples:
-                example-1:
+                refresh token 인증 실패 시:
                   value:
                     statusCode: 401
                     message: Unauthorized
+                'id/password 인증 실패 시 ':
+                  value:
+                    statusCode: 401
+                    message: 아이디 혹은 비밀번호가 잘못되었습니다.
+                    error: Unauthorized
       description: user authentication
       requestBody:
         content:
