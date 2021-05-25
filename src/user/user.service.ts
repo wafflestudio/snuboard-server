@@ -4,7 +4,7 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
-  NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { Keyword, User, UserKeyword } from './user.entity';
@@ -31,6 +31,13 @@ export class UserService {
 
   async getUserMe(req: UserRequest): Promise<User | undefined> {
     return await User.findOneWithKeyword({ id: req.user.id });
+  }
+  // 에러처리 필요
+  async delete(req: UserRequest): Promise<User> {
+    const user = await User.findOneWithKeyword({ id: req.user.id });
+    if (user === undefined)
+      throw new UnauthorizedException('not authorized user cannot be deleted');
+    return await User.remove(user);
   }
 
   async update(

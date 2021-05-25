@@ -12,7 +12,7 @@ export class UniqueUsernameValidator implements ValidatorConstraintInterface {
   }
 
   defaultMessage(validationArguments?: ValidationArguments): string {
-    return 'Duplicate Username Error';
+    return '이미 동일한 아이디가 사용중입니다.';
   }
 }
 
@@ -23,13 +23,13 @@ export class UniqueNicknameValidator implements ValidatorConstraintInterface {
   }
 
   defaultMessage(validationArguments?: ValidationArguments): string {
-    return 'Duplicate Nickname Error';
+    return '이미 동일한 닉네임이 사용중입니다.';
   }
 }
 
 @ValidatorConstraint()
 export class NotDefinedValidator implements ValidatorConstraintInterface {
-  async validate(value: string): Promise<boolean> {
+  validate(value: string): boolean {
     return value === undefined || value === null;
   }
 

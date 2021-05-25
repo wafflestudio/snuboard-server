@@ -14,7 +14,6 @@ import { User } from './user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { AuthDto } from './dto/auth-user.dto';
-import { AuthGuard } from '@nestjs/passport';
 import { UserRequest } from '../types/custom-type';
 import { KeywordDto } from './dto/keyword.dto';
 import { AuthTokenGuard, JwtAccessGuard } from '../auth/auth.guard';
@@ -36,6 +35,12 @@ export class UserController {
     @Body() userData: UpdateUserDto,
   ): Promise<User | undefined> {
     return await this.userService.update(req, userData);
+  }
+
+  @UseGuards(JwtAccessGuard)
+  @Delete('me')
+  async delete(@Req() req: UserRequest): Promise<User> {
+    return await this.userService.delete(req);
   }
 
   @Post()
