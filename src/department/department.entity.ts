@@ -26,7 +26,7 @@ export class Department extends BaseEntity {
   @OneToMany(() => Notice, (notice) => notice.department)
   notices!: Notice[];
 
-  @Transform((tags) => tags.value.map((tag: Tag) => tag.name))
+  @Transform((tags) => [...new Set(tags.value.map((tag: Tag) => tag.name))])
   @OneToMany(() => Tag, (tag) => tag.department)
   tags!: Tag[];
 
