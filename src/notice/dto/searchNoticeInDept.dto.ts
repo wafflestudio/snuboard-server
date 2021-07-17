@@ -7,14 +7,6 @@ export class SearchNoticeInDeptDto extends NoticePaginationDto {
 
   @IsBoolean()
   @IsOptional()
-  title: boolean = false;
-
-  @IsBoolean()
-  @IsOptional()
-  content: boolean = false;
-
-  @IsBoolean()
-  @IsOptional()
   pinned: boolean = false;
 
   @IsString()
