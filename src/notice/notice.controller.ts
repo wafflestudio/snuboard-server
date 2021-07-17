@@ -35,8 +35,6 @@ export class NoticeSummaryController {
   searchNoticeInDepartment(
     @Param('departmentId') departmentId: number,
     @Query('pinned', ParseBoolPipe) pinned: boolean,
-    @Query('title', ParseBoolPipe) title: boolean,
-    @Query('content', ParseBoolPipe) content: boolean,
     @Query() rawQuery: string,
     @Req() req: UserRequest,
   ): Promise<NoticesResponseDto> {
@@ -48,8 +46,6 @@ export class NoticeSummaryController {
       },
     );
     query.pinned = pinned;
-    query.title = title;
-    query.content = content;
 
     return this.noticeService.getNoticeInDepartment(req, departmentId, query);
   }
