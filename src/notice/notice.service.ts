@@ -30,7 +30,6 @@ import { validate } from 'class-validator';
 import { exceptionFormatter } from '../functions/custom-function';
 
 const emptyResponse: NoticesResponseDto = { notices: [], next_cursor: '' };
-
 @Injectable()
 export class NoticeService {
   async getNotice(req: UserRequest, id: number): Promise<Notice> {
@@ -264,7 +263,7 @@ export class NoticeService {
     keywords: string[],
   ): void {
     const keywordParam = keywords
-      .map((keyword) => '+' + keyword + '*')
+      .map((keyword) => '+' + keyword.replace(/[-*+~()<>"]+/g, '') + '*')
       .reduce((a, b) => a + ' ' + b);
     noticeQb
       .andWhere(
