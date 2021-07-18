@@ -264,7 +264,7 @@ export class NoticeService {
     keywords: string[],
   ): void {
     const keywordParam = keywords
-      .map((keyword) => '+' + keyword)
+      .map((keyword) => '+' + keyword + '*')
       .reduce((a, b) => a + ' ' + b);
     noticeQb
       .andWhere(

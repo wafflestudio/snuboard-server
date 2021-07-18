@@ -1,7 +1,6 @@
 import { createConnection, Connection, getConnection } from 'typeorm';
 import { Notice } from '../src/notice/notice.entity';
 import { Department } from '../src/department/department.entity';
-
 import * as ormConfig from '../src/ormconfig';
 
 async function search(
@@ -22,17 +21,23 @@ async function search(
       });
     } else {
       noticeQb.andWhere(
-        'match(contentText, title) against (+:keyword IN BOOLEAN MODE)',
+        'match(contentText, title) against (:keyword IN BOOLEAN MODE)',
         {
-          keyword: keyword,
+          keyword: `+${keyword}*`,
         },
       );
     }
-    const notices = await noticeQb.limit(10).getMany();
+    const notices = await noticeQb
+      .orderBy('createdAt', 'DESC')
+      //.take(10)
+      .getMany();
     noticeNum += notices.length;
   }
   const endTime = Date.now();
-  return { elapsedTime: endTime - startTime, noticeNum: noticeNum };
+  return {
+    elapsedTime: (endTime - startTime) / departments.length,
+    noticeNum: noticeNum,
+  };
 }
 
 async function runBenchmark() {
@@ -55,9 +60,9 @@ async function runBenchmark() {
   const departmentIds = top10.map((d) => d.departmentId);
   const keywords = [
     'cse',
-    '장학',
     'cbe',
     'zxcv',
+    '장학',
     '화요일',
     '복수전공',
     'data',
@@ -65,14 +70,17 @@ async function runBenchmark() {
     '부전공',
     '비대면',
     '학사',
+    '계획',
+    '모집',
+    '인턴',
   ];
 
   for (let i = 0; i < keywords.length; i++) {
     const resultLike = [];
     const resultFTS = [];
     for (let j = 0; j < 5; j++) {
-      resultLike.push(await search(keywords[i], departmentIds, 'LIKE'));
       resultFTS.push(await search(keywords[i], departmentIds, 'FTS'));
+      resultLike.push(await search(keywords[i], departmentIds, 'LIKE'));
     }
     const sumLike = resultLike
       .map((r) => r.elapsedTime)
