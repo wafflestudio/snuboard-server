@@ -30,7 +30,6 @@ import { validate } from 'class-validator';
 import { exceptionFormatter } from '../functions/custom-function';
 
 const emptyResponse: NoticesResponseDto = { notices: [], next_cursor: '' };
-
 @Injectable()
 export class NoticeService {
   async getNotice(req: UserRequest, id: number): Promise<Notice> {
@@ -127,16 +126,9 @@ export class NoticeService {
     query: SearchFollowedNoticeDto | SearchNoticeInDeptDto,
     tags: number[],
   ): Promise<NoticesResponseDto> {
-    const selectedColumn: string =
-      query.content && query.title
-        ? 'CONCAT(notice.title, notice.contentText)'
-        : query.title
-        ? 'notice.title'
-        : 'notice.contentText';
-
     const keywords: string[] = this.splitParam(query.keywords, ' ');
     this.appendTagQb(noticeQb, tags);
-    this.appendKeywordQb(noticeQb, keywords, selectedColumn);
+    this.appendKeywordQb(noticeQb, keywords);
     return await this.makeResponse(noticeQb, user, query.limit, query.cursor);
   }
 
@@ -228,9 +220,14 @@ export class NoticeService {
       if (query.keywords.length == 0) {
         throw new BadRequestException("'keywords' should not be empty");
       }
-      if (!(query.title || query.content)) {
+      const minLength = Math.min(
+        ...this.splitParam(query.keywords, ' ').map(
+          (keyword) => keyword.length,
+        ),
+      );
+      if (minLength < 2) {
         throw new BadRequestException(
-          "At least one of 'title' and 'content' should be true",
+          'keyword should have at least 2 characters',
         );
       }
     }
@@ -264,13 +261,15 @@ export class NoticeService {
   appendKeywordQb(
     noticeQb: SelectQueryBuilder<Notice>,
     keywords: string[],
-    selectedColumn: string,
   ): void {
-    keywords.forEach((keyword, index) => {
-      noticeQb
-        .andWhere(selectedColumn + ` like :keyword${index}`)
-        .setParameter(`keyword${index}`, `%${keyword}%`);
-    });
+    const keywordParam = keywords
+      .map((keyword) => '+' + keyword.replace(/[-*+~()<>"]+/g, '') + '*')
+      .reduce((a, b) => a + ' ' + b);
+    noticeQb
+      .andWhere(
+        `match (contentText, title) against (:keywordParam IN BOOLEAN MODE)`,
+      )
+      .setParameter(`keywordParam`, keywordParam);
   }
 
   async appendTagQb(
@@ -350,11 +349,7 @@ export class NoticeService {
   ): query is SearchNoticeInDeptDto | SearchFollowedNoticeDto {
     return (
       (<SearchNoticeInDeptDto | SearchFollowedNoticeDto>query).keywords !==
-        undefined &&
-      (<SearchNoticeInDeptDto | SearchFollowedNoticeDto>query).content !==
-        undefined &&
-      (<SearchNoticeInDeptDto | SearchFollowedNoticeDto>query).title !==
-        undefined
+      undefined
     );
   }
 
