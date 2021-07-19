@@ -730,7 +730,7 @@ paths:
                 example-4:
                   value:
                     statusCode: 400
-                    message: At least one of 'title' and 'content' should be true
+                    message: keyword should have at least 2 characters
                     error: Bad Request
         '401':
           description: Unauthorized
@@ -738,9 +738,7 @@ paths:
       description: |-
         해당 학과 공지사항 중에 제목 또는 내용에 키워드를 포함한 공지사항들을 검색한다. 공백이 포함된 문자열을 받는 경우 공백을 기준으로 split한 단어들에 대해 AND 연산으로 검색을 진행한다.
 
-        title과 content가 모두 true이면 제목 및 내용 검색으로 동작(두개의 결과를 OR)
-        title과 content 둘 중 하나는 true여야한다
-
+        검색하는 키워드는 모두 2글자 이상이어야 한다.
 
         tags의 경우 주어진 경우 해당 학과의 주어진 태그에 해당하는 공지사항들만 검색 (주어지지 않은 경우 해당 학과의 모든 태그)
 
@@ -759,16 +757,6 @@ paths:
           name: keywords
           description: 키워드
           required: true
-        - schema:
-            type: string
-          in: query
-          name: title
-          description: true로 설정되면 제목에 키워드를 포함하는 공지사항을 리턴
-        - schema:
-            type: string
-          in: query
-          name: content
-          description: 'true로 설정되면 내용에 키워드를 포함하고 있는 공지사항을 리턴 '
         - schema:
             type: string
           in: query
