@@ -1,13 +1,13 @@
 import { CreateUserDto } from './create-user.dto';
 import { PartialType, PickType } from '@nestjs/mapped-types';
 import { IsOptional, IsString, Validate } from 'class-validator';
-import { UniqueNicknameValidator } from '../user.validator';
+import { UniqueEmailValidator } from '../user.validator';
 
 export class UpdateUserDto {
   @IsOptional()
-  @Validate(UniqueNicknameValidator)
+  @Validate(UniqueEmailValidator)
   @IsString()
-  nickname!: string;
+  email!: string;
 
   @IsOptional()
   @IsString()

@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 import { User } from '../user/user.entity';
 import { Notice } from '../notice/notice.entity';
-import { Expose, Transform } from 'class-transformer';
+import { Exclude, Expose, Transform } from 'class-transformer';
 
 @Entity()
 export class Department extends BaseEntity {
@@ -35,6 +35,10 @@ export class Department extends BaseEntity {
 
   @Column()
   link!: string;
+
+  @Exclude()
+  @Column()
+  style!: string;
 }
 
 @Entity()

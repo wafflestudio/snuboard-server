@@ -60,6 +60,12 @@ export class Notice extends BaseEntity {
   get department_name(): string {
     return this.department.name ? this.department.name : '';
   }
+
+  @Expose()
+  get style(): string {
+    return this.department.style;
+  }
+
   @Exclude()
   @OneToMany(() => UserNotice, (userNotice) => userNotice.notice)
   userNotices!: UserNotice[];
