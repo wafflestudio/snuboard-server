@@ -22,7 +22,7 @@ paths:
                   value:
                     id: 1
                     username: eldpswp99
-                    nickname: nickname
+                    email: asdf@naver.com
                     keywords:
                       - 장학
                       - 인턴
@@ -62,7 +62,7 @@ paths:
                   value:
                     id: 1
                     username: eldpswp99
-                    nickname: Rebecca
+                    email: Rebecca@email.com
                     keywords:
                       - 장학
                       - 인턴
@@ -112,14 +112,14 @@ paths:
             schema:
               type: object
               properties:
-                nickname:
+                email:
                   type: string
                 password:
                   type: string
             examples:
               Update nickname:
                 value:
-                  nickname: Rebecca
+                  email: Rebecca@email.com
         description: Patch user properties to update.
       parameters:
         - schema:
@@ -195,7 +195,7 @@ paths:
                   value:
                     id: 21
                     username: mmmas
-                    nickname: mmmas
+                    email: mmmas@email.com
                     access_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1tbWFzIiwiaWQiOjIxLCJpYXQiOjE2MTMyNzk1NjgsImV4cCI6MTYxMzI4MzE2OH0.f-3buI9Hku6j15r7MRFmTFrkopYEgeBBvkGxXMweMGw
                     refresh_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1tbWFzIiwiaWQiOjIxLCJpYXQiOjE2MTMyNzk1Njh9.Sl-785nKn45ZKAZyX1r2IYrqc8OnctuOSCTaWryIeEc
                     keywords: []
@@ -269,18 +269,18 @@ paths:
                   type: string
                 password:
                   type: string
-                nickname:
+                email:
                   type: string
               required:
                 - username
                 - password
-                - nickname
+                - email
             examples:
               post user example:
                 value:
                   username: eldpswp99
                   password: password
-                  nickname: nickname
+                  email: email@naver.com
         description: Post the necessary fields for the API to create a new user.
       description: Create a new user.
     parameters: []
@@ -301,7 +301,7 @@ paths:
                   value:
                     id: 1
                     username: eldpswp99
-                    nickname: nickname
+                    email: email@naver.com
                     access_token: access_token
                     refresh_token: refresh_token
                     keywords: []
@@ -419,7 +419,7 @@ paths:
                   value:
                     id: 1
                     username: eldpswp99
-                    nickname: nickname
+                    email: asdf@naver.com
                     keywords:
                       - 장학
                       - 인턴
@@ -550,7 +550,7 @@ components:
         username:
           type: string
           minLength: 1
-        nickname:
+        email:
           type: string
           minLength: 1
         keywords:
@@ -560,7 +560,7 @@ components:
       required:
         - id
         - username
-        - nickname
+        - email
         - keywords
     tokenUser:
       description: ''
@@ -581,7 +581,7 @@ components:
         username:
           type: string
           minLength: 1
-        nickname:
+        email:
           type: string
           minLength: 1
         access_token:
@@ -597,7 +597,7 @@ components:
       required:
         - id
         - username
-        - nickname
+        - email
         - access_token
         - refresh_token
         - keywords
