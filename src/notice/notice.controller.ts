@@ -70,8 +70,6 @@ export class NoticeSummaryController {
 
   @Get('follow/search')
   searchFollowedNotice(
-    @Query('title', ParseBoolPipe) title: boolean,
-    @Query('content', ParseBoolPipe) content: boolean,
     @Query() rawQuery: string,
     @Req() req: UserRequest,
   ): Promise<NoticesResponseDto> {
@@ -82,8 +80,6 @@ export class NoticeSummaryController {
         enableImplicitConversion: true,
       },
     );
-    query.title = title;
-    query.content = content;
     return this.noticeService.getFollowedNotice(req, query);
   }
 
