@@ -406,20 +406,10 @@ paths:
           description: 검색할 키워드
           required: true
         - schema:
-            type: boolean
-          in: query
-          name: title
-          description: true로 설정되면 제목에 키워드를 포함하는 공지사항을 리턴
-        - schema:
             type: string
           in: header
           name: Authorization
           description: 'Bearer [token]'
-        - schema:
-            type: boolean
-          in: query
-          name: content
-          description: 'true로 설정되면 내용에 키워드를 포함하고 있는 공지사항을 리턴 '
         - schema:
             type: string
           in: query
