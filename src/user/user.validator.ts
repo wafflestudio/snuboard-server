@@ -17,9 +17,9 @@ export class UniqueUsernameValidator implements ValidatorConstraintInterface {
 }
 
 @ValidatorConstraint({ async: true })
-export class UniqueNicknameValidator implements ValidatorConstraintInterface {
-  async validate(nickname: string): Promise<boolean> {
-    return !(await User.findOne({ nickname }));
+export class UniqueEmailValidator implements ValidatorConstraintInterface {
+  async validate(email: string): Promise<boolean> {
+    return !(await User.findOne({ email }));
   }
 
   defaultMessage(validationArguments?: ValidationArguments): string {

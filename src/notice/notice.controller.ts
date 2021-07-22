@@ -26,7 +26,7 @@ import { plainToClass } from 'class-transformer';
 @UseGuards(JwtAccessGuard)
 @Controller('notices')
 @SerializeOptions({
-  excludePrefixes: ['content', 'files'],
+  excludePrefixes: ['content', 'files', 'style'],
 })
 export class NoticeSummaryController {
   constructor(private noticeService: NoticeService) {}

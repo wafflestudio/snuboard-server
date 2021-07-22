@@ -34,7 +34,7 @@ export class User extends BaseEntity {
   @Column({
     unique: true,
   })
-  nickname!: string;
+  email!: string;
 
   @Exclude()
   @Column({ default: true })
