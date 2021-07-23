@@ -127,7 +127,7 @@ export class NoticeService {
     tags: number[],
   ): Promise<NoticesResponseDto> {
     const keywords: string[] = this.splitParam(query.keywords, ' ');
-    this.appendTagQb(noticeQb, tags);
+    await this.appendTagQb(noticeQb, tags);
     this.appendKeywordQb(noticeQb, keywords);
     return await this.makeResponse(noticeQb, user, query.limit, query.cursor);
   }
