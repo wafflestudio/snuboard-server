@@ -161,7 +161,7 @@ export class NoticeService {
       .innerJoinAndSelect('notice.department', 'department')
       .orderBy('notice.createdAt', 'DESC')
       .addOrderBy('notice.id', 'DESC')
-      .take(limit + 1);
+      .limit(limit + 1);
 
     const noticesResponse: NoticesResponseDto = new NoticesResponseDto();
     const notices: Notice[] = await noticeQb.getMany();
