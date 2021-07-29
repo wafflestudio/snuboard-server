@@ -280,20 +280,10 @@ export class NoticeService {
       return;
     }
 
-    const tagQb: SelectQueryBuilder<NoticeTag> = NoticeTag.createQueryBuilder(
-      'noticeTag',
-    )
-      .select('noticeTag.noticeId')
-      .innerJoin('noticeTag.tag', 'tag', 'noticeTag.tagId = tag.id');
-
-    tagQb.where('tag.id IN (:...tags)');
-
     noticeQb
-      .innerJoin(
-        `(${tagQb.getQuery()})`,
-        'noticeTag',
-        `noticeTag.noticeId=notice.id`,
-      )
+      .innerJoin('notice_tag', 'noticeTag', 'noticeTag.noticeId = notice.id')
+      .innerJoin('tag', 'tag', 'noticeTag.tagId = tag.id')
+      .andWhere('tag.id IN (:...tags)')
       .setParameter('tags', tags);
   }
 
