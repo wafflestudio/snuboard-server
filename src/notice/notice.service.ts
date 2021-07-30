@@ -53,19 +53,27 @@ export class NoticeService {
       throw new BadRequestException(
         `There is no department with the id ${departmentId}`,
       );
-    const tags: number[] = await this.getTagIdsFromName(
-      this.splitParam(query.tags, ','),
-      department,
-    );
+    const queryTags = this.splitParam(query.tags, ',');
+    const tags: Tag[] = await this.getTagsFromName(queryTags, department);
+    const tagIds = tags.map((tag) => tag.id);
+    const tagNames = tags.map((tag) => tag.name);
+
+    if (queryTags.length !== tags.length) {
+      throw new BadRequestException(
+        `There is no tag with the name ${queryTags.filter(
+          (t) => !tagNames.includes(t),
+        )}`,
+      );
+    }
 
     const noticeQb: SelectQueryBuilder<Notice> = Notice.createQueryBuilder(
       'notice',
     );
     this.appendDepartmentQb(noticeQb, departmentId, query.pinned);
     if (this.isSearchQuery(query)) {
-      return await this.searchNotice(noticeQb, user, query, tags);
+      return await this.searchNotice(noticeQb, user, query, tagIds);
     } else {
-      await this.appendTagQb(noticeQb, tags);
+      this.appendTagQb(noticeQb, tagIds);
       return await this.makeResponse(noticeQb, user, query.limit, query.cursor);
     }
   }
@@ -79,17 +87,17 @@ export class NoticeService {
       user: req.user,
     });
 
-    const tags: number[] = await this.getFollowedTag(user);
-    if (tags.length == 0) {
+    const tagIds: number[] = await this.getFollowedTagIds(user);
+    if (tagIds.length == 0) {
       return emptyResponse;
     }
     const noticeQb: SelectQueryBuilder<Notice> = Notice.createQueryBuilder(
       'notice',
     );
     if (this.isSearchQuery(query)) {
-      return await this.searchNotice(noticeQb, user, query, tags);
+      return await this.searchNotice(noticeQb, user, query, tagIds);
     } else {
-      await this.appendTagQb(noticeQb, tags);
+      this.appendTagQb(noticeQb, tagIds);
       return await this.makeResponse(noticeQb, user, query.limit, query.cursor);
     }
   }
@@ -116,7 +124,6 @@ export class NoticeService {
     const noticeQb: SelectQueryBuilder<Notice> = Notice.createQueryBuilder(
       'notice',
     ).whereInIds(noticeIds);
-    await this.appendTagQb(noticeQb, []);
     return await this.makeResponse(noticeQb, user, query.limit, query.cursor);
   }
 
@@ -127,7 +134,7 @@ export class NoticeService {
     tags: number[],
   ): Promise<NoticesResponseDto> {
     const keywords: string[] = this.splitParam(query.keywords, ' ');
-    await this.appendTagQb(noticeQb, tags);
+    this.appendTagQb(noticeQb, tags);
     this.appendKeywordQb(noticeQb, keywords);
     return await this.makeResponse(noticeQb, user, query.limit, query.cursor);
   }
@@ -161,7 +168,7 @@ export class NoticeService {
       .innerJoinAndSelect('notice.department', 'department')
       .orderBy('notice.createdAt', 'DESC')
       .addOrderBy('notice.id', 'DESC')
-      .take(limit + 1);
+      .limit(limit + 1);
 
     const noticesResponse: NoticesResponseDto = new NoticesResponseDto();
     const notices: Notice[] = await noticeQb.getMany();
@@ -272,28 +279,15 @@ export class NoticeService {
       .setParameter(`keywordParam`, keywordParam);
   }
 
-  async appendTagQb(
-    noticeQb: SelectQueryBuilder<Notice>,
-    tags: number[],
-  ): Promise<void> {
+  appendTagQb(noticeQb: SelectQueryBuilder<Notice>, tags: number[]): void {
     if (tags.length == 0) {
       return;
     }
 
-    const tagQb: SelectQueryBuilder<NoticeTag> = NoticeTag.createQueryBuilder(
-      'noticeTag',
-    )
-      .select('noticeTag.noticeId')
-      .innerJoin('noticeTag.tag', 'tag', 'noticeTag.tagId = tag.id');
-
-    tagQb.where('tag.id IN (:...tags)');
-
     noticeQb
-      .innerJoin(
-        `(${tagQb.getQuery()})`,
-        'noticeTag',
-        `noticeTag.noticeId=notice.id`,
-      )
+      .innerJoin('notice_tag', 'noticeTag', 'noticeTag.noticeId = notice.id')
+      .innerJoin('tag', 'tag', 'noticeTag.tagId = tag.id')
+      .andWhere('tag.id IN (:...tags)')
       .setParameter('tags', tags);
   }
 
@@ -305,7 +299,7 @@ export class NoticeService {
     return user;
   }
 
-  async getFollowedTag(user: User): Promise<number[]> {
+  async getFollowedTagIds(user: User): Promise<number[]> {
     const userTags: UserTag[] = await UserTag.find({
       relations: ['tag'],
       where: { user: user },
@@ -313,19 +307,17 @@ export class NoticeService {
     return userTags.map((userTag) => userTag.tag.id);
   }
 
-  async getTagIdsFromName(
+  async getTagsFromName(
     tagNames: string[],
     department: Department,
-  ): Promise<number[]> {
+  ): Promise<Tag[]> {
     return (
-      (
-        await Tag.find({
-          where: {
-            name: In(tagNames),
-            department,
-          },
-        })
-      )?.map((tag) => tag.id) ?? []
+      (await Tag.find({
+        where: {
+          name: In(tagNames),
+          department,
+        },
+      })) ?? []
     );
   }
 
