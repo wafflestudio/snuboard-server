@@ -168,6 +168,7 @@ export class NoticeService {
       .innerJoinAndSelect('notice.department', 'department')
       .orderBy('notice.createdAt', 'DESC')
       .addOrderBy('notice.id', 'DESC')
+      .distinct(true)
       .limit(limit + 1);
 
     const noticesResponse: NoticesResponseDto = new NoticesResponseDto();
