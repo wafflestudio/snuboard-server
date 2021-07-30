@@ -69,7 +69,15 @@ export class NoticeService {
     const noticeQb: SelectQueryBuilder<Notice> = Notice.createQueryBuilder(
       'notice',
     );
-    this.appendDepartmentQb(noticeQb, departmentId, query.pinned);
+    if (tags.length === 0) {
+      noticeQb
+        .andWhere('notice.departmentId = :departmentId')
+        .setParameter('departmentId', departmentId);
+    }
+    if (query.pinned) {
+      noticeQb.andWhere('notice.isPinned = true');
+    }
+
     if (this.isSearchQuery(query)) {
       return await this.searchNotice(noticeQb, user, query, tagIds);
     } else {
@@ -251,19 +259,6 @@ export class NoticeService {
       return { user, department };
     }
     return { user, department: undefined };
-  }
-
-  appendDepartmentQb(
-    noticeQb: SelectQueryBuilder<Notice>,
-    departmentId: number,
-    pinned: boolean,
-  ): void {
-    noticeQb
-      .andWhere('notice.departmentId = :departmentId')
-      .setParameter('departmentId', departmentId);
-    if (pinned) {
-      noticeQb.andWhere('notice.isPinned = true');
-    }
   }
 
   appendKeywordQb(
