@@ -234,7 +234,7 @@ export class NoticeService {
     }
     if (this.isSearchQuery(query)) {
       if (query.keywords.length == 0) {
-        throw new BadRequestException("'keywords' should not be empty");
+        throw new BadRequestException('검색어를 입력해 주세요');
       }
       const minLength = Math.min(
         ...this.splitParam(query.keywords, ' ').map(
@@ -242,9 +242,7 @@ export class NoticeService {
         ),
       );
       if (minLength < 2) {
-        throw new BadRequestException(
-          'keyword should have at least 2 characters',
-        );
+        throw new BadRequestException('각 단어의 길이는 2 이상이어야 합니다');
       }
     }
     if (departmentId) {
@@ -379,9 +377,8 @@ export class NoticeService {
     const preNotice: PreNotice = await this.validateNotice(req, id);
     const { user, notice } = preNotice;
     let { userNotice } = preNotice;
-
     if (userNotice && userNotice.isScrapped) {
-      throw new BadRequestException('Already Scrapped notice');
+      throw new BadRequestException('이미 관심목록에 등록된 공지사항입니다');
     }
 
     if (userNotice) {
@@ -402,7 +399,10 @@ export class NoticeService {
     const { user, notice, userNotice } = await this.validateNotice(req, id);
 
     if (!userNotice || !userNotice.isScrapped) {
-      throw new HttpException('Not scrapped notice', HttpStatus.NO_CONTENT);
+      throw new HttpException(
+        '관심목록에 없는 공지사항입니다.',
+        HttpStatus.NO_CONTENT,
+      );
     }
 
     userNotice.isScrapped = false;

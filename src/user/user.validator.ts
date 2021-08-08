@@ -16,17 +16,6 @@ export class UniqueUsernameValidator implements ValidatorConstraintInterface {
   }
 }
 
-@ValidatorConstraint({ async: true })
-export class UniqueEmailValidator implements ValidatorConstraintInterface {
-  async validate(email: string): Promise<boolean> {
-    return !(await User.findOne({ email }));
-  }
-
-  defaultMessage(validationArguments?: ValidationArguments): string {
-    return '이미 동일한 닉네임이 사용중입니다.';
-  }
-}
-
 @ValidatorConstraint()
 export class NotDefinedValidator implements ValidatorConstraintInterface {
   validate(value: string): boolean {

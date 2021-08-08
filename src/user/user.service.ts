@@ -68,8 +68,7 @@ export class UserService {
         user: req.user,
         keyword,
       });
-      if (userKeyword)
-        throw new BadRequestException('keyword already added to this user');
+      if (userKeyword) throw new BadRequestException('이미 추가된 키워드입니');
     } else {
       keyword = Keyword.create({ name: keywordData.keyword });
       await Keyword.save(keyword);
