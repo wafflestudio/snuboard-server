@@ -1,8 +1,5 @@
 import { IsString, Validate } from 'class-validator';
-import {
-  UniqueEmailValidator,
-  UniqueUsernameValidator,
-} from '../user.validator';
+import { UniqueUsernameValidator } from '../user.validator';
 
 export class CreateUserDto {
   @IsString()
@@ -13,6 +10,5 @@ export class CreateUserDto {
   readonly password!: string;
 
   @IsString()
-  @Validate(UniqueEmailValidator)
   readonly email!: string;
 }
