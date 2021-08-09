@@ -10,7 +10,7 @@ import {
 import { User } from '../user/user.entity';
 import { Department, NoticeTag } from '../department/department.entity';
 import { Exclude, Expose } from 'class-transformer';
-import { PREVIEW_LENGTH } from './constansts';
+import { PREVIEW_LENGTH } from './constants';
 
 @Entity()
 @Index(['createdAt', 'id'])
@@ -43,6 +43,11 @@ export class Notice extends BaseEntity {
   // Index link(255) applied by migration
   @Column({ length: 1000 })
   link!: string;
+
+  @Exclude()
+  @Column()
+  @Index({ fulltext: true })
+  tagIds!: string;
 
   @Exclude()
   @ManyToOne(() => Department, (department) => department.notices, {
