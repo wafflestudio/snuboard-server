@@ -285,14 +285,6 @@ export class NoticeService {
       .setParameter('tags', tags);
   }
 
-  parseTagIdsToReg(tags: number[]) {
-    return tags
-      .reduce((acc, cur) => {
-        return `${acc}|${cur}`;
-      }, '')
-      .slice(1);
-  }
-
   async getValidatedUser(reqUser: User): Promise<User> {
     const user: User | undefined = await User.findOne(reqUser);
     if (!user) {

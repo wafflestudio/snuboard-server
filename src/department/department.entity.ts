@@ -82,7 +82,7 @@ export class UserTag extends BaseEntity {
 }
 
 @Entity()
-@Index(['noticeCreatedAt', 'noticeId'])
+@Index(['noticeCreatedAt', 'notice'])
 export class NoticeTag extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
@@ -100,7 +100,6 @@ export class NoticeTag extends BaseEntity {
   tag!: Tag;
 
   @RelationId((noticeTag: NoticeTag) => noticeTag.notice)
-  @Column()
   noticeId!: number;
 
   @Column()
