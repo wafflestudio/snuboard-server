@@ -15,6 +15,5 @@
   },
   "files": [
     "benchmark.ts",
-    "notice_tag_created_at_adder.ts"
   ]
 }
