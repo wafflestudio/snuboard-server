@@ -3,6 +3,7 @@ import {
   Column,
   Entity,
   Index,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -81,6 +82,7 @@ export class UserTag extends BaseEntity {
 }
 
 @Entity()
+@Index(['noticeCreatedAt', 'noticeId'])
 export class NoticeTag extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
@@ -98,5 +100,9 @@ export class NoticeTag extends BaseEntity {
   tag!: Tag;
 
   @RelationId((noticeTag: NoticeTag) => noticeTag.notice)
+  @Column()
   noticeId!: number;
+
+  @Column()
+  noticeCreatedAt!: Date;
 }
