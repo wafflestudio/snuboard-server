@@ -45,11 +45,6 @@ export class Notice extends BaseEntity {
   link!: string;
 
   @Exclude()
-  @Column()
-  @Index({ fulltext: true })
-  tagIds!: string;
-
-  @Exclude()
   @ManyToOne(() => Department, (department) => department.notices, {
     nullable: false,
     onDelete: 'CASCADE',
