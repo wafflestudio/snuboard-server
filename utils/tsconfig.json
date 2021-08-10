@@ -15,6 +15,5 @@
   },
   "files": [
     "benchmark.ts",
-    "notice_tagIds_adder.ts"
   ]
 }

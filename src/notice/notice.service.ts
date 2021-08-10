@@ -277,25 +277,12 @@ export class NoticeService {
     if (tags.length == 0) {
       return;
     }
-    const tagParam = tags.map((tag) => `${tag}x`).reduce((a, b) => a + ' ' + b);
 
     noticeQb
-      .andWhere('match (tagIds) against (:tagParam IN BOOLEAN MODE)')
-      .setParameter('tagParam', tagParam);
-
-    //previous method
-    // .innerJoin('notice_tag', 'noticeTag', 'noticeTag.noticeId = notice.id')
-    // .innerJoin('tag', 'tag', 'noticeTag.tagId = tag.id')
-    // .andWhere('tag.id IN (:...tags)')
-    // .setParameter('tags', tags);
-  }
-
-  parseTagIdsToReg(tags: number[]) {
-    return tags
-      .reduce((acc, cur) => {
-        return `${acc}|${cur}`;
-      }, '')
-      .slice(1);
+      .innerJoin('notice_tag', 'noticeTag', 'noticeTag.noticeId = notice.id')
+      .innerJoin('tag', 'tag', 'noticeTag.tagId = tag.id')
+      .andWhere('tag.id IN (:...tags)')
+      .setParameter('tags', tags);
   }
 
   async getValidatedUser(reqUser: User): Promise<User> {
