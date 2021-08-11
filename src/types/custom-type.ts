@@ -3,6 +3,7 @@ import { User } from '../user/user.entity';
 import { Department, Tag, UserTag } from '../department/department.entity';
 import { NoticePaginationDto } from 'src/notice/dto/noticePagination.dto';
 import { Notice, UserNotice } from '../notice/notice.entity';
+import exp from 'constants';
 
 export class Payload {
   username!: string;
@@ -36,3 +37,5 @@ export interface UserDepartment {
   user: User;
   department?: Department;
 }
+
+export type orderType = 'notice' | 'noticeTag';

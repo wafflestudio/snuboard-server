@@ -18,6 +18,7 @@ import {
 } from '../department/department.entity';
 import { Brackets, In, SelectQueryBuilder } from 'typeorm';
 import {
+  orderType,
   PreNotice,
   PreQuery,
   UserDepartment,
@@ -82,7 +83,13 @@ export class NoticeService {
       return await this.searchNotice(noticeQb, user, query, tagIds);
     } else {
       this.appendTagQb(noticeQb, tagIds);
-      return await this.makeResponse(noticeQb, user, query.limit, query.cursor);
+      return await this.makeResponse(
+        noticeQb,
+        user,
+        query.limit,
+        query.cursor,
+        tags.length === 0 ? 'notice' : 'noticeTag',
+      );
     }
   }
 
@@ -106,7 +113,13 @@ export class NoticeService {
       return await this.searchNotice(noticeQb, user, query, tagIds);
     } else {
       this.appendTagQb(noticeQb, tagIds);
-      return await this.makeResponse(noticeQb, user, query.limit, query.cursor);
+      return await this.makeResponse(
+        noticeQb,
+        user,
+        query.limit,
+        query.cursor,
+        'noticeTag',
+      );
     }
   }
 
@@ -132,9 +145,14 @@ export class NoticeService {
     const noticeQb: SelectQueryBuilder<Notice> = Notice.createQueryBuilder(
       'notice',
     ).whereInIds(noticeIds);
-    return await this.makeResponse(noticeQb, user, query.limit, query.cursor);
+    return await this.makeResponse(
+      noticeQb,
+      user,
+      query.limit,
+      query.cursor,
+      'notice',
+    );
   }
-
   async searchNotice(
     noticeQb: SelectQueryBuilder<Notice>,
     user: User,
@@ -142,9 +160,16 @@ export class NoticeService {
     tags: number[],
   ): Promise<NoticesResponseDto> {
     const keywords: string[] = this.splitParam(query.keywords, ' ');
+    const orderByCol: orderType = tags.length > 0 ? 'noticeTag' : 'notice';
     this.appendTagQb(noticeQb, tags);
     this.appendKeywordQb(noticeQb, keywords);
-    return await this.makeResponse(noticeQb, user, query.limit, query.cursor);
+    return await this.makeResponse(
+      noticeQb,
+      user,
+      query.limit,
+      query.cursor,
+      orderByCol,
+    );
   }
 
   async makeResponse(
@@ -152,7 +177,14 @@ export class NoticeService {
     user: User,
     limit: number,
     cursor: string,
+    orderByCol: orderType,
   ): Promise<NoticesResponseDto> {
+    const createdAtCol =
+      orderByCol == 'notice' ? 'notice.createdAt' : 'noticeTag.noticeCreatedAt';
+
+    const noticeIdCol =
+      orderByCol == 'notice' ? 'notice.id' : 'noticeTag.noticeId';
+
     if (cursor.length != 0) {
       const cursorInfo = cursor.split('-');
       const cursorCreatedAt = new Date(+cursorInfo[0]);
@@ -160,13 +192,13 @@ export class NoticeService {
 
       noticeQb.andWhere(
         new Brackets((qb) => {
-          qb.where('notice.createdAt < :cursorCreatedAt', {
+          qb.where(`${createdAtCol} < :cursorCreatedAt`, {
             cursorCreatedAt,
           }).orWhere(
             new Brackets((qb) => {
-              qb.where('notice.createdAt = :cursorCreatedAt', {
+              qb.where(`${createdAtCol} = :cursorCreatedAt`, {
                 cursorCreatedAt,
-              }).andWhere('notice.id < :cursorId', { cursorId });
+              }).andWhere(`${noticeIdCol} < :cursorId`, { cursorId });
             }),
           );
         }),
@@ -174,9 +206,8 @@ export class NoticeService {
     }
     noticeQb
       .innerJoinAndSelect('notice.department', 'department')
-      .orderBy('notice.createdAt', 'DESC')
-      .addOrderBy('notice.id', 'DESC')
-      .distinct(true)
+      .orderBy(createdAtCol, 'DESC')
+      .addOrderBy(noticeIdCol, 'DESC')
       .limit(limit + 1);
 
     const noticesResponse: NoticesResponseDto = new NoticesResponseDto();
@@ -279,9 +310,8 @@ export class NoticeService {
     }
 
     noticeQb
-      .innerJoin('notice_tag', 'noticeTag', 'noticeTag.noticeId = notice.id')
-      .innerJoin('tag', 'tag', 'noticeTag.tagId = tag.id')
-      .andWhere('tag.id IN (:...tags)')
+      .innerJoin(NoticeTag, 'noticeTag', 'noticeTag.noticeId = notice.id')
+      .andWhere('noticeTag.tagId IN (:tags)')
       .setParameter('tags', tags);
   }
 
