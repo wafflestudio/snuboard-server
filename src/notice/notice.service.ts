@@ -81,7 +81,7 @@ export class NoticeService {
     if (this.isSearchQuery(query)) {
       return await this.searchNotice(noticeQb, user, query, tagIds);
     } else {
-      this.appendTagQb(noticeQb, tagIds);
+      await this.appendTagQb(noticeQb, tagIds, query.limit, query.cursor);
       return await this.makeResponse(noticeQb, user, query.limit, query.cursor);
     }
   }
@@ -105,7 +105,7 @@ export class NoticeService {
     if (this.isSearchQuery(query)) {
       return await this.searchNotice(noticeQb, user, query, tagIds);
     } else {
-      this.appendTagQb(noticeQb, tagIds);
+      await this.appendTagQb(noticeQb, tagIds, query.limit, query.cursor);
       return await this.makeResponse(noticeQb, user, query.limit, query.cursor);
     }
   }
@@ -142,7 +142,7 @@ export class NoticeService {
     tags: number[],
   ): Promise<NoticesResponseDto> {
     const keywords: string[] = this.splitParam(query.keywords, ' ');
-    this.appendTagQb(noticeQb, tags);
+    await this.appendTagQb(noticeQb, tags, query.limit, query.cursor);
     this.appendKeywordQb(noticeQb, keywords);
     return await this.makeResponse(noticeQb, user, query.limit, query.cursor);
   }
@@ -273,16 +273,55 @@ export class NoticeService {
       .setParameter(`keywordParam`, keywordParam);
   }
 
-  appendTagQb(noticeQb: SelectQueryBuilder<Notice>, tags: number[]): void {
+  async appendTagQb(
+    noticeQb: SelectQueryBuilder<Notice>,
+    tags: number[],
+    limit: number,
+    cursor: string,
+  ): Promise<void> {
     if (tags.length == 0) {
       return;
     }
 
-    noticeQb
-      .innerJoin('notice_tag', 'noticeTag', 'noticeTag.noticeId = notice.id')
-      .innerJoin('tag', 'tag', 'noticeTag.tagId = tag.id')
-      .andWhere('tag.id IN (:...tags)')
-      .setParameter('tags', tags);
+    const noticeTagQb: SelectQueryBuilder<NoticeTag> = NoticeTag.createQueryBuilder(
+      'noticeTag',
+    );
+
+    noticeTagQb.select('noticeId').distinct(true);
+
+    if (cursor.length !== 0) {
+      const cursorInfo = cursor.split('-');
+      const cursorCreatedAt = new Date(+cursorInfo[0]);
+      const cursorId = +cursorInfo[1];
+
+      noticeTagQb.where(
+        new Brackets((qb) => {
+          qb.where('noticeTag.noticeCreatedAt < :cursorCreatedAt', {
+            cursorCreatedAt,
+          }).orWhere(
+            new Brackets((qb) => {
+              qb.where('noticeTag.noticeCreatedAt = :cursorCreatedAt', {
+                cursorCreatedAt,
+              }).andWhere('noticeTag.noticeId < :cursorId', { cursorId });
+            }),
+          );
+        }),
+      );
+    }
+
+    noticeTagQb
+      .andWhere('noticeTag.tagId IN (:...tags)')
+      .setParameter('tags', tags)
+      .orderBy('noticeTag.noticeCreatedAt', 'DESC')
+      .addOrderBy('noticeTag.noticeId', 'DESC')
+      .limit(limit + 1);
+
+    const noticeIds = (await noticeTagQb.getRawMany()).map((noticeTag) => {
+      return noticeTag.noticeId;
+    });
+
+    noticeQb.andWhereInIds(noticeIds);
+    noticeQb.getQuery();
   }
 
   async getValidatedUser(reqUser: User): Promise<User> {
