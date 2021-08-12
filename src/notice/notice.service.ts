@@ -312,7 +312,9 @@ export class NoticeService {
     noticeQb
       .innerJoin(NoticeTag, 'noticeTag', 'noticeTag.noticeId = notice.id')
       .andWhere('noticeTag.tagId IN (:tags)')
-      .setParameter('tags', tags);
+      .setParameter('tags', tags)
+      .addGroupBy('noticeTag.noticeCreatedAt')
+      .addGroupBy('noticeTag.noticeId');
   }
 
   async getValidatedUser(reqUser: User): Promise<User> {
