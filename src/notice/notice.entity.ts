@@ -10,7 +10,7 @@ import {
 import { User } from '../user/user.entity';
 import { Department, NoticeTag } from '../department/department.entity';
 import { Exclude, Expose } from 'class-transformer';
-import { PREVIEW_LENGTH } from './constansts';
+import { PREVIEW_LENGTH } from './constants';
 
 @Entity()
 @Index(['createdAt', 'id'])

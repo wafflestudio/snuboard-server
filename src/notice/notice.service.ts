@@ -304,7 +304,12 @@ export class NoticeService {
       .setParameter(`keywordParam`, keywordParam);
   }
 
-  appendTagQb(noticeQb: SelectQueryBuilder<Notice>, tags: number[]): void {
+  async appendTagQb(
+    noticeQb: SelectQueryBuilder<Notice>,
+    tags: number[],
+    limit: number,
+    cursor: string,
+  ): Promise<void> {
     if (tags.length == 0) {
       return;
     }
