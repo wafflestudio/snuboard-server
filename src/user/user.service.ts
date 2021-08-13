@@ -13,10 +13,15 @@ import { UserRequest } from '../types/custom-type';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { KeywordDto } from './dto/keyword.dto';
 import * as bcrypt from 'bcrypt';
+import { FcmTopicDto } from './dto/fcm-topic.dto';
+import { FirebaseService } from '../firebase/firebase.service';
 
 @Injectable()
 export class UserService {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private firebaseService: FirebaseService,
+  ) {}
 
   async create(userData: CreateUserDto): Promise<User> {
     const user: User = User.create(userData);
@@ -129,5 +134,17 @@ export class UserService {
     if (!user) throw ForbiddenException;
 
     return user;
+  }
+
+  async subscribeFcmTopics(req: UserRequest, tokenData: FcmTopicDto) {
+    const token = tokenData.token;
+
+    await this.firebaseService.createUserSubscription(req.user, token);
+  }
+
+  async unsubscribeFcmTopics(req: UserRequest, tokenData: FcmTopicDto) {
+    const token = tokenData.token;
+
+    await this.firebaseService.deleteUserSubscription(req.user, token);
   }
 }

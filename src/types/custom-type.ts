@@ -38,4 +38,8 @@ export interface UserDepartment {
   department?: Department;
 }
 
+export interface StringKey {
+  [key: string]: string;
+}
+
 export type orderType = 'notice' | 'noticeTag';

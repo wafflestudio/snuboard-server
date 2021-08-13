@@ -83,6 +83,17 @@ export class User extends BaseEntity {
       relations: ['userKeywords', 'userKeywords.keyword'],
     });
   }
+
+  async getSubscribedTags() {
+    const userTags = await UserTag.find({
+      where: [{ user: this }],
+      relations: ['tag', 'user', 'tag.department'],
+    });
+
+    return userTags.map((userTag) => {
+      return userTag.tag;
+    });
+  }
 }
 
 @Entity()

@@ -17,6 +17,7 @@ import { AuthDto } from './dto/auth-user.dto';
 import { UserRequest } from '../types/custom-type';
 import { KeywordDto } from './dto/keyword.dto';
 import { AuthTokenGuard, JwtAccessGuard } from '../auth/auth.guard';
+import { FcmTopicDto } from './dto/fcm-topic.dto';
 
 @Controller('users')
 export class UserController {
@@ -74,5 +75,23 @@ export class UserController {
     @Body() keyword: KeywordDto,
   ): Promise<User> {
     return await this.userService.deleteKeyword(req, keyword);
+  }
+
+  @UseGuards(JwtAccessGuard)
+  @Post('me/fcm/topics')
+  async subscribeFcmTopic(
+    @Req() req: UserRequest,
+    @Body() tokenData: FcmTopicDto,
+  ) {
+    return await this.userService.subscribeFcmTopics(req, tokenData);
+  }
+
+  @UseGuards(JwtAccessGuard)
+  @Delete('me/fcm/topics')
+  async unsubscribeFcmTopic(
+    @Req() req: UserRequest,
+    @Body() tokenData: FcmTopicDto,
+  ) {
+    return await this.userService.unsubscribeFcmTopics(req, tokenData);
   }
 }

@@ -9,17 +9,9 @@ import {
   Tag,
   UserTag,
 } from './department/department.entity';
+import { getEnvFile } from './functions/custom-function';
 
-const ENV: string = process.env.NODE_ENV ?? 'dev';
-let envFile: string;
-if (ENV === 'production') {
-  envFile = '.env.prod';
-} else if (ENV === 'ci') {
-  envFile = '.env.ci';
-} else {
-  envFile = '.env.dev';
-}
-
+const envFile = getEnvFile();
 config({ path: path.resolve(process.cwd(), envFile) });
 
 const ormConfig: ConnectionOptions = {
