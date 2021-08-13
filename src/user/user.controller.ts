@@ -79,7 +79,7 @@ export class UserController {
 
   @UseGuards(JwtAccessGuard)
   @Post('me/fcm/topics')
-  async subscribeFcmTopic(
+  async createSubscriptionToFcmTopics(
     @Req() req: UserRequest,
     @Body() tokenData: FcmTopicDto,
   ) {
@@ -88,7 +88,7 @@ export class UserController {
 
   @UseGuards(JwtAccessGuard)
   @Delete('me/fcm/topics')
-  async unsubscribeFcmTopic(
+  async deleteSubscriptionFromFcmTopics(
     @Req() req: UserRequest,
     @Body() tokenData: FcmTopicDto,
   ) {
