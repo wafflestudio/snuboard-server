@@ -136,13 +136,19 @@ export class UserService {
     return user;
   }
 
-  async subscribeFcmTopics(req: UserRequest, tokenData: FcmTopicDto) {
+  async createSubscriptionToFcmTopics(
+    req: UserRequest,
+    tokenData: FcmTopicDto,
+  ) {
     const token = tokenData.token;
 
     await this.firebaseService.createUserSubscription(req.user, token);
   }
 
-  async unsubscribeFcmTopics(req: UserRequest, tokenData: FcmTopicDto) {
+  async deleteSubscriptionFromFcmTopics(
+    req: UserRequest,
+    tokenData: FcmTopicDto,
+  ) {
     const token = tokenData.token;
 
     await this.firebaseService.deleteUserSubscription(req.user, token);

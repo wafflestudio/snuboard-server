@@ -83,7 +83,7 @@ export class UserController {
     @Req() req: UserRequest,
     @Body() tokenData: FcmTopicDto,
   ) {
-    return await this.userService.subscribeFcmTopics(req, tokenData);
+    return await this.userService.createSubscriptionToFcmTopics(req, tokenData);
   }
 
   @UseGuards(JwtAccessGuard)
@@ -92,6 +92,9 @@ export class UserController {
     @Req() req: UserRequest,
     @Body() tokenData: FcmTopicDto,
   ) {
-    return await this.userService.unsubscribeFcmTopics(req, tokenData);
+    return await this.userService.deleteSubscriptionFromFcmTopics(
+      req,
+      tokenData,
+    );
   }
 }
