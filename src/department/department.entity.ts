@@ -40,6 +40,10 @@ export class Department extends BaseEntity {
   @Exclude()
   @Column()
   style!: string;
+
+  @Exclude()
+  @Column()
+  code!: string;
 }
 
 @Entity()
