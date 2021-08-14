@@ -52,6 +52,7 @@ export class Notice extends BaseEntity {
   department!: Department;
 
   @Exclude()
+  @Column()
   departmentCode!: string;
 
   @Expose()
