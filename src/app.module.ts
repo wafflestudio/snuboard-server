@@ -7,21 +7,22 @@ import { NoticeModule } from './notice/notice.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { FirebaseModule } from './firebase/firebase.module';
 import * as ormConfig from './ormconfig';
-
-const ENV: string | undefined = process.env.NODE_ENV;
+import { getEnvFile } from './functions/custom-function';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: [ENV === 'production' ? '.env.prod' : '.env.dev', '.env.ci'],
+      envFilePath: [getEnvFile()],
     }),
     TypeOrmModule.forRoot(ormConfig),
     UserModule,
     DepartmentModule,
     NoticeModule,
     AuthModule,
+    FirebaseModule,
   ],
   controllers: [AppController],
   providers: [AppService],
