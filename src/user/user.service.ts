@@ -142,7 +142,7 @@ export class UserService {
   ) {
     const token = tokenData.token;
 
-    await this.firebaseService.createUserSubscription(req.user, token);
+    return await this.firebaseService.createUserSubscription(req.user, token);
   }
 
   async deleteSubscriptionFromFcmTopics(
@@ -151,6 +151,6 @@ export class UserService {
   ) {
     const token = tokenData.token;
 
-    await this.firebaseService.deleteUserSubscription(req.user, token);
+    return await this.firebaseService.deleteUserSubscription(req.user, token);
   }
 }

@@ -13,7 +13,7 @@ export class FirebaseService {
   async createUserSubscription(user: User, token: string) {
     const tags = await user.getSubscribedTags();
 
-    await Promise.all(
+    return await Promise.all(
       tags.map((tag) => {
         admin
           .messaging()
@@ -25,7 +25,7 @@ export class FirebaseService {
   async deleteUserSubscription(user: User, token: string) {
     const tags = await user.getSubscribedTags();
 
-    await Promise.all(
+    return await Promise.all(
       tags.map((tag) => {
         admin
           .messaging()
