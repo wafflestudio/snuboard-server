@@ -531,6 +531,94 @@ paths:
           name: Authorization
           description: 'Bearer [token]'
       description: '등록된 keyword를 삭제합니다.없는 키워드를 지우려고 하는 경우 204를 리턴하지만, 유저에 대한 정보는 주지 않습니다.'
+  /users/me/fcm/topics:
+    post:
+      summary: ''
+      operationId: post-users-me-fcm-topics
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: array
+                description: ''
+                minItems: 1
+                uniqueItems: true
+                items:
+                  type: object
+                  required: []
+                  properties: {}
+                x-examples:
+                  example-1:
+                    - result1
+                    - result2
+              examples:
+                example-1:
+                  value:
+                    - result1
+                    - result2
+      description: |-
+        유저가 구독하는 태그를 모두 fcm에서 body의 토큰에 구독합니다
+        response : fcm response를 배열로 전달.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              properties:
+                token:
+                  type: string
+                  minLength: 1
+              required:
+                - token
+              x-examples:
+                example-1:
+                  token: token string
+            examples:
+              example-1:
+                value:
+                  token: token string
+      parameters: []
+    delete:
+      summary: ''
+      operationId: delete-users-me-fcm-topics
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              examples:
+                example-1:
+                  value:
+                    - result1
+                    - result2
+      description: |-
+        유저가 구독하는 태그를 모두 fcm에서 body의 토큰에 구독취소 합니다
+        response : fcm response를 배열로 전달.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              properties:
+                token:
+                  type: string
+                  minLength: 1
+              required:
+                - token
+              x-examples:
+                example-1:
+                  token: token string
+            examples:
+              example-1:
+                value:
+                  token: token string
 components:
   schemas:
     User:
