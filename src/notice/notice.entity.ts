@@ -51,6 +51,10 @@ export class Notice extends BaseEntity {
   })
   department!: Department;
 
+  @Exclude()
+  @Column()
+  departmentCode!: string;
+
   @Expose()
   get department_id(): number {
     return this.department.id;

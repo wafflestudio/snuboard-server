@@ -80,7 +80,13 @@ export class NoticeService {
     }
 
     if (this.isSearchQuery(query)) {
-      return await this.searchNotice(noticeQb, user, query, tagIds);
+      return await this.searchNotice(
+        noticeQb,
+        user,
+        query,
+        tagIds,
+        departmentId,
+      );
     } else {
       this.appendTagQb(noticeQb, tagIds);
       return await this.makeResponse(
@@ -158,11 +164,25 @@ export class NoticeService {
     user: User,
     query: SearchFollowedNoticeDto | SearchNoticeInDeptDto,
     tags: number[],
+    departmentId?: number,
   ): Promise<NoticesResponseDto> {
     const keywords: string[] = this.splitParam(query.keywords, ' ');
+    let departmentCode = [];
+    if (departmentId === undefined) {
+      const departments = await Tag.find({
+        select: ['department'],
+        where: { id: In(tags) },
+      });
+      departmentCode = departments.map((tag) => tag.department.code);
+    } else {
+      const department = await Department.findOne({
+        where: { id: departmentId },
+      });
+      departmentCode = department ? [department.code] : [];
+    }
     const orderByCol: orderType = tags.length > 0 ? 'noticeTag' : 'notice';
     this.appendTagQb(noticeQb, tags);
-    this.appendKeywordQb(noticeQb, keywords);
+    this.appendKeywordQb(noticeQb, keywords, departmentCode);
     return await this.makeResponse(
       noticeQb,
       user,
@@ -293,15 +313,20 @@ export class NoticeService {
   appendKeywordQb(
     noticeQb: SelectQueryBuilder<Notice>,
     keywords: string[],
+    departments: string[],
   ): void {
     const keywordParam = keywords
       .map((keyword) => '+' + keyword.replace(/[-*+~()<>"]+/g, '') + '*')
       .reduce((a, b) => a + ' ' + b);
+    const departmentParam = `+(${departments.reduce(
+      (acc, dept) => acc + ' ' + dept,
+      '',
+    )})`;
     noticeQb
       .andWhere(
-        `match (contentText, title) against (:keywordParam IN BOOLEAN MODE)`,
+        `match (contentText, title, departmentCode) against (:keywordParam IN BOOLEAN MODE)`,
       )
-      .setParameter(`keywordParam`, keywordParam);
+      .setParameter(`keywordParam`, keywordParam + ' ' + departmentParam);
   }
 
   appendTagQb(noticeQb: SelectQueryBuilder<Notice>, tags: number[]): void {
