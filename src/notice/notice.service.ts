@@ -170,8 +170,8 @@ export class NoticeService {
     let departmentCode = [];
     if (departmentId === undefined) {
       const departments = await Tag.find({
-        select: ['department'],
         where: { id: In(tags) },
+        relations: ['department'],
       });
       departmentCode = departments.map((tag) => tag.department.code);
     } else {
@@ -322,6 +322,7 @@ export class NoticeService {
       (acc, dept) => acc + ' ' + dept,
       '',
     )})`;
+
     noticeQb
       .andWhere(
         `match (contentText, title, departmentCode) against (:keywordParam IN BOOLEAN MODE)`,
