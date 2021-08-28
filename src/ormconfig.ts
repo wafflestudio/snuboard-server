@@ -1,7 +1,7 @@
 import { config } from 'dotenv';
 import { ConnectionOptions } from 'typeorm';
 import * as path from 'path';
-import { Keyword, User, UserKeyword } from './user/user.entity';
+import { User } from './user/user.entity';
 import { Notice, UserNotice, File } from './notice/notice.entity';
 import {
   Department,
@@ -23,7 +23,6 @@ const ormConfig: ConnectionOptions = {
   database: process.env.DATABASE_DBNAME,
   entities: [
     User,
-    Keyword,
     UserNotice,
     File,
     Notice,
@@ -31,7 +30,6 @@ const ormConfig: ConnectionOptions = {
     Tag,
     Department,
     NoticeTag,
-    UserKeyword,
   ],
   //need to be set false when production
   synchronize: false,
