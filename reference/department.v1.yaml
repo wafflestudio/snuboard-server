@@ -75,7 +75,7 @@ paths:
         export const MUSIC = '음악대학';
         export const MEDICINE = '의과대학';
         export const CLS = '자유전공학부';
-        export const ETC = '기타';
+        export const ETC = '기타 기관';
         ```
       parameters:
         - schema:
