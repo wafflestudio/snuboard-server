@@ -5,177 +5,6 @@ info:
 servers:
   - url: 'http://localhost:3000'
 paths:
-  /users/me/:
-    parameters: []
-    get:
-      summary: Get User Info by User ID
-      tags: []
-      responses:
-        '200':
-          description: User Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-              examples:
-                Get user me:
-                  value:
-                    id: 1
-                    username: eldpswp99
-                    email: asdf@naver.com
-                    keywords:
-                      - 장학
-                      - 인턴
-        '401':
-          description: |-
-            Unauthorized
-            access_token 신규 혹은 재발급 필요
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Unauthorized'
-              examples:
-                invalid token:
-                  value:
-                    statusCode: 401
-                    message: Unauthorized
-      operationId: get-user-me
-      description: Retrieve the information of the user him/herself.
-      parameters:
-        - schema:
-            type: string
-          in: header
-          name: Authorization
-          description: 'Bearer [access_token]'
-    patch:
-      summary: Update User Information
-      operationId: patch-user-userId
-      responses:
-        '200':
-          description: User Updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-              examples:
-                update user me:
-                  value:
-                    id: 1
-                    username: eldpswp99
-                    email: Rebecca@email.com
-                    keywords:
-                      - 장학
-                      - 인턴
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                description: ''
-                type: object
-                properties:
-                  statusCode:
-                    type: number
-                  message:
-                    type: string
-                    minLength: 1
-                  error:
-                    type: string
-                    minLength: 1
-                required:
-                  - statusCode
-                  - message
-                  - error
-              examples:
-                Bad request:
-                  value:
-                    statusCode: 400
-                    message: Duplicate Username Error
-                    error: Bad Request
-        '401':
-          description: |-
-            Unauthorized
-            access_token 신규 혹은 재발급 필요
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Unauthorized'
-              examples:
-                Invalid token:
-                  value:
-                    statusCode: 401
-                    message: Unauthorized
-      description: Update the infromation of an existing user.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                password:
-                  type: string
-            examples:
-              Update nickname:
-                value:
-                  email: Rebecca@email.com
-        description: Patch user properties to update.
-      parameters:
-        - schema:
-            type: string
-          in: header
-          name: Authorization
-          description: 'Bearer [token]'
-    delete:
-      summary: ''
-      operationId: delete-users-me
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-              examples:
-                삭제:
-                  value:
-                    username: username1
-                    nickname: nickname111
-                    keywords:
-                      - asdf
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                description: ''
-                type: object
-                properties:
-                  statusCode:
-                    type: number
-                  message:
-                    type: string
-                    minLength: 1
-                required:
-                  - statusCode
-                  - message
-                x-examples:
-                  example-1:
-                    statusCode: 401
-                    message: Unauthorized
-              examples:
-                example-1:
-                  value:
-                    statusCode: 401
-                    message: Unauthorized
-      description: 유저 삭제
-      parameters:
-        - schema:
-            type: string
-          in: header
-          name: Authorization
-          description: 'Bearer [token]'
   /users/:
     post:
       summary: Create New User
@@ -194,11 +23,8 @@ paths:
                 post user example:
                   value:
                     id: 21
-                    username: mmmas
-                    email: mmmas@email.com
                     access_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1tbWFzIiwiaWQiOjIxLCJpYXQiOjE2MTMyNzk1NjgsImV4cCI6MTYxMzI4MzE2OH0.f-3buI9Hku6j15r7MRFmTFrkopYEgeBBvkGxXMweMGw
                     refresh_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1tbWFzIiwiaWQiOjIxLCJpYXQiOjE2MTMyNzk1Njh9.Sl-785nKn45ZKAZyX1r2IYrqc8OnctuOSCTaWryIeEc
-                    keywords: []
             application/xml:
               schema:
                 type: object
@@ -265,22 +91,14 @@ paths:
             schema:
               type: object
               properties:
-                username:
-                  type: string
-                password:
-                  type: string
-                email:
+                token:
                   type: string
               required:
-                - username
-                - password
-                - email
+                - token
             examples:
               post user example:
                 value:
-                  username: eldpswp99
-                  password: password
-                  email: email@naver.com
+                  token: example
         description: Post the necessary fields for the API to create a new user.
       description: Create a new user.
     parameters: []
@@ -300,11 +118,8 @@ paths:
                 example-1:
                   value:
                     id: 1
-                    username: eldpswp99
-                    email: email@naver.com
                     access_token: access_token
                     refresh_token: refresh_token
-                    keywords: []
         '400':
           description: Bad Request
           content:
@@ -372,27 +187,9 @@ paths:
             schema:
               description: ''
               type: object
-              properties:
-                grant_type:
-                  type: string
-                  minLength: 1
-                username:
-                  type: string
-                  minLength: 1
-                password:
-                  type: string
-                  minLength: 1
-              required:
-                - grant_type
             examples:
-              password authentication:
-                value:
-                  grant_type: password
-                  username: eldpswp99
-                  password: password
-              refresh_token authentication:
-                value:
-                  grant_type: refresh_token
+              refresh_token authentication  // token should be given to Authorization header:
+                value: {}
         description: |-
           refresh_token 인증 방법을 이용할 시 
 
@@ -403,184 +200,7 @@ paths:
           in: header
           name: Authorization
           description: 'Bearer [refresh_token]'
-  /users/me/keyword:
-    post:
-      summary: Create user keyword
-      operationId: post-users-me-keyword
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-              examples:
-                example-1:
-                  value:
-                    id: 1
-                    username: eldpswp99
-                    email: asdf@naver.com
-                    keywords:
-                      - 장학
-                      - 인턴
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                description: ''
-                type: object
-                properties:
-                  statusCode:
-                    type: number
-                  message:
-                    type: string
-                    minLength: 1
-                  error:
-                    type: string
-                    minLength: 1
-                required:
-                  - statusCode
-                  - message
-                  - error
-              examples:
-                example-1:
-                  value:
-                    statusCode: 400
-                    message: keyword already added to this user
-                    error: Bad Request
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Unauthorized'
-              examples:
-                example-1:
-                  value:
-                    statusCode: 401
-                    message: Unauthorized
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                keyword:
-                  type: string
-            examples:
-              example-1:
-                value:
-                  keyword: 장학
-        description: ''
-      parameters:
-        - schema:
-            type: string
-          in: header
-          name: Authorization
-          description: 'Bearer [token]'
-      description: keyword를 새로 등록합니다.
-    delete:
-      summary: Delete User keyword
-      operationId: delete-users-me-keyword
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-              examples:
-                example-1:
-                  value:
-                    id: 1
-                    username: eldpswp99
-                    nickname: nickname
-                    keywords:
-                      - 장학
-                      - 인턴
-        '204':
-          description: No Content
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Unauthorized'
-              examples:
-                example-1:
-                  value:
-                    statusCode: 401
-                    message: Unauthorized
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                keyword:
-                  type: string
-            examples:
-              example-1:
-                value:
-                  keyword: 장학
-      parameters:
-        - schema:
-            type: string
-          in: header
-          name: Authorization
-          description: 'Bearer [token]'
-      description: '등록된 keyword를 삭제합니다.없는 키워드를 지우려고 하는 경우 204를 리턴하지만, 유저에 대한 정보는 주지 않습니다.'
   /users/me/fcm/topics:
-    post:
-      summary: ''
-      operationId: post-users-me-fcm-topics
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                type: array
-                description: ''
-                minItems: 1
-                uniqueItems: true
-                items:
-                  type: object
-                  required: []
-                  properties: {}
-                x-examples:
-                  example-1:
-                    - result1
-                    - result2
-              examples:
-                example-1:
-                  value:
-                    - result1
-                    - result2
-      description: |-
-        유저가 구독하는 태그를 모두 fcm에서 body의 토큰에 구독합니다
-        response : fcm response를 배열로 전달.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              description: ''
-              type: object
-              properties:
-                token:
-                  type: string
-                  minLength: 1
-              required:
-                - token
-              x-examples:
-                example-1:
-                  token: token string
-            examples:
-              example-1:
-                value:
-                  token: token string
-      parameters: []
     delete:
       summary: ''
       operationId: delete-users-me-fcm-topics
@@ -619,6 +239,35 @@ paths:
               example-1:
                 value:
                   token: token string
+    post:
+      summary: ''
+      operationId: post-users-me-fcm-topics
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                description: ''
+                minItems: 1
+                uniqueItems: true
+                items:
+                  type: object
+                  required: []
+                  properties: {}
+                x-examples:
+                  example-1:
+                    - result1
+                    - result2
+              examples:
+                example-1:
+                  value:
+                    - result1
+                    - result2
+      description: |-
+        유저가 구독하는 태그를 모두 fcm에서 body의 토큰에 구독 합니다
+        response : fcm response를 배열로 전달.
 components:
   schemas:
     User:
@@ -635,21 +284,12 @@ components:
       properties:
         id:
           type: number
-        username:
-          type: string
-          minLength: 1
         email:
           type: string
           minLength: 1
-        keywords:
-          type: array
-          items:
-            type: string
       required:
         - id
-        - username
         - email
-        - keywords
     tokenUser:
       description: ''
       type: object
@@ -666,29 +306,16 @@ components:
       properties:
         id:
           type: number
-        username:
-          type: string
-          minLength: 1
-        email:
-          type: string
-          minLength: 1
         access_token:
           type: string
           minLength: 1
         refresh_token:
           type: string
           minLength: 1
-        keywords:
-          type: array
-          items:
-            type: string
       required:
         - id
-        - username
-        - email
         - access_token
         - refresh_token
-        - keywords
     Unauthorized:
       description: ''
       type: object
