@@ -16,13 +16,11 @@ export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
+  @Exclude()
   @Column({
     unique: true,
   })
   username!: string;
-
-  @Column()
-  email!: string;
 
   @Exclude()
   @Column({ default: true })

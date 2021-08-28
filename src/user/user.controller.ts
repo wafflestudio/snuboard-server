@@ -20,12 +20,6 @@ import { FcmTopicDto } from './dto/fcm-topic.dto';
 export class UserController {
   constructor(private userService: UserService) {}
 
-  @UseGuards(JwtAccessGuard)
-  @Get('me')
-  getUserMe(@Req() req: UserRequest) {
-    return this.userService.getUserMe(req);
-  }
-
   @Post()
   async create(@Body() userData: CreateUserDto): Promise<User> {
     return this.userService.create(userData);

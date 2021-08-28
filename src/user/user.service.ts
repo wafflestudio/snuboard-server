@@ -16,7 +16,6 @@ export class UserService {
   async create(userData: CreateUserDto): Promise<User> {
     const user: User = User.create({
       username: userData.token,
-      email: '',
     });
     await User.save(user);
     return this.authService.login(user);
@@ -24,10 +23,6 @@ export class UserService {
 
   async auth(req: UserRequest): Promise<User> {
     return await this.authService.login(req.user);
-  }
-
-  async getUserMe(req: UserRequest): Promise<User | undefined> {
-    return await User.findOne({ id: req.user.id });
   }
 
   async createSubscriptionToFcmTopics(
