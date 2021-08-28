@@ -5,4 +5,4 @@ import { Injectable } from '@nestjs/common';
 export class JwtAccessGuard extends AuthGuard('jwt-access') {}
 
 @Injectable()
-export class AuthTokenGuard extends AuthGuard(['local', 'jwt-refresh']) {}
+export class AuthTokenGuard extends AuthGuard('jwt-refresh') {}

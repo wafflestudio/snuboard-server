@@ -8,17 +8,6 @@ import { Payload } from '../types/custom-type';
 export class AuthService {
   constructor(private jwtService: JwtService) {}
 
-  async validateUser(
-    username: string,
-    password: string,
-  ): Promise<User | undefined> {
-    const user = await User.findOne({ username });
-    if (user && (await bcrypt.compare(password, user.password))) {
-      return user;
-    }
-    return undefined;
-  }
-
   async login(user: User | undefined): Promise<User> {
     if (!user) throw new UnauthorizedException();
 
@@ -36,7 +25,7 @@ export class AuthService {
       +process.env.SALT_ROUND!,
     );
     await User.save(user);
-    user = await User.findOneWithKeyword({ id: user.id });
+    user = await User.findOne({ id: user.id });
 
     if (!user) throw new UnauthorizedException();
     user.access_token = accessToken;
