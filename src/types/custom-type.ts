@@ -1,7 +1,7 @@
 import { Request } from 'express';
 import { User } from '../user/user.entity';
 import { Department, Tag, UserTag } from '../department/department.entity';
-import { NoticePaginationDto } from 'src/notice/dto/noticePagination.dto';
+import { NoticePaginationDto } from '../notice/dto/noticePagination.dto';
 import { Notice, UserNotice } from '../notice/notice.entity';
 import exp from 'constants';
 
