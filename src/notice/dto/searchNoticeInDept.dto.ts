@@ -3,6 +3,7 @@ import { NoticePaginationDto } from './noticePagination.dto';
 
 export class SearchNoticeInDeptDto extends NoticePaginationDto {
   @IsString()
+  @IsOptional()
   keywords!: string;
 
   @IsBoolean()
