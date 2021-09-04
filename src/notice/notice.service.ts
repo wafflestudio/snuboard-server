@@ -284,9 +284,6 @@ export class NoticeService {
       throw new BadRequestException('invalid cursor format');
     }
     if (this.isSearchQuery(query)) {
-      if (query.keywords.length == 0) {
-        throw new BadRequestException('검색어를 입력해 주세요');
-      }
       const minLength = Math.min(
         ...this.splitParam(query.keywords, ' ').map(
           (keyword) => keyword.length,
@@ -317,7 +314,7 @@ export class NoticeService {
   ): void {
     const keywordParam = keywords
       .map((keyword) => '+' + keyword.replace(/[-*+~()<>"]+/g, '') + '*')
-      .reduce((a, b) => a + ' ' + b);
+      .reduce((a, b) => a + ' ' + b, '');
     const departmentParam = `+(${departments.reduce(
       (acc, dept) => acc + ' ' + dept,
       '',
