@@ -76,6 +76,7 @@ paths:
         export const MEDICINE = '의과대학';
         export const CLS = '자유전공학부';
         export const ETC = '기타 기관';
+        export const UNION = '연합전공';
         ```
       parameters:
         - schema:
