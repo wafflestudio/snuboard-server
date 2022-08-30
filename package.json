@@ -36,7 +36,7 @@
     "bcrypt": "^5.0.1",
     "class-transformer": "^0.3.2",
     "class-validator": "^0.13.1",
-    "firebase-admin": "^9.11.0",
+    "firebase-admin": "^11.0.1",
     "mysql2": "^2.2.5",
     "nest": "^0.1.6",
     "passport": "^0.4.1",
