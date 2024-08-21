@@ -15,7 +15,7 @@ const envFile = getEnvFile();
 config({ path: path.resolve(process.cwd(), envFile) });
 
 const ormConfig: ConnectionOptions = {
-  type: 'mariadb',
+  type: 'mysql',
   host: process.env.DATABASE_HOST,
   port: +(process.env.DATABASE_PORT ?? 3306),
   username: process.env.DATABASE_USER,
