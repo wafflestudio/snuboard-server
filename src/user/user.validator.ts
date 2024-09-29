@@ -1,28 +1,25 @@
-import {
-  ValidationArguments,
-  ValidatorConstraint,
-  ValidatorConstraintInterface,
-} from 'class-validator';
+import { ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
+
 import { User } from './user.entity';
 
 @ValidatorConstraint({ async: true })
 export class UniqueUsernameValidator implements ValidatorConstraintInterface {
-  async validate(username: string): Promise<boolean> {
-    return !(await User.findOne({ username }));
-  }
+    async validate(username: string): Promise<boolean> {
+        return !(await User.findOne({ where: { username } }));
+    }
 
-  defaultMessage(validationArguments?: ValidationArguments): string {
-    return '이미 동일한 아이디가 사용중입니다.';
-  }
+    defaultMessage(validationArguments?: ValidationArguments): string {
+        return '이미 동일한 아이디가 사용중입니다.';
+    }
 }
 
 @ValidatorConstraint()
 export class NotDefinedValidator implements ValidatorConstraintInterface {
-  validate(value: string): boolean {
-    return value === undefined || value === null;
-  }
+    validate(value: string): boolean {
+        return value === undefined || value === null;
+    }
 
-  defaultMessage(validationArguments?: ValidationArguments): string {
-    return 'Should not be defined';
-  }
+    defaultMessage(validationArguments?: ValidationArguments): string {
+        return 'Should not be defined';
+    }
 }

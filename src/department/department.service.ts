@@ -1,172 +1,144 @@
 import {
-  BadRequestException,
-  HttpException,
-  HttpStatus,
-  Injectable,
-  NotFoundException,
-  Req,
-  UnauthorizedException,
+    BadRequestException,
+    HttpException,
+    HttpStatus,
+    Injectable,
+    NotFoundException,
+    Req,
+    UnauthorizedException,
 } from '@nestjs/common';
-import { PreFollow, UserRequest } from '../types/custom-type';
+import { In, ObjectLiteral } from 'typeorm';
+
 import { Department, Tag, UserTag } from './department.entity';
+import { PreFollow, UserRequest } from '../types/custom-type';
 import { FollowDto } from './dto/follow.dto';
 import { User } from '../user/user.entity';
-import { In } from 'typeorm';
 
 @Injectable()
 export class DepartmentService {
-  async getAllDepartments(@Req() req: UserRequest): Promise<Department[]> {
-    const departments: Department[] = await Department.find({
-      relations: ['tags'],
-    });
+    async getAllDepartments(@Req() req: UserRequest): Promise<Department[]> {
+        const departments: Department[] = await Department.find({
+            relations: ['tags'],
+        });
 
-    return this.attachFollow(departments, req.user);
-  }
-
-  async attachFollow(
-    departments: Department[],
-    user: User,
-  ): Promise<Department[]> {
-    departments.forEach((department) => {
-      department.follow = [];
-    });
-
-    const follows: UserTag[] = await UserTag.find({
-      where: {
-        user,
-      },
-      relations: ['tag', 'tag.department'],
-    });
-    follows.forEach((userTag) => {
-      const department = departments.find(
-        (department) => department.id === userTag.tag.department.id,
-      );
-      if (department !== undefined) {
-        department.follow?.push(userTag.tag);
-      }
-    });
-
-    return departments;
-  }
-
-  async getDepartment(
-    @Req() req: UserRequest,
-    id: number,
-  ): Promise<Department> {
-    const department: Department | undefined = await Department.findOne(id, {
-      relations: ['tags'],
-    });
-    if (!department) {
-      throw new NotFoundException('There is no department with the given id');
+        return this.attachFollow(departments, req.user);
     }
 
-    department.follow = await this.getFollow(department, req.user);
-    return department;
-  }
+    async attachFollow(departments: Department[], user: User): Promise<Department[]> {
+        departments.forEach((department) => {
+            department.follow = [];
+        });
 
-  async getFollow(
-    department: Department,
-    user: User | undefined,
-  ): Promise<Tag[]> {
-    user = await User.findOne(user);
-    if (!user) throw new UnauthorizedException();
-    const tags: Tag[] = await Tag.find({
-      department,
-    });
-    const userTags: UserTag[] = await UserTag.find({
-      where: {
-        user,
-        tag: In(tags.map((tag) => tag.id)),
-      },
-      relations: ['tag'],
-    });
+        const follows: UserTag[] = await UserTag.find({
+            where: {
+                user,
+            },
+            relations: ['tag', 'tag.department'],
+        });
+        follows.forEach((userTag) => {
+            const department = departments.find((department) => department.id === userTag.tag.department.id);
+            if (department !== undefined) {
+                department.follow?.push(userTag.tag);
+            }
+        });
 
-    return userTags ? userTags.map((userTag) => userTag.tag) : [];
-  }
-
-  async validateIdFollow(
-    req: UserRequest,
-    id: number,
-    followData: FollowDto,
-  ): Promise<PreFollow> {
-    const department: Department | undefined = await Department.findOne(id, {
-      relations: ['tags'],
-    });
-    if (!department) {
-      throw new NotFoundException('There is no department with the id');
+        return departments;
     }
 
-    const tag: Tag | undefined = department.tags.find(
-      (tag) => tag.name === followData.follow,
-    );
-    if (!tag) {
-      throw new BadRequestException(
-        `There is no tag with the given name: ${followData.follow}`,
-      );
-    }
-    const user: User | undefined = await User.findOne(req.user);
-    if (!user) throw new UnauthorizedException();
-    const userTag: UserTag | undefined = await UserTag.findOne({
-      user,
-      tag,
-    });
+    async getDepartment(@Req() req: UserRequest, id: number): Promise<Department> {
+        const department: Department | null = await Department.findOne({
+            where: { id },
+            relations: ['tags'],
+        });
+        if (!department) {
+            throw new NotFoundException('There is no department with the given id');
+        }
 
-    return {
-      department,
-      tag,
-      user,
-      userTag,
-    };
-  }
-
-  async createFollow(
-    req: UserRequest,
-    id: number,
-    followData: FollowDto,
-  ): Promise<Department> {
-    const { department, tag, user, userTag } = await this.validateIdFollow(
-      req,
-      id,
-      followData,
-    );
-
-    if (userTag) {
-      throw new BadRequestException('already followed tag');
+        department.follow = await this.getFollow(department, req.user);
+        return department;
     }
 
-    const newUserTag: UserTag = UserTag.create({
-      user,
-      tag,
-    });
-    await UserTag.save(newUserTag);
+    async getFollow(department: Department, user: User | null): Promise<Tag[]> {
+        if (user != null) user = await User.findOne({ where: user as ObjectLiteral });
+        if (!user) throw new UnauthorizedException();
+        const tags: Tag[] = await Tag.find({
+            where: { department },
+        });
+        const userTags: UserTag[] = await UserTag.find({
+            where: {
+                user,
+                tag: In(tags.map((tag) => tag.id)),
+            },
+            relations: ['tag'],
+        });
 
-    department.follow = await this.getFollow(department, user);
-    return department;
-  }
-
-  async deleteFollow(
-    req: UserRequest,
-    id: number,
-    followData: FollowDto,
-  ): Promise<Department> {
-    const { department, tag, user, userTag } = await this.validateIdFollow(
-      req,
-      id,
-      followData,
-    );
-
-    if (!userTag) {
-      throw new HttpException(
-        {
-          message: 'already deleted follow',
-        },
-        HttpStatus.NO_CONTENT,
-      );
+        return userTags ? userTags.map((userTag) => userTag.tag) : [];
     }
 
-    await UserTag.delete(userTag);
+    async validateIdFollow(req: UserRequest, id: number, followData: FollowDto): Promise<PreFollow> {
+        const department: Department | null = await Department.findOne({
+            where: { id },
+            relations: ['tags'],
+        });
+        if (!department) {
+            throw new NotFoundException('There is no department with the id');
+        }
 
-    department.follow = await this.getFollow(department, user);
-    return department;
-  }
+        const tag: Tag | undefined = department.tags.find((tag) => tag.name === followData.follow);
+        if (!tag) {
+            throw new BadRequestException(`There is no tag with the given name: ${followData.follow}`);
+        }
+        const user: User | null = await User.findOne({ where: req.user as ObjectLiteral });
+        if (!user) throw new UnauthorizedException();
+        const userTag: UserTag | null = await UserTag.findOne({
+            where: {
+                user,
+                tag,
+            },
+        });
+        if (!userTag) {
+            throw new BadRequestException('not followed tag');
+        }
+
+        return {
+            department,
+            tag,
+            user,
+            userTag,
+        };
+    }
+
+    async createFollow(req: UserRequest, id: number, followData: FollowDto): Promise<Department> {
+        const { department, tag, user, userTag } = await this.validateIdFollow(req, id, followData);
+
+        if (userTag) {
+            throw new BadRequestException('already followed tag');
+        }
+
+        const newUserTag: UserTag = UserTag.create({
+            user,
+            tag,
+        });
+        await UserTag.save(newUserTag);
+
+        department.follow = await this.getFollow(department, user);
+        return department;
+    }
+
+    async deleteFollow(req: UserRequest, id: number, followData: FollowDto): Promise<Department> {
+        const { department, tag, user, userTag } = await this.validateIdFollow(req, id, followData);
+
+        if (!userTag) {
+            throw new HttpException(
+                {
+                    message: 'already deleted follow',
+                },
+                HttpStatus.NO_CONTENT,
+            );
+        }
+        await userTag.remove();
+
+        department.follow = await this.getFollow(department, user);
+        return department;
+    }
 }

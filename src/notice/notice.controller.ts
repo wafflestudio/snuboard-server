@@ -1,143 +1,107 @@
 import {
-  Controller,
-  Delete,
-  Get,
-  Param,
-  ParseBoolPipe,
-  Post,
-  Query,
-  Req,
-  SerializeOptions,
-  UseGuards,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    ParseBoolPipe,
+    Post,
+    Query,
+    Req,
+    SerializeOptions,
+    UseGuards,
 } from '@nestjs/common';
-import { JwtAccessGuard } from '../auth/auth.guard';
-import { UserRequest } from '../types/custom-type';
+import { plainToClass } from 'class-transformer';
+
 import { Notice } from './notice.entity';
 import { NoticeService } from './notice.service';
-
-import { NoticePaginationDto } from './dto/noticePagination.dto';
+import { JwtAccessGuard } from '../auth/auth.guard';
+import { UserRequest } from '../types/custom-type';
 import { GetNoticeInDeptDto } from './dto/getNoticeInDept.dto';
-import { SearchNoticeInDeptDto } from './dto/searchNoticeInDept.dto';
-import { SearchFollowedNoticeDto } from './dto/searchFollowedNotice.dto';
-
+import { NoticePaginationDto } from './dto/noticePagination.dto';
 import { NoticesResponseDto } from './dto/noticesResponse.dto';
-import { plainToClass } from 'class-transformer';
+import { SearchFollowedNoticeDto } from './dto/searchFollowedNotice.dto';
+import { SearchNoticeInDeptDto } from './dto/searchNoticeInDept.dto';
 
 @UseGuards(JwtAccessGuard)
 @Controller('notices')
 @SerializeOptions({
-  excludePrefixes: ['content', 'files', 'style'],
+    excludePrefixes: ['content', 'files', 'style'],
 })
 export class NoticeSummaryController {
-  constructor(private noticeService: NoticeService) {}
+    constructor(private noticeService: NoticeService) {}
 
-  @Get('department/:departmentId/search')
-  searchNoticeInDepartment(
-    @Param('departmentId') departmentId: number,
-    @Query('pinned', ParseBoolPipe) pinned: boolean,
-    @Query() rawQuery: string,
-    @Req() req: UserRequest,
-  ): Promise<NoticesResponseDto> {
-    const query: SearchNoticeInDeptDto = plainToClass(
-      SearchNoticeInDeptDto,
-      rawQuery,
-      {
-        enableImplicitConversion: true,
-      },
-    );
-    query.pinned = pinned;
+    @Get('department/:departmentId/search')
+    searchNoticeInDepartment(
+        @Param('departmentId') departmentId: number,
+        @Query('pinned', ParseBoolPipe) pinned: boolean,
+        @Query() rawQuery: string,
+        @Req() req: UserRequest,
+    ): Promise<NoticesResponseDto> {
+        const query: SearchNoticeInDeptDto = plainToClass(SearchNoticeInDeptDto, rawQuery, {
+            enableImplicitConversion: true,
+        });
+        query.pinned = pinned;
 
-    return this.noticeService.getNoticeInDepartment(req, departmentId, query);
-  }
+        return this.noticeService.getNoticeInDepartment(req, departmentId, query);
+    }
 
-  @Get('department/:departmentId')
-  getNoticeInDepartment(
-    @Param('departmentId') departmentId: number,
-    @Query('pinned', ParseBoolPipe) pinned: boolean,
-    @Query() rawQuery: string,
-    @Req() req: UserRequest,
-  ): Promise<NoticesResponseDto> {
-    const query: GetNoticeInDeptDto = plainToClass(
-      GetNoticeInDeptDto,
-      rawQuery,
-      {
-        enableImplicitConversion: true,
-      },
-    );
-    query.pinned = pinned;
-    return this.noticeService.getNoticeInDepartment(req, departmentId, query);
-  }
+    @Get('department/:departmentId')
+    getNoticeInDepartment(
+        @Param('departmentId') departmentId: number,
+        @Query('pinned', ParseBoolPipe) pinned: boolean,
+        @Query() rawQuery: string,
+        @Req() req: UserRequest,
+    ): Promise<NoticesResponseDto> {
+        const query: GetNoticeInDeptDto = plainToClass(GetNoticeInDeptDto, rawQuery, {
+            enableImplicitConversion: true,
+        });
+        query.pinned = pinned;
+        return this.noticeService.getNoticeInDepartment(req, departmentId, query);
+    }
 
-  @Get('follow/search')
-  searchFollowedNotice(
-    @Query() rawQuery: string,
-    @Req() req: UserRequest,
-  ): Promise<NoticesResponseDto> {
-    const query: SearchFollowedNoticeDto = plainToClass(
-      SearchFollowedNoticeDto,
-      rawQuery,
-      {
-        enableImplicitConversion: true,
-      },
-    );
-    return this.noticeService.getFollowedNotice(req, query);
-  }
+    @Get('follow/search')
+    searchFollowedNotice(@Query() rawQuery: string, @Req() req: UserRequest): Promise<NoticesResponseDto> {
+        const query: SearchFollowedNoticeDto = plainToClass(SearchFollowedNoticeDto, rawQuery, {
+            enableImplicitConversion: true,
+        });
+        return this.noticeService.getFollowedNotice(req, query);
+    }
 
-  @Get('follow')
-  getFollowedNotice(
-    @Query() rawQuery: string,
-    @Req() req: UserRequest,
-  ): Promise<NoticesResponseDto> {
-    const query: NoticePaginationDto = plainToClass(
-      NoticePaginationDto,
-      rawQuery,
-      {
-        enableImplicitConversion: true,
-      },
-    );
-    return this.noticeService.getFollowedNotice(req, query);
-  }
+    @Get('follow')
+    getFollowedNotice(@Query() rawQuery: string, @Req() req: UserRequest): Promise<NoticesResponseDto> {
+        const query: NoticePaginationDto = plainToClass(NoticePaginationDto, rawQuery, {
+            enableImplicitConversion: true,
+        });
+        return this.noticeService.getFollowedNotice(req, query);
+    }
 
-  @Get('scrap')
-  getScrappedNotice(
-    @Query() rawQuery: string,
-    @Req() req: UserRequest,
-  ): Promise<NoticesResponseDto> {
-    const query: NoticePaginationDto = plainToClass(
-      NoticePaginationDto,
-      rawQuery,
-      {
-        enableImplicitConversion: true,
-      },
-    );
-    return this.noticeService.getScrappedNotice(req, query);
-  }
+    @Get('scrap')
+    getScrappedNotice(@Query() rawQuery: string, @Req() req: UserRequest): Promise<NoticesResponseDto> {
+        const query: NoticePaginationDto = plainToClass(NoticePaginationDto, rawQuery, {
+            enableImplicitConversion: true,
+        });
+        return this.noticeService.getScrappedNotice(req, query);
+    }
 }
 
 @UseGuards(JwtAccessGuard)
 @Controller('notices')
 @SerializeOptions({ excludePrefixes: ['contentText'] })
 export class NoticeDetailController {
-  constructor(private noticeService: NoticeService) {}
+    constructor(private noticeService: NoticeService) {}
 
-  @Get(':id')
-  getNotice(@Req() req: UserRequest, @Param('id') id: number): Promise<Notice> {
-    return this.noticeService.getNotice(req, id);
-  }
+    @Get(':id')
+    getNotice(@Req() req: UserRequest, @Param('id') id: number): Promise<Notice> {
+        return this.noticeService.getNotice(req, id);
+    }
 
-  @Post(':id/scrap')
-  createScrap(
-    @Req() req: UserRequest,
-    @Param('id') id: number,
-  ): Promise<Notice> {
-    return this.noticeService.createScrap(req, id);
-  }
+    @Post(':id/scrap')
+    createScrap(@Req() req: UserRequest, @Param('id') id: number): Promise<Notice> {
+        return this.noticeService.createScrap(req, id);
+    }
 
-  @Delete(':id/scrap')
-  deleteScrap(
-    @Req() req: UserRequest,
-    @Param('id') id: number,
-  ): Promise<Notice> {
-    return this.noticeService.deleteScrap(req, id);
-  }
+    @Delete(':id/scrap')
+    deleteScrap(@Req() req: UserRequest, @Param('id') id: number): Promise<Notice> {
+        return this.noticeService.deleteScrap(req, id);
+    }
 }

@@ -1,66 +1,58 @@
-import {
-  BaseEntity,
-  Column,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { Exclude } from 'class-transformer';
-
 import * as bcrypt from 'bcrypt';
-import { UserNotice } from '../notice/notice.entity';
+import { Exclude } from 'class-transformer';
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+
 import { UserTag } from '../department/department.entity';
+import { UserNotice } from '../notice/notice.entity';
 
 @Entity()
 export class User extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id!: number;
+    @PrimaryGeneratedColumn()
+    id!: number;
 
-  @Exclude()
-  @Column({
-    unique: true,
-  })
-  username!: string;
+    @Exclude()
+    @Column({
+        unique: true,
+    })
+    username!: string;
 
-  @Exclude()
-  @Column({ default: true })
-  isActive!: boolean;
+    @Exclude()
+    @Column({ default: true })
+    isActive!: boolean;
 
-  @Exclude()
-  @Column({ default: '' })
-  refreshToken!: string;
+    @Exclude()
+    @Column({ default: '' })
+    refreshToken!: string;
 
-  @OneToMany(() => UserNotice, (userNotice) => userNotice.user)
-  userNotices!: UserNotice[];
+    @OneToMany(() => UserNotice, (userNotice) => userNotice.user)
+    userNotices!: UserNotice[];
 
-  @OneToMany(() => UserTag, (userTag) => userTag.user)
-  userTags!: UserTag[];
+    @OneToMany(() => UserTag, (userTag) => userTag.user)
+    userTags!: UserTag[];
 
-  access_token?: string;
-  refresh_token?: string;
+    access_token?: string;
 
-  static async findOneIfRefreshTokenMatches(
-    refreshToken: string,
-    id: number,
-  ): Promise<User | undefined> {
-    const user: User | undefined = await this.findOne(id);
-    if (!user) return undefined;
+    refresh_token?: string;
 
-    if (await bcrypt.compare(refreshToken, user.refreshToken)) {
-      return user;
+    static async findOneIfRefreshTokenMatches(refreshToken: string, id: number): Promise<User | undefined> {
+        const user: User | null = await this.findOne({ where: { id } });
+        if (!user) return undefined;
+
+        if (await bcrypt.compare(refreshToken, user.refreshToken)) {
+            return user;
+        }
+
+        return undefined;
     }
 
-    return undefined;
-  }
+    async getSubscribedTags() {
+        const userTags = await UserTag.find({
+            where: [{ user: this }],
+            relations: ['tag', 'user', 'tag.department'],
+        });
 
-  async getSubscribedTags() {
-    const userTags = await UserTag.find({
-      where: [{ user: this }],
-      relations: ['tag', 'user', 'tag.department'],
-    });
-
-    return userTags.map((userTag) => {
-      return userTag.tag;
-    });
-  }
+        return userTags.map((userTag) => {
+            return userTag.tag;
+        });
+    }
 }

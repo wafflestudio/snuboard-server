@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './user.entity';
 import { AuthService } from '../auth/auth.service';
@@ -8,38 +9,32 @@ import { FirebaseService } from '../firebase/firebase.service';
 
 @Injectable()
 export class UserService {
-  constructor(
-    private authService: AuthService,
-    private firebaseService: FirebaseService,
-  ) {}
+    constructor(
+        private authService: AuthService,
+        private firebaseService: FirebaseService,
+    ) {}
 
-  async create(userData: CreateUserDto): Promise<User> {
-    const user: User = User.create({
-      username: userData.token,
-    });
-    await User.save(user);
-    return this.authService.login(user);
-  }
+    async create(userData: CreateUserDto): Promise<User> {
+        const user: User = User.create({
+            username: userData.token,
+        });
+        await User.save(user);
+        return this.authService.login(user);
+    }
 
-  async auth(req: UserRequest): Promise<User> {
-    return await this.authService.login(req.user);
-  }
+    async auth(req: UserRequest): Promise<User> {
+        return await this.authService.login(req.user);
+    }
 
-  async createSubscriptionToFcmTopics(
-    req: UserRequest,
-    tokenData: FcmTopicDto,
-  ) {
-    const token = tokenData.token;
+    async createSubscriptionToFcmTopics(req: UserRequest, tokenData: FcmTopicDto) {
+        const { token } = tokenData;
 
-    return await this.firebaseService.createUserSubscription(req.user, token);
-  }
+        return await this.firebaseService.createUserSubscription(req.user, token);
+    }
 
-  async deleteSubscriptionFromFcmTopics(
-    req: UserRequest,
-    tokenData: FcmTopicDto,
-  ) {
-    const token = tokenData.token;
+    async deleteSubscriptionFromFcmTopics(req: UserRequest, tokenData: FcmTopicDto) {
+        const { token } = tokenData;
 
-    return await this.firebaseService.deleteUserSubscription(req.user, token);
-  }
+        return await this.firebaseService.deleteUserSubscription(req.user, token);
+    }
 }

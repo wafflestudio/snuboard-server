@@ -1,111 +1,112 @@
-import {
-  BaseEntity,
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  RelationId,
-} from 'typeorm';
-import { User } from '../user/user.entity';
-import { Notice } from '../notice/notice.entity';
 import { Exclude, Expose, Transform } from 'class-transformer';
+import {
+    BaseEntity,
+    Column,
+    Entity,
+    Index,
+    JoinColumn,
+    ManyToOne,
+    OneToMany,
+    PrimaryGeneratedColumn,
+    RelationId,
+} from 'typeorm';
+
+import { Notice } from '../notice/notice.entity';
+import { User } from '../user/user.entity';
 
 @Entity()
 export class Department extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id!: number;
+    @PrimaryGeneratedColumn()
+    id!: number;
 
-  @Column()
-  name!: string;
+    @Column()
+    name!: string;
 
-  @Column()
-  college!: string;
+    @Column()
+    college!: string;
 
-  @OneToMany(() => Notice, (notice) => notice.department)
-  notices!: Notice[];
+    @OneToMany(() => Notice, (notice) => notice.department)
+    notices!: Notice[];
 
-  @Transform((tags) => [...new Set(tags.value.map((tag: Tag) => tag.name))])
-  @OneToMany(() => Tag, (tag) => tag.department)
-  tags!: Tag[];
+    @Transform((tags) => [...new Set(tags.value.map((tag: Tag) => tag.name))])
+    @OneToMany(() => Tag, (tag) => tag.department)
+    tags!: Tag[];
 
-  @Transform((tags) => tags.value.map((tag: Tag) => tag.name))
-  follow?: Tag[];
+    @Transform((tags) => tags.value.map((tag: Tag) => tag.name))
+    follow?: Tag[];
 
-  @Column()
-  link!: string;
+    @Column()
+    link!: string;
 
-  @Exclude()
-  @Column()
-  style!: string;
+    @Exclude()
+    @Column()
+    style!: string;
 
-  @Exclude()
-  @Column()
-  code!: string;
+    @Exclude()
+    @Column()
+    code!: string;
 }
 
 @Entity()
 export class Tag extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id!: number;
+    @PrimaryGeneratedColumn()
+    id!: number;
 
-  @Column()
-  name!: string;
+    @Column()
+    name!: string;
 
-  @ManyToOne(() => Department, (department) => department.tags, {
-    nullable: false,
-    onDelete: 'CASCADE',
-  })
-  department!: Department;
+    @ManyToOne(() => Department, (department) => department.tags, {
+        nullable: false,
+        onDelete: 'CASCADE',
+    })
+    department!: Department;
 
-  @OneToMany(() => UserTag, (userTag) => userTag.tag)
-  userTags!: UserTag[];
+    @OneToMany(() => UserTag, (userTag) => userTag.tag)
+    userTags!: UserTag[];
 
-  @OneToMany(() => NoticeTag, (noticeTag) => noticeTag.tag)
-  noticeTags!: NoticeTag[];
+    @OneToMany(() => NoticeTag, (noticeTag) => noticeTag.tag)
+    noticeTags!: NoticeTag[];
 }
 
 @Entity()
 export class UserTag extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id!: number;
+    @PrimaryGeneratedColumn()
+    id!: number;
 
-  @ManyToOne(() => User, (user) => user.userTags, {
-    nullable: false,
-    onDelete: 'CASCADE',
-  })
-  user!: User;
+    @ManyToOne(() => User, (user) => user.userTags, {
+        nullable: false,
+        onDelete: 'CASCADE',
+    })
+    user!: User;
 
-  @ManyToOne(() => Tag, (tag) => tag.userTags, {
-    nullable: false,
-    onDelete: 'CASCADE',
-  })
-  tag!: Tag;
+    @ManyToOne(() => Tag, (tag) => tag.userTags, {
+        nullable: false,
+        onDelete: 'CASCADE',
+    })
+    tag!: Tag;
 }
 
 @Entity()
 @Index(['noticeCreatedAt', 'notice'])
 export class NoticeTag extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id!: number;
+    @PrimaryGeneratedColumn()
+    id!: number;
 
-  @ManyToOne(() => Notice, (notice) => notice.noticeTags, {
-    nullable: false,
-    onDelete: 'CASCADE',
-  })
-  notice!: Notice;
+    @ManyToOne(() => Notice, (notice) => notice.noticeTags, {
+        nullable: false,
+        onDelete: 'CASCADE',
+    })
+    notice!: Notice;
 
-  @ManyToOne(() => Tag, (tag) => tag.noticeTags, {
-    nullable: false,
-    onDelete: 'CASCADE',
-  })
-  tag!: Tag;
+    @ManyToOne(() => Tag, (tag) => tag.noticeTags, {
+        nullable: false,
+        onDelete: 'CASCADE',
+    })
+    tag!: Tag;
 
-  @RelationId((noticeTag: NoticeTag) => noticeTag.notice)
-  noticeId!: number;
+    @RelationId((noticeTag: NoticeTag) => noticeTag.notice)
+    noticeId!: number;
 
-  @Column()
-  noticeCreatedAt!: Date;
+    @Column()
+    noticeCreatedAt!: Date;
 }
