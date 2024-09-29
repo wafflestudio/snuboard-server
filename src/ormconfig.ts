@@ -3,10 +3,10 @@ import * as path from 'path';
 import { config } from 'dotenv';
 import { DataSourceOptions } from 'typeorm';
 
-import { Department, NoticeTag, Tag, UserTag } from './department/department.entity';
-import { getEnvFile } from './functions/custom-function';
-import { Notice, UserNotice, File } from './notice/notice.entity';
-import { User } from './user/user.entity';
+import { Department, NoticeTag, Tag, UserTag } from './department/department.entity.js';
+import { getEnvFile } from './functions/custom-function.js';
+import { Notice, UserNotice, File } from './notice/notice.entity.js';
+import { User } from './user/user.entity.js';
 
 const envFile = getEnvFile();
 config({ path: path.resolve(process.cwd(), envFile) });
@@ -29,4 +29,4 @@ const ormConfig: DataSourceOptions = {
     },
 };
 
-export = ormConfig;
+export default ormConfig;

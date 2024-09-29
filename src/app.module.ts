@@ -9,7 +9,7 @@ import { DepartmentModule } from './department/department.module';
 import { FirebaseModule } from './firebase/firebase.module';
 import { getEnvFile } from './functions/custom-function';
 import { NoticeModule } from './notice/notice.module';
-import * as ormConfig from './ormconfig';
+import ormConfig from './ormconfig';
 import { UserModule } from './user/user.module';
 
 @Module({
