@@ -117,7 +117,7 @@ export class NoticeService {
         departmentId?: number,
     ): Promise<NoticesResponseDto> {
         const keywords: string[] = this.splitParam(query.keywords, ' ');
-        let departmentCode = [];
+        let departmentCode: string[] = [];
         if (departmentId === undefined) {
             const departments = await Tag.find({
                 where: { id: In(tags) },
