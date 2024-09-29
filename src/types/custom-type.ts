@@ -2,10 +2,10 @@ import exp from 'constants';
 
 import { Request } from 'express';
 
-import { Department, Tag, UserTag } from '../department/department.entity';
+import { Department, Tag, UserTag } from '../department/department.entity.js';
 import { NoticePaginationDto } from '../notice/dto/noticePagination.dto';
-import { Notice, UserNotice } from '../notice/notice.entity';
-import { User } from '../user/user.entity';
+import { Notice, UserNotice } from '../notice/notice.entity.js';
+import { User } from '../user/user.entity.js';
 
 export class Payload {
     username!: string;

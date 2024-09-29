@@ -1,6 +1,5 @@
 import { ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
-
-import { User } from './user.entity';
+import { User } from './user.entity.js';
 
 @ValidatorConstraint({ async: true })
 export class UniqueUsernameValidator implements ValidatorConstraintInterface {

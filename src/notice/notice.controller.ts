@@ -16,11 +16,12 @@ import { Notice } from './notice.entity';
 import { NoticeService } from './notice.service';
 import { JwtAccessGuard } from '../auth/auth.guard';
 import { UserRequest } from '../types/custom-type';
-import { GetNoticeInDeptDto } from './dto/getNoticeInDept.dto';
+
 import { NoticePaginationDto } from './dto/noticePagination.dto';
 import { NoticesResponseDto } from './dto/noticesResponse.dto';
 import { SearchFollowedNoticeDto } from './dto/searchFollowedNotice.dto';
 import { SearchNoticeInDeptDto } from './dto/searchNoticeInDept.dto';
+import { GetNoticeInDeptDto } from './dto/getNoticeInDept.dto';
 
 @UseGuards(JwtAccessGuard)
 @Controller('notices')

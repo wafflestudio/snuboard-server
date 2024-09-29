@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { CreateUserDto } from './dto/create-user.dto';
-import { User } from './user.entity';
+import { User } from './user.entity.js';
 import { AuthService } from '../auth/auth.service';
 import { UserRequest } from '../types/custom-type';
 import { FcmTopicDto } from './dto/fcm-topic.dto';

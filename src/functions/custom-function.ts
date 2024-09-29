@@ -1,7 +1,7 @@
 import { BadRequestException, HttpStatus } from '@nestjs/common';
 import { ValidationError } from 'class-validator';
 
-import { Department } from '../department/department.entity';
+import { Department } from '../department/department.entity.js';
 import { StringKey } from '../types/custom-type';
 
 export function exceptionFormatter(validationErrors: ValidationError[] = []): BadRequestException {

@@ -1,12 +1,11 @@
 import { Body, Controller, Delete, Get, HttpCode, Post, Req, UseGuards } from '@nestjs/common';
-
-import { AuthDto } from './dto/auth-user.dto';
-import { CreateUserDto } from './dto/create-user.dto';
-import { User } from './user.entity';
 import { UserService } from './user.service';
+import { User } from './user.entity.js';
+import { CreateUserDto } from './dto/create-user.dto';
 import { AuthTokenGuard, JwtAccessGuard } from '../auth/auth.guard';
 import { UserRequest } from '../types/custom-type';
 import { FcmTopicDto } from './dto/fcm-topic.dto';
+import { AuthDto } from './dto/auth-user.dto';
 
 @Controller('users')
 export class UserController {

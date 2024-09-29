@@ -9,10 +9,11 @@ import {
     OneToMany,
     PrimaryGeneratedColumn,
     RelationId,
+    Relation,
 } from 'typeorm';
 
-import { Notice } from '../notice/notice.entity';
-import { User } from '../user/user.entity';
+import { Notice } from '../notice/notice.entity.js';
+import { User } from '../user/user.entity.js';
 
 @Entity()
 export class Department extends BaseEntity {
@@ -26,14 +27,14 @@ export class Department extends BaseEntity {
     college!: string;
 
     @OneToMany(() => Notice, (notice) => notice.department)
-    notices!: Notice[];
+    notices!: Relation<Notice[]>;
 
     @Transform((tags) => [...new Set(tags.value.map((tag: Tag) => tag.name))])
     @OneToMany(() => Tag, (tag) => tag.department)
-    tags!: Tag[];
+    tags!: Relation<Tag[]>;
 
     @Transform((tags) => tags.value.map((tag: Tag) => tag.name))
-    follow?: Tag[];
+    follow?: Relation<Tag[]>;
 
     @Column()
     link!: string;
@@ -59,13 +60,13 @@ export class Tag extends BaseEntity {
         nullable: false,
         onDelete: 'CASCADE',
     })
-    department!: Department;
+    department!: Relation<Department>;
 
     @OneToMany(() => UserTag, (userTag) => userTag.tag)
-    userTags!: UserTag[];
+    userTags!: Relation<UserTag[]>;
 
     @OneToMany(() => NoticeTag, (noticeTag) => noticeTag.tag)
-    noticeTags!: NoticeTag[];
+    noticeTags!: Relation<NoticeTag[]>;
 }
 
 @Entity()
@@ -77,13 +78,13 @@ export class UserTag extends BaseEntity {
         nullable: false,
         onDelete: 'CASCADE',
     })
-    user!: User;
+    user!: Relation<User>;
 
     @ManyToOne(() => Tag, (tag) => tag.userTags, {
         nullable: false,
         onDelete: 'CASCADE',
     })
-    tag!: Tag;
+    tag!: Relation<Tag>;
 }
 
 @Entity()
@@ -96,13 +97,13 @@ export class NoticeTag extends BaseEntity {
         nullable: false,
         onDelete: 'CASCADE',
     })
-    notice!: Notice;
+    notice!: Relation<Notice>;
 
     @ManyToOne(() => Tag, (tag) => tag.noticeTags, {
         nullable: false,
         onDelete: 'CASCADE',
     })
-    tag!: Tag;
+    tag!: Relation<Tag>;
 
     @RelationId((noticeTag: NoticeTag) => noticeTag.notice)
     noticeId!: number;

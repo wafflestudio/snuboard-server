@@ -1,7 +1,7 @@
 import { createConnection, Connection, getConnection } from 'typeorm';
-import { Notice } from '../src/notice/notice.entity';
-import { Department } from '../src/department/department.entity';
-import * as ormConfig from '../src/ormconfig';
+import { Notice } from '../src/notice/notice.entity.js';
+import { Department } from '../src/department/department.entity.js';
+import * as ormConfig from '../src/ormconfig.js';
 
 async function search(keyword: string, departments: number[], searchType: string) {
     let noticeNum = 0;

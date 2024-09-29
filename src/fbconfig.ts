@@ -3,7 +3,7 @@ import * as path from 'path';
 import { config } from 'dotenv';
 import { ServiceAccount } from 'firebase-admin/lib/credential';
 
-import { getEnvFile } from './functions/custom-function';
+import { getEnvFile } from './functions/custom-function.js';
 
 const envFile = getEnvFile();
 config({ path: path.resolve(process.cwd(), envFile) });

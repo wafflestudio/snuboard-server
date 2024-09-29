@@ -1,9 +1,9 @@
 import { Exclude, Expose } from 'class-transformer';
-import { BaseEntity, Column, Entity, Index, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, Index, ManyToOne, OneToMany, PrimaryGeneratedColumn, Relation } from 'typeorm';
 
-import { PREVIEW_LENGTH } from './constants';
-import { Department, NoticeTag } from '../department/department.entity';
-import { User } from '../user/user.entity';
+import { PREVIEW_LENGTH } from './constants.js';
+import { Department, NoticeTag } from '../department/department.entity.js';
+import { User } from '../user/user.entity.js';
 
 @Entity()
 @Index(['createdAt', 'id'])
@@ -42,7 +42,7 @@ export class Notice extends BaseEntity {
         nullable: false,
         onDelete: 'CASCADE',
     })
-    department!: Department;
+    department!: Relation<Department>;
 
     @Exclude()
     @Column()
@@ -65,14 +65,14 @@ export class Notice extends BaseEntity {
 
     @Exclude()
     @OneToMany(() => UserNotice, (userNotice) => userNotice.notice)
-    userNotices!: UserNotice[];
+    userNotices!: Relation<UserNotice[]>;
 
     @OneToMany(() => File, (file) => file.notice)
-    files!: File[];
+    files!: Relation<File[]>;
 
     @Exclude()
     @OneToMany(() => NoticeTag, (noticeTag) => noticeTag.notice)
-    noticeTags!: NoticeTag[];
+    noticeTags!: Relation<NoticeTag[]>;
 
     @Expose()
     get tags(): string[] {
@@ -105,7 +105,7 @@ export class File extends BaseEntity {
         nullable: false,
         onDelete: 'CASCADE',
     })
-    notice!: Notice;
+    notice!: Relation<Notice>;
 }
 
 @Entity()
@@ -120,11 +120,11 @@ export class UserNotice extends BaseEntity {
         nullable: false,
         onDelete: 'CASCADE',
     })
-    user!: User;
+    user!: Relation<User>;
 
     @ManyToOne(() => Notice, (notice) => notice.userNotices, {
         nullable: false,
         onDelete: 'CASCADE',
     })
-    notice!: Notice;
+    notice!: Relation<Notice>;
 }

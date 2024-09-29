@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { In, ObjectLiteral } from 'typeorm';
 
-import { Department, Tag, UserTag } from './department.entity';
+import { Department, Tag, UserTag } from './department.entity.js';
 import { PreFollow, UserRequest } from '../types/custom-type';
 import { FollowDto } from './dto/follow.dto';
 import { User } from '../user/user.entity';

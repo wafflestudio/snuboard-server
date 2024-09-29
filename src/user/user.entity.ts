@@ -2,8 +2,8 @@ import * as bcrypt from 'bcrypt';
 import { Exclude } from 'class-transformer';
 import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-import { UserTag } from '../department/department.entity';
-import { UserNotice } from '../notice/notice.entity';
+import { UserTag } from '../department/department.entity.js';
+import { UserNotice } from '../notice/notice.entity.js';
 
 @Entity()
 export class User extends BaseEntity {

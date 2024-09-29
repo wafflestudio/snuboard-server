@@ -6,19 +6,18 @@ import {
     NotFoundException,
     UnauthorizedException,
 } from '@nestjs/common';
-import { validate } from 'class-validator';
-import { Brackets, In, ObjectLiteral, SelectQueryBuilder } from 'typeorm';
-
-import { Notice, UserNotice } from './notice.entity';
-import { User } from '../user/user.entity';
+import { User } from '../user/user.entity.js';
+import { Notice, UserNotice } from './notice.entity.js';
 import { GetNoticeInDeptDto } from './dto/getNoticeInDept.dto';
 import { NoticesResponseDto } from './dto/noticesResponse.dto';
-import { Department, NoticeTag, Tag, UserTag } from '../department/department.entity';
+import { Department, NoticeTag, Tag, UserTag } from '../department/department.entity.js';
+import { Brackets, In, ObjectLiteral, SelectQueryBuilder } from 'typeorm';
 import { orderType, PreNotice, PreQuery, UserDepartment, UserRequest } from '../types/custom-type';
 import { NoticePaginationDto } from './dto/noticePagination.dto';
 import { SearchFollowedNoticeDto } from './dto/searchFollowedNotice.dto';
 import { SearchNoticeInDeptDto } from './dto/searchNoticeInDept.dto';
 import { exceptionFormatter } from '../functions/custom-function';
+import { validate } from 'class-validator';
 
 const emptyResponse: NoticesResponseDto = { notices: [], next_cursor: '' };
 @Injectable()

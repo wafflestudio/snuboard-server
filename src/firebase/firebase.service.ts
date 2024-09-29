@@ -3,7 +3,7 @@ import * as admin from 'firebase-admin';
 
 import { fbConfig } from '../fbconfig';
 import { encodeTag } from '../functions/custom-function';
-import { User } from '../user/user.entity';
+import { User } from '../user/user.entity.js';
 
 @Injectable()
 export class FirebaseService {

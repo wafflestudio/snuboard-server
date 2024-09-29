@@ -1,6 +1,5 @@
 import { IsString } from 'class-validator';
-
-import { Notice } from '../notice.entity';
+import { Notice } from '../notice.entity.js';
 
 export class NoticesResponseDto {
     notices!: Notice[];
