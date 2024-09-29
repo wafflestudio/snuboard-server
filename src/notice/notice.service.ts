@@ -336,11 +336,10 @@ export class NoticeService {
                 notice,
             },
         });
-        if (userNotice == null) throw new NotFoundException('There is no userNotice with the user and notice');
         return {
             user,
             notice,
-            userNotice,
+            userNotice: userNotice || undefined,
         };
     }
 
