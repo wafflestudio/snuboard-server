@@ -31,7 +31,7 @@ export class DepartmentService {
 
         const follows: UserTag[] = await UserTag.find({
             where: {
-                user,
+                user: { id: user.id },
             },
             relations: ['tag', 'tag.department'],
         });
@@ -59,15 +59,15 @@ export class DepartmentService {
     }
 
     async getFollow(department: Department, user: User | null): Promise<Tag[]> {
-        if (user != null) user = await User.findOne({ where: user as ObjectLiteral });
+        if (user != null) user = await User.findOne({ where: { id: user.id } });
         if (!user) throw new UnauthorizedException();
         const tags: Tag[] = await Tag.find({
-            where: { department },
+            where: { department: { id: department.id } },
         });
         const userTags: UserTag[] = await UserTag.find({
             where: {
-                user,
-                tag: In(tags.map((tag) => tag.id)),
+                user: { id: user.id },
+                tag: { id: In(tags.map((tag) => tag.id)) },
             },
             relations: ['tag'],
         });
@@ -92,8 +92,8 @@ export class DepartmentService {
         if (!user) throw new UnauthorizedException();
         const userTag: UserTag | null = await UserTag.findOne({
             where: {
-                user,
-                tag,
+                user: { id: user.id },
+                tag: { id: tag.id },
             },
         });
         return {

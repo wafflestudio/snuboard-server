@@ -47,7 +47,7 @@ export class User extends BaseEntity {
 
     async getSubscribedTags() {
         const userTags = await UserTag.find({
-            where: [{ user: this }],
+            where: [{ user: { id: this.id } }],
             relations: ['tag', 'user', 'tag.department'],
         });
 

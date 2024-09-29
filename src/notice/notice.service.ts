@@ -99,7 +99,7 @@ export class NoticeService {
 
         const userNotices: UserNotice[] = await UserNotice.find({
             relations: ['notice'],
-            where: { user, isScrapped: true },
+            where: { user: { id: user.id }, isScrapped: true },
         });
         if (userNotices.length == 0) {
             return emptyResponse;
@@ -176,7 +176,7 @@ export class NoticeService {
         const notices: Notice[] = await noticeQb.getMany();
         const noticeTags: NoticeTag[] = await NoticeTag.find({
             where: {
-                notice: In(notices.map((notice) => notice.id)),
+                notice: { id: In(notices.map((notice) => notice.id)) },
             },
             relations: ['tag'],
         });
@@ -262,7 +262,7 @@ export class NoticeService {
     }
 
     async getValidatedUser(reqUser: User): Promise<User> {
-        const user: User | null = await User.findOne({ where: reqUser as ObjectLiteral });
+        const user: User | null = await User.findOne({ where: { id: reqUser.id } });
         if (!user) {
             throw new UnauthorizedException();
         }
@@ -272,7 +272,7 @@ export class NoticeService {
     async getFollowedTagIds(user: User): Promise<number[]> {
         const userTags: UserTag[] = await UserTag.find({
             relations: ['tag'],
-            where: { user },
+            where: { user: { id: user.id } },
         });
         return userTags.map((userTag) => userTag.tag.id);
     }
@@ -291,7 +291,7 @@ export class NoticeService {
     async attachIsScrapped(user: User, notices: Notice[]): Promise<void> {
         const userNotices: UserNotice[] = await UserNotice.find({
             relations: ['notice'],
-            where: { user, isScrapped: true },
+            where: { user: { id: user.id }, isScrapped: true },
         });
         const scrappedNotices: number[] = userNotices.map((userNotice) => {
             return userNotice.notice.id;
@@ -332,8 +332,8 @@ export class NoticeService {
 
         const userNotice: UserNotice | null = await UserNotice.findOne({
             where: {
-                user,
-                notice,
+                user: { id: user.id },
+                notice: { id: notice.id },
             },
         });
         return {
