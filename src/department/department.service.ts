@@ -96,15 +96,11 @@ export class DepartmentService {
                 tag,
             },
         });
-        if (!userTag) {
-            throw new BadRequestException('not followed tag');
-        }
-
         return {
             department,
             tag,
             user,
-            userTag,
+            userTag: userTag || undefined,
         };
     }
 

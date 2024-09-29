@@ -1,5 +1,6 @@
 import {
     Controller,
+    DefaultValuePipe,
     Delete,
     Get,
     Param,
@@ -34,7 +35,7 @@ export class NoticeSummaryController {
     @Get('department/:departmentId/search')
     searchNoticeInDepartment(
         @Param('departmentId') departmentId: number,
-        @Query('pinned', ParseBoolPipe) pinned: boolean,
+        @Query('pinned', new DefaultValuePipe(false), ParseBoolPipe) pinned: boolean,
         @Query() rawQuery: string,
         @Req() req: UserRequest,
     ): Promise<NoticesResponseDto> {
@@ -42,17 +43,17 @@ export class NoticeSummaryController {
             enableImplicitConversion: true,
         });
         query.pinned = pinned;
-
         return this.noticeService.getNoticeInDepartment(req, departmentId, query);
     }
 
     @Get('department/:departmentId')
     getNoticeInDepartment(
         @Param('departmentId') departmentId: number,
-        @Query('pinned', ParseBoolPipe) pinned: boolean,
+        @Query('pinned', new DefaultValuePipe(false), ParseBoolPipe) pinned: boolean,
         @Query() rawQuery: string,
         @Req() req: UserRequest,
     ): Promise<NoticesResponseDto> {
+        console.log(req, departmentId);
         const query: GetNoticeInDeptDto = plainToClass(GetNoticeInDeptDto, rawQuery, {
             enableImplicitConversion: true,
         });
