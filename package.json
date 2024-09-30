@@ -6,7 +6,7 @@
     "private": true,
     "license": "UNLICENSED",
     "scripts": {
-        "prebuild": "npx rimraf dist",
+        "prebuild": "npx rimraf dist && npx node src/fixJSDOM.js",
         "build": "npx nest build",
         "format": "npx prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
         "start": "npx nest start",
@@ -40,6 +40,7 @@
         "nestjs": "^0.0.1",
         "passport-jwt": "^4.0.1",
         "sqlite3": "^5.1.7",
+        "supertest": "^7.0.0",
         "typeorm": "^0.3.20"
     },
     "devDependencies": {
@@ -53,6 +54,7 @@
         "@types/jest": "^29.5.13",
         "@types/jsdom": "^21.1.7",
         "@types/passport-jwt": "^4.0.1",
+        "@types/supertest": "^6.0.2",
         "@typescript-eslint/eslint-plugin": "^8.7.0",
         "eslint-config-prettier": "^9.1.0",
         "eslint-plugin-import": "^2.30.0",

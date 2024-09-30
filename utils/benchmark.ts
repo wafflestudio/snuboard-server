@@ -1,13 +1,20 @@
-import { createConnection, Connection, getConnection } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { Notice } from '../src/notice/notice.entity.js';
 import { Department } from '../src/department/department.entity.js';
-import * as ormConfig from '../src/ormconfig.js';
+import { dataSource } from '../src/datasource.js';
+
+async function getDataSource(): Promise<DataSource> {
+    if (!dataSource.isInitialized) {
+        await dataSource.initialize();
+    }
+    return dataSource;
+}
 
 async function search(keyword: string, departments: number[], searchType: string) {
     let noticeNum = 0;
     const startTime = Date.now();
     for (let i = 0; i < departments.length; i++) {
-        const noticeQb = getConnection()
+        const noticeQb = (await getDataSource())
             .getRepository(Notice)
             .createQueryBuilder('notice')
             .where('departmentId = :dId', { dId: departments[i] });
@@ -34,8 +41,8 @@ async function search(keyword: string, departments: number[], searchType: string
 }
 
 async function runBenchmark() {
-    const connection: Connection = await createConnection(ormConfig);
-    const departments = await getConnection()
+    const dataSource: DataSource = await getDataSource();
+    const departments = await dataSource
         .getRepository(Notice)
         .createQueryBuilder('notice')
         .select('notice.departmentId, count(notice.id) as noticeCount, d.name')
@@ -89,7 +96,7 @@ async function runBenchmark() {
         //console.log(resultFTS);
         console.log(`elapsed time ratio LIKE/FTS ${(sumLike / sumFTS).toFixed(2)}`);
     }
-    await connection.close();
+    await dataSource.destroy();
 }
 
 runBenchmark();
