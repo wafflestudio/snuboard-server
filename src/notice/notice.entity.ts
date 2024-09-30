@@ -111,6 +111,7 @@ export class File extends BaseEntity {
     notice!: Relation<Notice>;
 }
 
+@Index('user_notice_idx', ['user', 'notice'], { unique: true })
 @Entity()
 export class UserNotice extends BaseEntity {
     @PrimaryGeneratedColumn()

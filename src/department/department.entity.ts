@@ -20,7 +20,7 @@ export class Department extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column()
+    @Column({ unique: true })
     name!: string;
 
     @Column()
@@ -49,6 +49,7 @@ export class Department extends BaseEntity {
 }
 
 @Entity()
+@Index('name_dept_idx', ['name', 'department'], { unique: true })
 export class Tag extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number;
@@ -69,6 +70,7 @@ export class Tag extends BaseEntity {
     noticeTags!: Relation<NoticeTag[]>;
 }
 
+@Index('user_tag_idx', ['user', 'tag'], { unique: true })
 @Entity()
 export class UserTag extends BaseEntity {
     @PrimaryGeneratedColumn()
@@ -89,6 +91,7 @@ export class UserTag extends BaseEntity {
 
 @Entity()
 @Index('notice_cursor', ['noticeCreatedAt', 'notice'])
+@Index('notice_tag_idx', ['notice', 'tag'], { unique: true })
 export class NoticeTag extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number;
