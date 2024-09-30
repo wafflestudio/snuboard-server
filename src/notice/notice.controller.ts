@@ -53,7 +53,6 @@ export class NoticeSummaryController {
         @Query() rawQuery: string,
         @Req() req: UserRequest,
     ): Promise<NoticesResponseDto> {
-        console.log(req, departmentId);
         const query: GetNoticeInDeptDto = plainToClass(GetNoticeInDeptDto, rawQuery, {
             enableImplicitConversion: true,
         });
