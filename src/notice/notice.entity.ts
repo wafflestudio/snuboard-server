@@ -7,6 +7,7 @@ import { User } from '../user/user.entity.js';
 
 @Entity()
 @Index(['createdAt', 'id'])
+@Index('contentText', ['contentText', 'title', 'departmentCode'], { fulltext: true })
 export class Notice extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number;
@@ -26,7 +27,7 @@ export class Notice extends BaseEntity {
     content!: string;
 
     @Expose({ name: 'created_at' })
-    @Column({ type: 'timestamp' })
+    @Column({ type: 'timestamp', default: '1970-01-01 09:00:01' })
     createdAt!: Date;
 
     @Expose({ name: 'is_pinned' })
@@ -34,6 +35,7 @@ export class Notice extends BaseEntity {
     isPinned!: boolean;
 
     // Index link(255) applied by migration
+    @Index('notice_link_idx')
     @Column({ length: 1000 })
     link!: string;
 
@@ -45,7 +47,7 @@ export class Notice extends BaseEntity {
     department!: Relation<Department>;
 
     @Exclude()
-    @Column()
+    @Column({ type: 'varchar', length: 63, default: '' })
     departmentCode!: string;
 
     @Expose()
@@ -98,6 +100,7 @@ export class File extends BaseEntity {
     name!: string;
 
     // Index link(255) applied by migration
+    @Index('file_link_idx')
     @Column({ length: 1000 })
     link!: string;
 

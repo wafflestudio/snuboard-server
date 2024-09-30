@@ -36,15 +36,15 @@ export class Department extends BaseEntity {
     @Transform((tags) => tags.value.map((tag: Tag) => tag.name))
     follow?: Relation<Tag[]>;
 
-    @Column()
+    @Column({ default: '' })
     link!: string;
 
     @Exclude()
-    @Column()
+    @Column({ default: '' })
     style!: string;
 
     @Exclude()
-    @Column()
+    @Column({ type: 'varchar', length: 63, default: '' })
     code!: string;
 }
 
@@ -88,7 +88,7 @@ export class UserTag extends BaseEntity {
 }
 
 @Entity()
-@Index(['noticeCreatedAt', 'notice'])
+@Index('notice_cursor', ['noticeCreatedAt', 'notice'])
 export class NoticeTag extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number;
@@ -108,6 +108,6 @@ export class NoticeTag extends BaseEntity {
     @RelationId((noticeTag: NoticeTag) => noticeTag.notice)
     noticeId!: number;
 
-    @Column()
+    @Column({ type: 'timestamp', default: '1970-01-01 09:00:01' })
     noticeCreatedAt!: Date;
 }
