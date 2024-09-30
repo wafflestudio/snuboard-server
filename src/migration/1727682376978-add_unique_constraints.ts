@@ -36,9 +36,7 @@ export class addUniqueConstraints1727682376978 implements MigrationInterface {
         await queryRunner.query(`
             DROP TEMPORARY TABLE IF EXISTS tmp_to_keep;
         `);
-        console.log(
-            await queryRunner.query(`SELECT MIN(id) AS min_id, MAX(id) as max_id, name FROM department GROUP BY name;`),
-        );
+
         await queryRunner.query(
             `ALTER TABLE \`department\` ADD UNIQUE INDEX \`IDX_471da4b90e96c1ebe0af221e07\` (\`name\`)`,
         );
