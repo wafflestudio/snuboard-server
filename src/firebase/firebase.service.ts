@@ -1,14 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import * as admin from 'firebase-admin';
+import admin from 'firebase-admin';
 
-import { fbConfig } from '../fbconfig';
 import { encodeTag } from '../functions/custom-function';
 import { User } from '../user/user.entity.js';
 
 @Injectable()
 export class FirebaseService {
     constructor() {
-        admin.initializeApp({ credential: admin.credential.cert(fbConfig) });
+        admin.initializeApp({ credential: admin.credential.applicationDefault() });
     }
 
     async createUserSubscription(user: User, token: string) {
